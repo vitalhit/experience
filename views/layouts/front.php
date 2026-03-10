@@ -65,14 +65,6 @@ AppAsset::register($this);
 				<?php }?>
 			</div>
 
-			<div class="geolocation">
-				<h2>Ваш город <small class="geo-this">Москва?</small></h2>
-				<ul class="geo-row">
-					<?php foreach ($cities as $city) {
-						echo '<li class="city"><a href="'. $city->alias .'">'. $city->name .'</a></li>';
-					}?>
-				</ul>
-			</div>
 
 			<div class="user-block">
 			<?php if (Yii::$app->user->isGuest) {
