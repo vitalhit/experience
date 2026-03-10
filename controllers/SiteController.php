@@ -172,12 +172,7 @@ class SiteController extends Controller
 
 		$model = new Login();
 		if ($model->load(Yii::$app->getRequest()->post()) && $model->login()) {
-			if (Yii::$app->authManager->getAssignment('user', Yii::$app->user->id)) { // проверка роли
-				return $this->redirect('/crm');
-			} else {
-				return $this->redirect('/crm/company');
-				// return $this->goBack();
-			};
+			return $this->redirect('/experience/order');
 		} else {
 			return $this->render('login', ['model' => $model]);
 		}
