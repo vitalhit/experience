@@ -60,10 +60,12 @@ class ExcursionBookingWidget extends Widget
             ->orderBy(['biblioevent_guide.sort_order' => SORT_ASC])
             ->all();
 
+        $maxDate = date('Y-m-d', strtotime('+1 year'));
         $dates = Events::find()
             ->select(['date'])
             ->where(['event_id' => $this->biblioevent_id, 'status' => 1])
             ->andWhere('DATE(date) >= DATE(NOW())')
+            ->andWhere('DATE(date) <= :max', [':max' => $maxDate])
             ->orderBy(['date' => SORT_ASC])
             ->column();
         $this->availableDates = array_map(function ($d) {

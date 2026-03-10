@@ -172,6 +172,7 @@ $css = <<<CSS
 .excursion-btn-submit:disabled { background: #9e9e9e; cursor: not-allowed; }
 .excursion-calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .excursion-calendar-nav { padding: 4px 12px; cursor: pointer; border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5; }
+.excursion-calendar-nav:disabled { opacity: 0.5; cursor: not-allowed; }
 CSS;
 
 $script = <<<JS
@@ -190,8 +191,21 @@ $script = <<<JS
     var selectedDate = null;
     var selectedSession = null;
     var selectedEventId = null;
-    var currentMonth = new Date().getMonth();
-    var currentYear = new Date().getFullYear();
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var currentMonth = today.getMonth();
+    var currentYear = today.getFullYear();
+    var maxDate = new Date(today);
+    maxDate.setFullYear(maxDate.getFullYear() + 1);
+    var maxYear = maxDate.getFullYear();
+    var maxMonth = maxDate.getMonth();
+
+    function isPastMonth(y, m) {
+        return y < today.getFullYear() || (y === today.getFullYear() && m < today.getMonth());
+    }
+    function isBeyondLimit(y, m) {
+        return y > maxYear || (y === maxYear && m > maxMonth);
+    }
 
     function renderCalendar() {
         var cal = document.getElementById('excursion-calendar-' + widgetId);
@@ -202,11 +216,14 @@ $script = <<<JS
         var firstDow = d.getDay();
         firstDow = firstDow === 0 ? 6 : firstDow - 1;
 
+        var canGoLeft = !isPastMonth(currentYear, currentMonth);
+        var canGoRight = !isBeyondLimit(currentYear, currentMonth);
+
         var monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
         var html = '<div class="excursion-calendar-header">';
-        html += '<button type="button" class="excursion-calendar-nav" data-dir="-1">←</button>';
+        html += '<button type="button" class="excursion-calendar-nav" data-dir="-1"' + (canGoLeft ? '' : ' disabled') + '>←</button>';
         html += '<span>' + monthNames[currentMonth] + ' ' + currentYear + '</span>';
-        html += '<button type="button" class="excursion-calendar-nav" data-dir="1">→</button>';
+        html += '<button type="button" class="excursion-calendar-nav" data-dir="1"' + (canGoRight ? '' : ' disabled') + '>→</button>';
         html += '</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px;">';
         ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(function(d) { html += '<div style="text-align:center;font-weight:600;font-size:0.85em;">' + d + '</div>'; });
         html += '</div><div class="excursion-calendar-container">';
@@ -215,11 +232,13 @@ $script = <<<JS
         for (var day = 1; day <= lastDay; day++) {
             var y = currentYear, m = currentMonth + 1;
             var dateStr = y + '-' + (m < 10 ? '0' : '') + m + '-' + (day < 10 ? '0' : '') + day;
-            var isAvailable = availableDates.indexOf(dateStr) !== -1;
+            var dayDate = new Date(y, currentMonth, day);
+            var isPast = dayDate < today;
+            var isBeyondYear = dayDate > maxDate;
+            var isAvailable = !isPast && !isBeyondYear && availableDates.indexOf(dateStr) !== -1;
             var isSelected = selectedDate === dateStr;
-            var isPast = new Date(y, m - 1, day) < new Date(new Date().setHours(0,0,0,0));
             var cls = 'excursion-calendar-day';
-            if (isPast) cls += ' disabled';
+            if (isPast || isBeyondYear) cls += ' disabled';
             else if (isAvailable) cls += ' available';
             if (isSelected) cls += ' selected';
             html += '<div class="' + cls + '" data-date="' + dateStr + '">' + day + '</div>';
@@ -234,7 +253,7 @@ $script = <<<JS
                 loadSessions();
             });
         });
-        cal.querySelectorAll('.excursion-calendar-nav').forEach(function(el) {
+        cal.querySelectorAll('.excursion-calendar-nav:not([disabled])').forEach(function(el) {
             el.addEventListener('click', function() {
                 var dir = parseInt(this.dataset.dir, 10);
                 currentMonth += dir;
