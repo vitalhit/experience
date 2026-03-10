@@ -31,6 +31,7 @@ use yii\helpers\ArrayHelper;
  * @property int $status
  * @property int $type
  * @property string $info
+ * @property int $percent Процент комиссии агента
  */
 class Companies extends \yii\db\ActiveRecord
 {
@@ -50,7 +51,7 @@ class Companies extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['date', 'date_closed'], 'safe'],
-            [['person_id', 'status', 'dogovorstatus', 'type'], 'integer'],
+            [['person_id', 'status', 'dogovorstatus', 'type', 'percent'], 'integer'],
             [['info'], 'string'],
             [['name', 'brand', 'dogovor', 'inn', 'kpp', 'ogrn', 'jaddress', 'faddress', 'man', 'position', 'nds', 'bank', 'bik', 'korr', 'raschet'], 'string', 'max' => 255],
         ];
@@ -84,6 +85,7 @@ class Companies extends \yii\db\ActiveRecord
             'status' => 'Статус',
             'type' => 'Тип',
             'info' => 'Инфо',
+            'percent' => 'Процент комиссии',
         ];
     }
 

@@ -161,7 +161,15 @@ class Events extends \yii\db\ActiveRecord
     public function getBiblioevents()
     {
         return $this->hasOne(Biblioevents::className(), ['id' => 'event_id']);
-    } 
+    }
+
+    /**
+     * Alias для getBiblioevents() — совместимость с BookingController
+     */
+    public function getBiblioevent()
+    {
+        return $this->getBiblioevents();
+    }
 
     public function getSeats()
     {

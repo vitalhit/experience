@@ -54,6 +54,15 @@ namespace app\models;
  * @property integer $template_id
  * @property integer $del 1 = удален
  * @property integer $canceled 1 = отменен
+ * @property integer $session_id
+ * @property integer $ticket_category_id
+ * @property integer $quantity
+ * @property float $price
+ * @property string $customer_name
+ * @property string $customer_email
+ * @property string $customer_phone
+ * @property string $comment
+ * @property integer $experience_order_id
  */
 class Tickets extends \yii\db\ActiveRecord
 {
@@ -88,9 +97,10 @@ class Tickets extends \yii\db\ActiveRecord
     {
         return [
             [['order_id', 'user_id', 'money', 'type'], 'required'],
-            [['company_id', 'user', 'person_id', 'smena_id', 'user_id', 'client_id', 'biblioevent_id', 'event_id', 'seat_id', 'seat', 'money', 'count', 'summa', 'type', 'subscribe', 'status', 'send', 'status_come', 'template_id', 'del', 'canceled'], 'integer'],
+            [['company_id', 'user', 'person_id', 'smena_id', 'user_id', 'client_id', 'biblioevent_id', 'event_id', 'seat_id', 'seat', 'money', 'count', 'summa', 'type', 'subscribe', 'status', 'send', 'status_come', 'template_id', 'del', 'canceled', 'session_id', 'ticket_category_id', 'quantity', 'experience_order_id'], 'integer'],
+            [['price'], 'number'],
             [['date'], 'safe'],
-            [['name', 'secondname', 'email', 'phone','order_id', 'info', 'admin', 'from_url', 'field1', 'field2', 'field3', 'field4', 'field5', 'field6', 'field7', 'field8', 'field9', 'field10', 'promocode', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'barcode', 'mark'], 'string'],
+            [['name', 'secondname', 'email', 'phone','order_id', 'info', 'admin', 'from_url', 'field1', 'field2', 'field3', 'field4', 'field5', 'field6', 'field7', 'field8', 'field9', 'field10', 'promocode', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'barcode', 'mark', 'customer_name', 'customer_email', 'customer_phone', 'comment'], 'string'],
         ];
     }
 
@@ -233,5 +243,20 @@ class Tickets extends \yii\db\ActiveRecord
     public function getBiblioevent()
     {
         return $this->hasOne(Biblioevents::className(), ['id' => 'event_id'])->viaTable('events', ['id' => 'event_id']);
+    }
+
+    public function getExperienceOrder()
+    {
+        return $this->hasOne(ExperienceOrder::className(), ['id' => 'experience_order_id']);
+    }
+
+    public function getSession()
+    {
+        return $this->hasOne(Sessions::className(), ['id' => 'session_id']);
+    }
+
+    public function getTicketCategory()
+    {
+        return $this->hasOne(TicketCategories::className(), ['id' => 'ticket_category_id']);
     }
 }

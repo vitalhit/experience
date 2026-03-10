@@ -84,7 +84,7 @@ class Biblioevents extends \yii\db\ActiveRecord
 	{
 		return [
 			[['name', 'place_id'], 'required'],
-			[['category_id', 'band_id', 'company_id', 'place_id', 'city', 'landing_id', 'template_id', 'seating_id', 'status', 'a_priority', 'a_all', 'click', 'deleted','status','event_status','show_date', 'redirect_time'], 'integer'],
+			[['category_id', 'band_id', 'company_id', 'place_id', 'city', 'landing_id', 'template_id', 'seating_id', 'status', 'a_priority', 'a_all', 'click', 'deleted','status','event_status','show_date', 'redirect_time', 'default_tickets_per_session'], 'integer'],
 			[['info','info_reg_after','info_mail', 'serv_info', 'button_head', 'button_code', 'button_link', 'button_default', 'button_text', 'vksend', 'place_comment','link_vk_audio', 'counter_body', 'counter_head','landing_type'], 'string'],
 			[['name', 'alias', 'subtitle', 'url', 'phone', 'phone2', 'link_buy', 'link_vk', 'link_vk_img', 'link_vk_cc', 'link_fb', 'link_insta', 'link_kg', 'link_bot', 'image', 'age', 'a_company', 'a_p_bib', 'a_p_city', 'a_p_place', 'a_p_sec', 'a_m_bib', 'a_m_city', 'a_m_place', 'a_m_sec'], 'string', 'max' => 255],
 			[['a_start', 'a_end'], 'safe'],
