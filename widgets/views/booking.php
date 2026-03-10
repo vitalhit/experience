@@ -168,6 +168,8 @@ $css = <<<CSS
 .excursion-counter-input { width: 40px; text-align: center; border: 1px solid #ddd; border-radius: 4px; padding: 4px; }
 .excursion-form-group { margin-bottom: 12px; }
 .excursion-form-control { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; color: black; }
+.excursion-form-control::placeholder { color: #666; }
+input.excursion-form-control[name="customer_phone"] { color: black; }
 .excursion-booking-footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; }
 .excursion-total-price { font-weight: 600; margin-bottom: 8px; }
 .excursion-booking-info { font-size: 0.9em; color: #666; margin-bottom: 12px; }
