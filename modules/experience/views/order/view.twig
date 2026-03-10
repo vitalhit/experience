@@ -1,0 +1,59 @@
+<div class="experience-order container" style="max-width: 720px; margin: 2rem auto; padding: 0 1rem;">
+	<h1 style="font-size: 1.5rem; margin-bottom: 0.5rem;">{{ biblioevent.name }}</h1>
+	{% if biblioevent.subtitle %}
+		<p style="color: #666; margin-bottom: 1.5rem;">{{ biblioevent.subtitle }}</p>
+	{% endif %}
+
+	<div style="margin-bottom: 1.5rem;">
+		<strong>Экскурсовод</strong><br>
+		{{ guideName }}
+		{% if guideContact %}
+			<a href="{{ guideContact }}">Написать</a>
+		{% else %}
+			<span>Написать</span>
+		{% endif %}
+	</div>
+
+	<dl style="display: grid; gap: 0.5rem 1rem; grid-template-columns: auto 1fr;">
+		<dt>Дата</dt>
+		<dd>{{ dateFormatted ?: '—' }}</dd>
+
+		<dt>Начало</dt>
+		<dd>{{ timeFormatted ? (timeFormatted ~ ' местное время') : '—' }}</dd>
+
+		<dt>Участников</dt>
+		<dd>{{ participantsCount }}</dd>
+
+		<dt>Стоимость</dt>
+		<dd>{{ sum|number_format(0, '', ' ') }} ₽</dd>
+	</dl>
+
+	<p style="margin: 1rem 0; padding: 0.75rem; background: #f5f5f5; border-radius: 4px;">
+		<strong>{{ statusLabel }}</strong>
+	</p>
+
+	{% if canPay %}
+		<p style="margin: 1rem 0;">
+			Внесите предоплату до завершения регистрации. После оплаты вам станут доступны контакты организатора и место встречи.
+		</p>
+		{% if meetingPlace %}
+			<p style="margin: 0.5rem 0;"><strong>Примерное место встречи:</strong> {{ meetingPlace }}</p>
+		{% endif %}
+	{% endif %}
+
+	<div style="margin: 1.5rem 0; padding: 1rem; border: 1px solid #eee; border-radius: 4px;">
+		<p><strong>Дата начала</strong><br>{{ datetimeFormatted ?: '—' }}</p>
+		<p><strong>Количество участников</strong><br>{{ participantsCount }} человек</p>
+		<p><strong>К оплате</strong><br>{{ sum|number_format(0, '', ' ') }} ₽</p>
+	</div>
+
+	{% if canPay %}
+		<p style="margin: 0.5rem 0;">Промокод или карта лояльности — ввести на странице оплаты при необходимости.</p>
+		<p style="margin: 1rem 0;">
+			<a href="{{ paymentUrl }}" class="btn btn-primary" style="display: inline-block; padding: 12px 24px;">Оплатить картой {{ sum|number_format(0, '', ' ') }} ₽</a>
+		</p>
+		<p>
+			<a href="{{ paymentUrl }}">Оплатить</a>
+		</p>
+	{% endif %}
+</div>
