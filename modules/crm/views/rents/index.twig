@@ -1,0 +1,77 @@
+{% if app.session.hasFlash('success') %}
+	<div class="alert alert-success alert-dismissable">
+		<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+		<h4>{{ app.session.getFlash('success') }}</h4>
+	</div>
+{% elseif app.session.hasFlash('danger') %}
+	<div class="alert alert-danger alert-dismissable">
+		<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+		<h4>{{ app.session.getFlash('danger') }}</h4>
+	</div>
+{% endif %}
+
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>Аренда</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/rent_step.twig') | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+
+		<table class="tb stacktable">
+			<tr>
+				<td>#</td>
+				<td>Дата</td>
+				<td>Начало</td>
+				<td>Окончание</td>
+				<td>Кто</td>
+				<td>Площадка / Зал</td>
+				<td class="ta-r">Стоимость</td>
+				<td>Тип</td>
+				<td>Статус</td>
+				<td></td>
+				<td></td>
+			</tr>
+			{% for row in rents %}
+				<tr class="{%if row.status == 5 %} green {% elseif row.status == 1 %} yellow {% elseif row.status == 100 %} red{% endif%}">
+					<td>{{ row.id }}</td>
+					<td>{{ row.date|date('d.m.Y') }}</td>
+					<td>{{ row.start|date('H:i') }}</td>
+					<td>{{ row.end|date('H:i') }}</td>
+					<td><a href="/crm/persons/view?id={{ row.persons.id|e }}"><span>{{ row.persons.name|e }} {{ row.persons.middle_name|e }}</span><br>{{ row.persons.second_name|e }} </a></td>
+					<td><span>{{ row.rooms.places.name }}</span><br><a href="/crm/rooms/view?id={{ row.rooms.id|e }}">{{ row.rooms.name }}</a></td>
+					<td class="ta-r">{{ row.summa|number_format(0, '.', ' ') }} <span>руб</span></td>
+					<td>
+						{% if row.type == 1 %}
+							Наличка
+						{% elseif row.type == 2 %}
+							БезНал
+						{% elseif row.type == 3 or row.type == 9 %}
+							Билетник
+						{% elseif row.type == 4 %}
+							GoodRepublik
+						{% elseif row.type == 5 %}
+							Абонемент
+						{% else %}
+							-
+						{% endif %}
+					</td>
+					<td>
+						{% if row.status == 1 %}
+							Бронь
+						{% elseif row.status == 5 %}
+							Оплата
+						{% endif %}
+					</td> 
+					<td><a href="/crm/rents/update?id={{ row.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+					<td><a href="/crm/rents/delete?id={{ row.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>

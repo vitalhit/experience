@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <h2>{{ company.name }}</h2>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        {{ this.render('/module/company_step.twig', {'company' : company}) | raw }}
+    </div>
+
+    <div class="col-xs-12 col-lg-9 company">
+        <div class="newblo">
+            <h2>Акты о выполненных работах</h2>
+            <p>Если часть актов в этом разделе не получена нами, мы не сможем оформлять переводы средств на ваш расчетный счет.</p>
+            <p>Скачайте, распечатайте, подпишите и отсканируйте все неполученные акты, и загрузите сканы обратно в систему (счет-фактуру подписывать и загружать не нужно). В течение рабочего дня после загрузки мы проверим ваши документы и подтвердим получение.</p>
+            <p>Если вам нужны подписанные с нашей стороны оригиналы документов, отправьте нам подписанные акты в 2 экземплярах. Мы отправим вам подписанные акт и счет-фактуру после получения оригиналов от вас.</p>
+        </div>
+        {% set mnths = ['','Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'] %}
+        {% for m in month|reverse %}        
+            <div class="newblo btop {{ m.status }}">
+                {% if m.status == 'done' %}
+                    <span class="glyphicon glyphicon-ok bigok"></span>
+                {% endif %}
+
+                <div class="col-xs-12 col-lg-3"><h3 class="tal">{{ mnths[m.month|date("n")] }} {{ m.month|date('Y') }}</h3></div>
+
+                <div class="col-xs-12 col-lg-3">
+                    <a target="_blank" href="/crm/company/akt?date={{ m.month }}"><span class="glyphicon glyphicon-download"></span> Скачать Акт</a>
+                </div>
+
+                <div class="col-xs-12 col-lg-3">
+                     <a class="btn c_green" href="/crm/company/upload?date={{ m.month }}"><span class="glyphicon glyphicon-upload"></span> Загрузить сканы</a>
+                </div>
+
+                {# {% if m.status == 'wait' and m.docs %}
+                    <div class="col-xs-12 col-lg-3">
+                        <a class="btn c_yell" href="/crm/company/sendverify?date={{ m.month }}"><span class="glyphicon glyphicon-ok"></span> Отправить на проверку</a>
+                    </div>
+                {% endif %} #}
+
+                <div class="clear mb10"></div>
+                {% for doc in m.docs %}
+                    <div class="imgblo">
+                        <span>{{ doc.create_at|date('d.m. H:i')}}</span>
+                        <div class="img80">
+                            {% if m.status == 'wait' %}<div class="delimage" tag="{{ doc.id }}"><span class="glyphicon glyphicon-trash"></span></div>{% endif %}
+                            <a href="/web/uploads/docs/{{ doc.image}}" target="_blank" class="img80"><img src="/web/uploads/docs/{{ doc.image}}" class="w80" alt=""></a>
+                        </div>
+                    <p>{{ doc.info }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script type="text/javascript">
+$('.steps .conts').addClass('active');
+
+$(document).ready(function() {
+    $(document).on('click', ".delimage", function(){
+        var bloimg = $(this).parent().parent('.imgblo');
+        var img_id = $(this).attr('tag');
+        console.log(img_id);
+        console.log(bloimg);
+        $.ajax({
+            type: 'get',
+            url: "/crm/company/delimage",
+            data: {'img_id': img_id},
+            response: 'text',
+            success: function(data){
+                $(bloimg).remove();
+            }
+        })
+    });
+});
+</script>

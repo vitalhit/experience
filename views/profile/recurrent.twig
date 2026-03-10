@@ -1,0 +1,140 @@
+<h2>Реккурентные платежи</h2>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-3 left_blo">
+		<div class="stiky">
+			<div class="newblo">
+				{% if person.image %}
+					<img src="/web/uploads/users/{{ person.image }}" class="img-responsive img-circle">
+				{% else %}
+					<img src="/web/images/noimage.png" class="img-responsive img-circle">
+				{% endif %}
+				<h2 class="mt0 mb10">{% if person.name %}{{ person.name }} {{ person.second_name }}{% endif %}</h2>
+				<a href="/profile/update" class="btn btn-primary ma w120">Редактировать</a>
+				<h4>User_id: {{ user_id }}<br>Профиль id: {{ person.id }}</h4>
+				<p><b>Статус:</b> {{ person.status }}</p>
+				<p><b>Дата рождения:</b> {{ person.birthday|date('d.m.Y') }}</p>
+				<p><b>E-mail:</b> {{ person.mail }}</p>
+				<p><b>Телефон:</b> {{ person.phone }}</p>
+				<p><b>Пол:</b> {% if person.sex == 0 %} женщина {% else %} мужчина {% endif %} </p>
+				<p><b>Получать письма:</b> {% if person.sendmail == 1 %} Да {% else %} Нет {% endif %} </p>
+				<p><b>Пожелания:</b> {{ person.vishes }}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-9">
+		
+		{% if tickets %}
+			<div class="mini_header mt0"><span>Действующие автоплатежи <div class="badge">2</div></span></div>
+			
+
+
+
+
+			<table class="tb stacktable">
+				<tr>
+					<td>№</td>
+					<td>Куплен</td>
+					<td>Название</td>
+					<td>Дата списания</td>
+					<td class="tar">Цена/месяц</td>
+					<td class="tar">Статус</td>
+					<td class="tar">Операция</td>
+
+				</tr>
+
+
+					<tr class="{% if row.status == 5  or row.summa == 0 %} green {% else %} yellow {% endif %}">
+					<td>№1</td>
+					<td>18.11.2018</td>
+					<td>SoldOutMafia</td>
+					<td>01.12.2018</td>
+					<td class="tar">900</td>
+					<td class="tar">Включен</td>
+					<td class="tar"><a class="btn btn-success"  href="https://igoevent.com/site/ticket?id={{ row.order_id }}">Выключить</a></td>
+					
+					</tr>
+				
+					</tr>
+					<tr class="{% if row.status == 5  or row.summa == 0 %} green {% else %} yellow {% endif %}">
+					<td>№3</td>
+					<td>29.10.2018</td>
+					<td>Клуб организаторов событий</td>
+					<td>14.12.2018</td>
+					<td class="tar">1000</td>
+					<td class="tar">Включен</td>
+					<td class="tar"><a class="btn btn-success"  href="https://igoevent.com/site/ticket?id={{ row.order_id }}">Выключить</a></td>
+					</tr>
+			</table>
+			<p>&nbsp;</p>
+			<div class="mini_header mt0"><span>Не действующие автоплатежи <div class="badge">1</div></span></div>
+			<table class="tb stacktable">
+				<tr>
+					<td>№</td>
+					<td>Куплен</td>
+					<td>Название</td>
+					<td>Дата списания</td>
+					<td class="tar">Цена/месяц</td>
+					<td class="tar">Статус</td>
+					<td class="tar">Операция</td>
+
+				</tr>
+
+				<tr class="{% if row.status == 5  or row.summa == 0 %} green {% else %} yellow {% endif %}">
+					<td>№2</td>
+					<td>29.10.2018</td>
+					<td>Онлайн курс «Рисунок»</td>
+					<td>14.12.2018</td>
+					<td class="tar">1000</td>
+					<td class="tar">Не включен</td>
+					<td class="tar"><a class="btn btn-success" style="background-color: red!important;" href="https://igoevent.com/site/ticket?id={{ row.order_id }}">Включить</a></td>
+				</tr>
+			</table>
+			<p>&nbsp;</p>
+
+
+			<div class="mini_header mt0"><span>Завершенные предложения <div class="badge">1</div></span></div>
+			<table class="tb stacktable">
+				<tr>
+					<td>№</td>
+					<td>Куплен</td>
+					<td>Название</td>
+					<td>Дата списания</td>
+					<td class="tar">Цена/месяц</td>
+					<td class="tar">Статус</td>
+					<td class="tar">Операция</td>
+
+				</tr>
+				<tr class="{% if row.status == 5  or row.summa == 0 %} green {% else %} yellow {% endif %}">
+					<td>№4</td>
+					<td>01.08.2018</td>
+					<td>Абонимент в Хорошую Республику</td>
+					<td>01.08.2018</td>
+					<td class="tar">1000</td>
+					<td class="tar">Включен</td>
+					<td class="tar"><a class="btn btn-success"  href="https://igoevent.com/site/ticket?id={{ row.order_id }}">Выключить</a></td>
+				</tr>
+				<tr class="{% if row.status == 5  or row.summa == 0 %} green {% else %} yellow {% endif %}">
+					<td>№5</td>
+					<td>01.08.2018</td>
+					<td>Абонимент JazzLike</td>
+					<td>01.10.2018</td>
+					<td class="tar">1000</td>
+					<td class="tar">Не включен</td>
+					<td class="tar">Не доступно</td>
+				</tr>
+			</table>
+
+		
+
+		{% endif %}
+
+
+	</div>
+</div>
+
+
+
+
+

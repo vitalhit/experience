@@ -1,0 +1,36 @@
+<div class="steps">
+	
+	{% if band.id %}
+		<div class="newblo">
+			<h2>Редактировать</h2>
+			<div class="step band">
+				<a href="/crm/band/update?id={{ band.id }}"><span class="glyphicon glyphicon-pencil"></span> Название, описание</a>
+			</div>
+			<div class="step team">
+				<a href="/crm/band/team?id={{ band.id }}"><span class="glyphicon glyphicon-thumbs-up"></span> Команда</a>
+			</div>
+		</div>
+		<div class="newblo">
+			<h2>Продвижение</h2>
+			<div class="step land">
+				<a target="_blank" href="/band/{% if band.alias %}{{ band.alias }}{% else%}{{ band.id }}{% endif %}"><span class="glyphicon glyphicon-share"></span> Промо страница</a>
+				<!--
+				{% if band.landing_id %}
+					<a target="_blank" href="/band/{% if band.alias %}{{ band.alias }}{% else%}{{ band.id }}{% endif %}"><span class="glyphicon glyphicon-share"></span> Промо страница</a><a class="btn btn-success btn-xs" href="/crm/landing/update?id={{ band.landing_id }}&band_id={{ band.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+				{% else %}
+					<a target="_blank" href="/crm/landing/create?band_id={{ band.id }}"><span class="glyphicon glyphicon-share"></span> Создать промо страницу</a>
+				{% endif %}
+				-->
+			</div>
+		</div>
+	{% endif %}
+
+	
+		<div class="newblo">
+			<h2>Бенды</h2>
+			<div class="step events">
+				<a href="/crm/band"><span class="glyphicon glyphicon-globe"></span> Все бенды</a>
+				<a href="/crm/band/create" class="btn btn-success btn-xs">+ бенд</a>
+			</div>
+		</div>
+</div>

@@ -1,0 +1,174 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>Создайте событие</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		<div class="steps">
+			<div class="newblo">
+				<h2>Событие</h2>
+
+				<div class="step event active">
+					<span class="glyphicon glyphicon-flag"></span> Описание события
+				</div>
+				<div class="step date">
+					<span class="glyphicon glyphicon-calendar"></span> Даты
+				</div>
+				<div class="step type">
+					<span class="glyphicon glyphicon-shopping-cart"></span> Типы билетов
+				</div>
+				<div class="step lett">
+					<span class="glyphicon glyphicon-send"></span> Письма
+				</div>
+				<div class="step inst">
+					<span class="glyphicon glyphicon-cog"></span> Инструкция по публикации
+				</div>
+				<div class="step land">
+					<span class="glyphicon glyphicon-share"></span> Лендинг
+				</div>
+			</div>
+
+			<div class="newblo">
+				<h2>Гости</h2>
+				<div class="step guest">
+					<span class="glyphicon glyphicon-user"></span> Билеты события
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-9">
+		<div class="row">
+			<div class="col-xs-12 col-lg-4">
+				<h4 class="tal">Выберите место</h4>
+			</div>
+
+			<div class="col-xs-12 col-lg-8 select">
+				<div style="position: relative;" id="find_place">
+					<input type="text" class="form-control" id="place_input" placeholder="Название">
+					<div id="place_list" class="list"></div>
+				</div>
+			</div>
+		</div>
+
+		<hr>
+
+		{{ this.render('_form.php', {'model' : model, 'category' : category, 'company' : company, 'ads' : ads , 'user' : user}) | raw }}
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	// Получить список мест
+	$(document).on("keyup", '#place_input', function() {
+		var value = $(this).val();
+		$.ajax({
+			type: 'GET',
+			url: "/ajax/place-list",
+			data: {value: value},
+			response: 'text',
+			success: function(data){
+				// console.log(data.list);
+				if (data.list) { 
+					$("#place_list").html(data.list); 
+				}
+			}
+		})
+	});
+
+
+	// Выбрать место
+	$(document).on("click", '.jsplaceset', function() {
+		var text = $(this).text();
+		var city_id = $(this).attr('city_id');
+		var place_id = $(this).attr('place_id');
+
+		city_id = $.trim(city_id);
+		place_id = $.trim(place_id);
+		// console.log("city_id", city_id);
+		// console.log("place_id", place_id);
+		$("#place_list").html('');
+		$("#biblioevents-city").val(city_id).change();
+		$("#biblioevents-place_id").val(place_id);
+		$("#find_place").html(text);
+	});
+
+
+
+	$(function(){
+		//Наличие алиаса
+		$('#biblioevents-alias').change("change keyup input click", function() {
+			$('#biblioevents-alias').next('span').remove();
+			$('#biblioevents-alias').parent('.form-group').removeClass('error has-feedback');
+			var alias = this.value;
+			var city = $('#biblioevents-city').val();
+			// console.log(alias);
+			// console.log(city);
+			$.ajax({
+				type: 'get',
+				url: "/biblioevents/aliasisset",
+				data: {'alias': alias, 'city': city},
+				response: 'text',
+				success: function(data){
+					if (data) {
+						$('#biblioevents-alias').parent('.form-group').addClass('error has-feedback');
+						$('#biblioevents-alias').after('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+						$('.submit').attr('disabled',true);
+					}else{
+						$('.submit').attr('disabled',false);
+					}
+				}
+			})
+		});
+	});
+</script>
+
+
+
+<style>
+	.select .list {
+		/*display: none;*/
+		position: absolute;
+		top: 100%;
+		margin-top: -1px;
+		left: 0px;
+		width: 100%;
+		z-index: 3000;
+		background-color: #fff;
+		border: 1px solid #297a69;
+		border-top: 1px solid #d8dedf;
+		border-radius: 0 0 8px 8px;
+		padding: 0;
+	}
+	.select.active .list {
+		display: block;
+	}
+	.select .list > div {
+		position: relative;
+		cursor: pointer;
+		width: 100%;
+		display: inline-block;
+		padding: 10px 15px 10px 20px;
+		border-bottom: 1px solid #d8dedf;
+	}
+	.select .list > div:last-child {
+		border-bottom: 0px solid transparent;
+	}
+	.select .list > div:hover,
+	.select .list > div.active {
+		color: #3cc45a;
+	}
+	.select .list div:hover:before,
+	.select .list div.active:before {
+		content: " \27A4 ";
+		position: absolute;
+		top: 50%;
+		left: 5px;
+		margin-top: -10px;
+		font-size: 11px;
+		color: #3cc45a;
+	}
+	.select .list span {
+		float: right;
+	}
+</style>

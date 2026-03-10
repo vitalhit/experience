@@ -1,0 +1,319 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<div class="row">
+				<div class="col-xs-12 col-lg-8">
+					<h2>{{ project.name }}</h2>
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<a href="/crm/tasks/create?projectid={{ project.id }}&amp;tasksid={{ model.id }}" class="btn btn-success pull-right">+ шаг</a>
+					<a href="/crm/tasks/create?projectid={{ project.id }}" class="btn btn-success pull-right mr10">+ задача</a>
+					<a href="/crm/tasks/my?projectid={{ project.id }}" class="btn btn-info pull-right mr10"> Все задачи </a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		{% if tasks %}
+			<table class="tb stacktable hidden-xs">
+				<tr>
+					<td>Начало</td>
+					<td>Окончание</td>
+					<td>Время</td>
+					<td>Название</td>
+					<td>Отвественный</td>
+					<td>Статус</td>
+					<td>Прт</td>
+					<td>Качество</td>
+					<td>Результат</td>
+					<td>url</td>
+					<td></td>
+				</tr>
+				{% for row in tasks %}
+					<tr class="{%if row.status_id == 4%} green {% elseif row.status_id == 2%} yellow {% elseif row.status_id == 3%} red{% elseif row.status_id == 5%} blue{% endif%} {%if row.type_id == 2%} meet {% endif%}">
+						<td>{{ row.start|date('d.m H:i') }}</td>
+						<td>{% if row.end %}{{ row.end|date('d.m H:i') }}{% else%} - {% endif %}</td>
+						<td>{% if row.time %} {{ row.time|date('H:i') }}{% else%} - {% endif %}</td>
+						<td><a href="/crm/tasks/update?id={{ row.id|e }}">{{ row.name }}</a></td>
+						<td>{{ row.owners.username }}</td>
+						<td>{{ row.status.name }}</td>
+						<td class="tac"><div class="priority priority{{ row.priority }}">{{ row.priority }}</div></td>
+						<td>{{ row.quality }}</td>
+						<td>{{ row.result }}</td>
+						<td>{% if row.url %}<a href="{{ row.url }}">ссылка</a>{% endif%}</td>
+						<td><a href="/crm/tasks/delete?taskid={{ row.id }}&projectid={{ project.id }}" title="Удалить" aria-label="Удалить" data-confirm="Вы уверены, что хотите удалить этот элемент?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+					</tr>
+				{% endfor %}
+			</table>
+			<hr>
+		{% endif %}
+		{{ this.render('_form.php', {'model' : model, 'projects' : projects}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-3">
+		<div class="mini_header mt0"><span class="pull-left">Клиенты</span></div>
+
+		{% for client in model.clients %}
+			<a title="{% for tc in model.taskClient %}{% if client.id == tc.client_id %} {{ tc.info }} {% endif %}{% endfor %}" href="/crm/clients/update?id={{ client.id }}">{{ client.name }}  {{ client.second_name }}</a> {% if client.vk_id > 0 %} : <a href="https://vk.com/im?sel={{ client.vk_id}} ">vk</a>(<a href="https://vk.com/gim136527321?sel={{ client.vk_id}} ">vkg</a>),<a href="https://wa.me/{{ client.phone }}?text=..%20">wap</a> {% endif %}
+			<br>
+		{% endfor %}
+
+		<form class="form-horizontal" method="POST" action="/crm/tasks/addclient">
+			<div class="form-group">
+				<input type="hidden" name="task_id" value="{{ model.id }}">
+				<div class="col-xs-12 col-lg-4">
+					<input type="text" class="form-control" name="client_id" placeholder="ID">
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<div class="row">
+						<input type="text" class="form-control" name="info" placeholder="info">
+					</div>
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<button type="submit" class="btn btn-primary">send</button>
+				</div>
+			</div>
+		</form>
+		<div class="clear"></div>
+		<div class="mini_header mt0"><span class="pull-left">Юзеры</span></div>
+
+		{% for user in model.users %}
+			{{ user.person.id }}
+		{% endfor %}
+
+		<form class="form-horizontal" method="POST" action="/crm/tasks/addclient">
+			<div class="form-group">
+				<input type="hidden" name="task_id" value="{{ model.id }}">
+				<div class="col-xs-12 col-lg-4">
+					<input type="text" class="form-control" name="client_id" placeholder="ID">
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<div class="row">
+						<input type="text" class="form-control" name="info" placeholder="info">
+					</div>
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<button type="submit" class="btn btn-primary">send</button>
+				</div>
+			</div>
+		</form>
+		<div class="clear"></div>
+
+		<br>
+		<div class="mini_header mt0"><span>События</span></div>
+			{% for bevent in model.taskBiblioevent %}
+				<a href="https://igoevent.com/{% for bib in biblioevent %}{% if bib.id == bevent.biblioevent_id %}{% if bib.city == 1 %}msk{% endif %}{% if bib.city == 2 %}spb{% endif %}/event/{{ bib.alias }}{% endif %}{% endfor %}">  {{ bevent.biblioevent_id }}</a>: 
+				<a title="Гости" href="/crm/biblioevents/view?id={{ bevent.biblioevent_id }}"> гости </a>, 
+				<a title="Даты" href="/crm/events/create?biblioeventid={{ bevent.biblioevent_id }}"> даты </a> ({{ bevent.info }})
+				<br>
+			{% endfor %}
+
+			<form class="form-horizontal" method="POST" action="/crm/tasks/addtaskbiblioevent">
+			<div class="form-group">
+				<input type="hidden" name="task_id" value="{{ model.id }}">
+				<div class="col-xs-12 col-lg-4">
+					<input type="text" class="form-control" name="biblioevent_id" placeholder="BE ID">
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<div class="row">
+						<input type="text" class="form-control" name="info" placeholder="info">
+					</div>
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<button type="submit" class="btn btn-primary">send</button>
+				</div>
+			</div>
+		</form>
+
+			<br>
+			<div class="mini_header mt0"><span>Ссылки</span></div>
+
+			{% for link in model.taskLink %}
+				<a title="Порядковый номер: {{ link.number }}" href="{{ link.link }}"> {{ link.link_text }} </a>
+				<br>
+			{% endfor %}
+		<form class="form-horizontal" method="POST" action="/crm/tasks/addlink">
+			<div class="form-group">
+				<input type="hidden" name="task_id" value="{{ model.id }}">
+				<div class="col-xs-12 col-lg-4">
+					<input type="text" class="form-control" name="link" placeholder="link">
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<div class="row">
+						<input type="text" class="form-control" name="message" placeholder="message">
+					</div>
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<input type="text" class="form-control" name="link_text" placeholder="link text">
+				</div>
+				<div class="col-xs-12 col-lg-3">
+					<button type="submit" class="btn btn-primary">send</button>
+				</div>
+			</div>
+		</form>
+			<br>
+			<div class="mini_header mt0"><span>Bands</span></div>
+			{% for band in model.taskBand %}
+				<a title=" {{ band.number }}" href="https://igoevent.com/crm/band/view?id={{ band.band_id }}"> {{ band.info }} </a>
+				<br>
+			{% endfor %}
+			<br>
+		<form class="form-horizontal" method="POST" action="/crm/tasks/addband">
+			<div class="form-group">
+				<input type="hidden" name="task_id" value="{{ model.id }}">
+				<div class="col-xs-12 col-lg-4">
+					<input type="text" class="form-control" name="band_id" placeholder="ID">
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<div class="row">
+						<input type="text" class="form-control" name="info" placeholder="info">
+					</div>
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<button type="submit" class="btn btn-primary">send</button>
+				</div>
+			</div>
+		</form>
+			<div class="mini_header mt0"><span>Фидбек</span></div>
+
+			{% for feedback in model.taskFeedback %}
+				{{ feedback.id }} <a href="https://igoevent.com/admin/attantion/feedview?id={{ feedback.id }}">{{ feedback.text }}</a> - 
+				{% if  feedback.status == 1 %} новый {% endif%}
+				{% if  feedback.status == 4 %} закрыт {% endif%}
+				<br>
+			{% endfor %}
+			<br>
+
+			<div class="mini_header mt0"><span>Ссылки статичные</span></div>
+			<a title="добавить на КудаГо" href="https://app.slack.com/client/T0320DXKS/CNXJ3QZK2/thread/G0JH696LS-1578092343.000700"> KudaGo: slack #igoevent</a><br>
+			<a title="" href="mailto:ok@jazzmap.ru?subject={{ project.name }}&body=Добрый день. Добавь, пожалуйста, новую дату {{ project.name }}. ссылка на событие:  "> jazzmap: добавить событие</a><br>
+
+			<div class="mini_header mt0"><span>ЧАТ</span></div>
+			<div class="chat_area">
+				<div class="ch">
+					{% set side = 0 %}
+						{% for item in chats %}
+							{% if side == item.user_id %}
+								<div class="text_round"><div class="delchat" tag="{{ item.id }}"><span class="glyphicon glyphicon-trash"></span></div><p>{{ item.text|raw }}</p></div>
+							{% else %}
+							</div><div class="ch">
+							<div class="man"> 
+								<img src="/uploads/users/{{ item.user.person.image }}" class="w26 img-circle fll">
+								<span>{{ item.user.person.name }}   {{ item.create_at|date('d.m в H:i') }} {% if item.user.person.vk_id %} <a href="https://vk.com/im?sel={{ item.user.person.vk_id }}">vk</a> {% endif %}</span>
+							</div>
+							{% set side = item.user_id %}
+								<div class="text_round"><div class="delchat" tag="{{ item.id }}"><span class="glyphicon glyphicon-trash"></span></div><p>{{ item.text|raw }}</p></div>
+							{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+
+				<form id="chatform" method="post">
+					<input type="hidden" id="chat-user_id" class="form-control" name="user_id" value="{{ user_id }}">
+					<input type="hidden" id="chat-task_id" class="form-control" name="task_id" value="{{ model.id }}">
+					<textarea id="chat-text" class="form-control mb10" name="text" rows="4"></textarea>
+	{# 			<div class="row">
+					<div class="col-xs-12 col-lg-4"><span class="mini">Только для</span></div>
+					<div class="col-xs-12 col-lg-8">
+						<div class="form-group field-chat-for_user_id">
+							<select id="chat-for_user_id" class="form-control" name="for_user_id">
+								<option value="5">Виталий Хитров</option>
+							</select>
+						</div>		
+					</div>
+				</div> #}
+				<div class="col-xs-6">
+					<div class="row">
+						<a class="btn c_green" href="/crm/company/upload?task_id={{ model.id }}"><span class="glyphicon glyphicon-upload"></span> Прикрепить фото</a>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="row">
+						<a class="chat_submit btn btn-success pull-right">Отправить</a>
+					</div>
+				</div>
+			</form>
+
+			<div class="clear mb10"></div>
+			{% for doc in model.docs %}
+				<div class="imgblo imgblo_doc">
+					<span>{{ doc.create_at|date('d.m. H:i') }} </span><br><span class="h15 db">{{ doc.info }}</span>
+					<div class="img80">
+						<div class="delimage" tag="{{ doc.id }}"><span class="glyphicon glyphicon-trash"></span></div>
+						<a href="/uploads/docs/{{ doc.image}}" target="_blank" class="">
+							{% if doc.image|slice(-4,4) == '.doc' or doc.image|slice(-4,4) == 'docx' %}
+								<img src="/web/images/doc.jpg" class="w80">		
+							{% elseif doc.image|slice(-4,4) == '.xls' or doc.image|slice(-4,4) == 'xlsx' %}
+								<img src="/web/images/xls.jpg" class="w80">		
+							{% elseif doc.image|slice(-4,4) == '.ppt' or doc.image|slice(-4,4) == 'pptx' %}
+								<img src="/web/images/ppt.jpg" class="w80">			
+							{% elseif doc.image|slice(-4,4) == '.pdf' %}
+								<img src="/web/images/pdf.png" class="w80">							
+							{% else %}
+								<img src="/uploads/docs/{{ doc.image}}" class="w80" alt="">
+							{% endif %}
+						</a>
+					</div>
+				</div>
+			{% endfor %}
+
+		</div>
+	</div>
+
+
+	<script>
+	$(document).on('click', '.chat_submit', function() {
+		var data = $('#chatform').serialize();
+		$.ajax({
+			type: 'POST',
+			url: '/crm/tasks/chat',
+			data: data,
+			response: 'text',
+			success: function(data){
+				$('.chat_area').html(data);
+				$('#chat-text').val('');
+			}
+		})
+	});
+
+
+	$(document).ready(function() {
+		// Удаляем картинку
+		$(document).on('click', ".delimage", function(){
+			var bloimg = $(this).parent().parent('.imgblo');
+			var img_id = $(this).attr('tag');
+			console.log(img_id);
+			console.log(bloimg);
+			$.ajax({
+				type: 'get',
+				url: "/crm/company/delimage",
+				data: {'img_id': img_id},
+				response: 'text',
+				success: function(data){
+					$(bloimg).remove();
+				}
+			})
+		});
+
+        // Удаляем запись чата
+        $(document).on('click', ".delchat", function(){
+        	var blo = $(this).parent();
+        	var id = $(this).attr('tag');
+        	console.log(blo);
+        	console.log(id);
+
+        	$.ajax({
+        		type: 'get',
+        		url: "/crm/tasks/delchat",
+        		data: {'id': id},
+        		response: 'text',
+        		success: function(data){
+        			if(data){
+        				$(blo).remove();
+        			}
+        		}
+        	})
+        });
+    });
+	</script>

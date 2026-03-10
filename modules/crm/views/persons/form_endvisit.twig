@@ -1,0 +1,72 @@
+<form class="form" method="POST" action="/crm/persons/visitend?uid={{user.id}}">
+	<input type="hidden" value="{{money}}" id="money_in">
+	<input type="hidden" value="{{end}}" name="end">
+
+	<div class="row ta-c">
+		<div class="col-xs-12 col-sm-4 super">
+			<p class="big"><span>с</span> {{ visit.start|date('H:i') }}</p>
+		</div>
+		<div class="col-xs-12 col-sm-4 super">
+			<p class="big"><span>по</span> {{ end|date('H:i') }}</p>
+		</div>
+		<div class="col-xs-12 col-sm-4 super">
+			<input type="hidden" name="" id="timein" value="{{ timein }}">
+			<p class="big"><span>итог</span> <span class="normal">{{ (timein / 60)|round() }}<span>ч</span>  {{ timein % 60}}<span>м</span>  </span></p>
+		</div>     
+	</div>
+
+	<div class="mt20"> </div>
+	<div class="line"> </div>
+	
+	<div class="col-xs-12 col-lg-5">
+		<span>Стоимость 1 мин</span>
+		<input type="text" id="formin" class="pull-left form-control" name="" value="" placeholder="р за 1 мин">
+	</div>
+	<div class="col-xs-12 col-lg-2 tac"><span>или</span></div>
+	<div class="col-xs-12 col-lg-5">
+		<span>Итоговая стоимость</span>
+		<input type="text" class="discount_input pull-left form-control" id="fin_money" name="fin_money" value="{{fin_money}}" placeholder="итого">
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="mt20"> </div>
+	<div class="line"> </div>
+
+
+
+	<h2><span>#{{ user.id }}</span> <a href="/crm/persons/view?id={{ user.id }}">{{ user.second_name }} {{ user.name }} {{ user.middle_name }}</a></h2>
+
+	<div class="row ta-c mini">
+		<p class="col-xs-12 col-sm-4">{{ user.status }}</p>
+		<p class="col-xs-12 col-sm-4">{{ user.mail }}</p>
+		<p class="col-xs-12 col-sm-4">{{ user.phone }}</p>
+	</div>
+
+
+	<div class="row">
+		<div class="col-xs-12 col-md-4"><input type="submit" name="type" class="btn btn-success" value="Наличка"></div>  
+		<div class="col-xs-12 col-md-4"><input type="submit" name="type" class="btn btn-success" value="БезНал"></div>  
+		<div class="col-xs-12 col-md-4"><input type="submit" name="type" class="btn btn-success" value="Free"></div> 
+	</div>
+</form>
+
+
+<script type="text/javascript">
+
+$(function(){
+
+	$(document).on('change', '#formin', function() {
+		var rub = $(this).val();
+		console.log(rub);
+		var timein = $('#timein').val()
+		console.log(timein);
+		var fin_money = rub * timein;
+		console.log(fin_money);
+		$('#fin_money').val(fin_money);
+	});
+
+});
+
+</script>
+

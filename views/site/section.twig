@@ -1,0 +1,78 @@
+<div class="container title-section">
+	<div class="title-geo">
+		<h1>{{ section.name }} <small class="geo-in-this">{{ city.name }}</small></h1> 
+		<ul class="geo-in-row">
+			{% for row in cities %}
+				<li class="city {% if row.alias == city.alias %}active{% endif %}"><a href="/{{ row.alias }}">{{ row.name }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+
+
+
+<div class="container">
+	<div class="section-block">
+
+		<div class="event-row">
+			{% if biblioevents %}
+				{% set nodate = 0 %}
+				{% for row in biblioevents %}
+					{% if row.image and row.oneactiveevent.date %}
+						<div class="event">
+							<a class="img-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								{# <span class="comments">12</span><span class="like">410</span> #}
+								<img src="/uploads/users/{{ row.image }}">
+							</a>
+							{# <span class="type-event">категория</span> #}
+							<a class="title-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								<h3>{{ row.name }} {# <small>6+</small> #}</h3>
+							</a>
+							<span class="point">{{ row.oneactiveevent.date|date('d.m.Y ') }} в {{ row.oneactiveevent.date|date('H:i') }}</span>
+							{# <span class="views">9214</span> #}
+						</div>
+					{% endif %}
+					{% if row.oneactiveevent.date == false %} {% set nodate = 1 %} {% endif %} 
+				{% endfor %}
+			{% else %}
+				<h1>В этой категории нет событий!</h1>
+			{% endif %}
+		</div>
+		
+		{% if nodate == 1 %} <h2>Нет даты</h2> {% endif %}
+
+		<div class="event-row">
+			{% if biblioevents %}
+				{% for row in biblioevents %}
+					{% if row.image and row.oneactiveevent.date == false %}
+						<div class="event">
+							<a class="img-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								{# <span class="comments">12</span><span class="like">410</span> #}
+								<img src="/uploads/users/{{ row.image }}">
+							</a>
+							{# <span class="type-event">категория</span> #}
+							<a class="title-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								<h3>{{ row.name }} {# <small>6+</small> #}</h3>
+							</a>
+							{# <span class="views">9214</span> #}
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="clear"></div>		
+		{{ this.render('_bottom.twig', {'ads' : ads}) | raw }}
+	</div>
+
+
+	<div class="sidebar-block">
+		{{ this.render('_right.twig', {'ads' : ads}) | raw }}
+	</div>
+</div>
+
+{{ this.render('block/_footer.twig') | raw }}
+
+<script type="text/javascript" src="/js/igoeventapi.js"></script>
+<link rel="stylesheet" href="/css/igoeventapi.css">
+<link href="/css/front.css" rel="stylesheet">
+

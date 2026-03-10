@@ -1,0 +1,81 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<button type="button" class="left_toggle"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+			<h2>{{ biblioevent.name }} </h2>
+			<!-- <span class="tal mt0">{{ biblioevent.categoryevents.category }} </span> -->
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/event_step.twig', {'biblioevent' : biblioevent, 'user' : user}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<div class="newblo">
+			<div class="row">
+				<div class="col-xs-12 col-lg-3 mb20">
+					{% set mnths = ['','января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'] %}
+					<form method="get">
+						<input type="hidden" name="id" value="{{ biblioevent.id }}">
+						<select name="event_id" class="form-control" onchange="this.form.submit()">
+							<option value="">Все даты</option>
+							{% for row in dates %}
+								<option value="{{ row.id }}" {% if row.id == event_id %}selected{% endif %}>{{ row.date|date("j") }} {{ mnths[row.date|date("n")] }} {{ row.date|date("Y") }} - {{ row.date|date("H:i") }}</option>
+							{% endfor %}
+						</select>
+					</form>
+				</div>
+
+			</div>
+		</div>
+		<table class="tb hidden-xs">
+			<tr>
+				<th>#</th>
+				<th>Дата</th>
+				<th>Купил</th>
+				<th colspan="3">Гость</th>
+				<th>Билет</th>
+<!--				<th class="tar">Р.</th>
+				<th class="tar">Шт</th> -->
+				<th class="tar">Итог</th>
+				<th></th>
+				<th></th>
+			</tr>
+			{% for tik in tickets %}
+				<tr class="{% if tik.status == 5 or tik.summa == 0 %} green {% elseif tik.status == 8 %} black {% elseif tik.status == 7 %} red {% else %} yellow {% endif %}">
+					<td class="mini"><a target="_blank" href="/crm/tickets/view?id={{ tik.id }}">{{ tik.id }}</a><br><a href='/site/ticket?barcode={{tik.barcode}}'>{{tik.order_id}}</a></td>
+					<td class="mini">{{ tik.events.date|date('d.m H:i') }}</td>
+					<td class="mini">{{ tik.date|date('d.m H:i') }}</td>
+					<td class="mini"><a target="_blank" href="/crm/persons/view?id={{ tik.persons.id }}">{{ tik.persons.second_name }}</a></td>
+					<td class="mini">{{ tik.persons.name }}</td>
+<!--					<td class="mini">{{ tik.persons.middle_name }}</td> -->
+					<td class="mini">{{ tik.persons.mail }}</td>
+					<td>{{ tik.seats.name }}</td>
+<!--					<td class="tar">{{ tik.money }}</td>
+					<td class="tar">{{ tik.count }}</td> -->
+					<td class="tar">{{ tik.summa }}</td>
+					<td>
+						<p class="çolor">
+							{% if tik.status == 5 %} Опл. {% elseif tik.status == 8 %} Отмена {% elseif tik.status == 3 %} Не оплачен {% elseif tik.status == 1 %} 
+								{% if tik.summa == 0 %}
+									Рег.{% else %}Бронь
+								{% endif %}
+							{% endif %}
+						</p>
+					</td>
+					<td class="mini">{{ tik.barcode }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.steps .barcode').addClass('active');
+});
+</script>
+
+
+

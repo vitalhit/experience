@@ -1,0 +1,11 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-3">
+		<h1>Даты</h1>
+	</div>
+</div>
+
+<h2 class="tal">Купить билет {{ row.biblioevents.name }}<span>{{ row.id }}</span></h2>
+
+{% for row in events %}
+	<p><a href="/site/form?id={{ row.id }}" class="btn btn-primary">Купить билет - {{ row.date|date('d.m.Y H:i') }}</a></p>
+{% endfor %}

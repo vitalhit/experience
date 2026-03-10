@@ -1,0 +1,28 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-3">
+		<h1>Ссылка на все события</h1>
+	</div>
+</div>
+
+	<div class="col-xs-12">
+		<div class="event-row">
+		{% for row in events %}	
+			
+			<a class="title-event" href="/{{row.cities.alias}}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">{{ row.name }} ({{row.id}})</a><br>
+			<!--
+			<div class="event" style="min-width: 240px; max-width: 320px;">
+				<a class="img-event" href="/{{row.cities.alias}}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+					{# <span class="comments">12</span><span class="like">410</span> #}
+					<img src="/web/uploads/users/{{ row.image }}">
+				</a>
+				{# <span class="type-event">категория</span> #}
+				<a class="title-event" href="/{{row.cities.alias}}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+					<h3>{{ row.name }} ({{row.id}}) {# <small>6+</small> #}</h3>
+				</a>
+				{# <span class="point">{{ row.oneactiveevent.date|date('d.m.Y ') }} в {{ row.oneactiveevent.date|date('H:i') }}</span> #}
+				{# <span class="views">9214</span> #}
+			</div>
+			-->
+		{% endfor %}
+		</div>
+	</div>

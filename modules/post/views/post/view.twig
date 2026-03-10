@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="stiky">
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-9">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12"> 
+                    <table class="tb stacktable">
+                        <tr>
+                            <td>id</td>
+                            <td>title</td>
+                            <td>tag</td>
+                        </tr>
+                        <tr>
+                        <td><span class=""><a href="/post/post/update?id={{ model.id }}">{{ model.id }}</a></span></td>
+                            <td>{{ model.title }}</td>
+                            <td>{{ model.tag}}</td>
+                        </tr>
+                </table>
+                </div>
+            </div>
+        </div>
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12"> 
+                    <b>Attach:</b><br>{{ model.attach}}<br><br>
+                    <b>Text:</b><br><pre>{{ model.text}}</pre><br><br>
+                    {% if model.link or model.link or model.link_fb  or model.link_vk_cc %}
+                    <b>Links:</b><br>
+                                {{ model.link}}<br>
+                                {{ model.link_vk}}<br>
+                                {{ model.link_fb}}<br>
+                                {{ model.link_vk_cc}}<br><br>
+                    {% endif %}        
+                    <b>Links(audio & videos):</b><br>
+                        {{ model.link_audio}}<br>
+                        {{ model.link_videos}}
+                        {{ model.link_photos }}
+
+                </div>
+            </div>    
+        </div>
+       <!--  <div class="mini_header mt0"><span>ВИЗИТЫ <div class="badge">{{ client.visits|length }}</div></span></div>
+
+        <div class="newblo">
+            <table class="table stacktable">
+                <tr>
+                    <td>Начало</td>
+                    <td>Окончание</td>
+                    <td>Скидка</td>
+                    <td>Стоимость</td>
+                </tr>
+                {% for row in client.visits|reverse %}
+                    <tr>
+                        <td>{{ row.start|date('d.m в H:i') }}</td>
+                        <td>{{ row.end|date('d.m в H:i') }}</td>
+                        <td>{{ row.discount_money }}</td>
+                        <td>{{ row.money }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div> -->
+
+    </div>
+</div>

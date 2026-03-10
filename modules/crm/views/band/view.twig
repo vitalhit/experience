@@ -1,0 +1,45 @@
+
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<button type="button" class="left_toggle"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+			<h2>Информация: {{ band.name }} </h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/band_step.twig', {'band' : band}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		
+		<h4>Выступления: {{ band.name }} </h4>
+		{% for item in band.events %}
+			<div class="newblo">
+				<div class="row">
+					<div class="col-xs-12 col-lg-3">
+						<p><b><a href="/crm/events/update?id={{ item.id }}">{{ item.date|date('d.m.Y') }} в {{ item.date|date('H:i') }}</a></b></p>
+					</div>
+					<div class="col-xs-12 col-lg-8">
+						<p><a href="/crm/biblioevents/update?id={{ item.biblioevents.id }}">{{ item.biblioevents.name }}, {{ item.biblioevents.places.name }}</a><br>
+							{% if item.link_vk%}<a href="https://vk.com/{{ item.link_vk }}" style="float: right; margin: 0 5px 0 0px;">  <img width="70%" src="/images/vk.png"></a>{%endif%}
+							{% if item.link_fb%} <a href="https://vk.com/{{ item.link_fb }}" style="float: right; margin: 0 5px 0 0px;">  <img width="70%" src="/images/fb.png"></a>{%endif%}
+						</p>
+					</div>
+					<div class="col-xs-12 col-lg-1">
+						<p><a target="_blank" href="/{{ item.biblioevents.cities.alias }}/event/{% if item.biblioevents.alias %}{{ item.biblioevents.alias }}{% else%}{{ item.biblioevents.id }}{% endif %}"><span class="glyphicon glyphicon-share"></span></a></p>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.steps .view').addClass('active');
+});
+</script>
+
+
+

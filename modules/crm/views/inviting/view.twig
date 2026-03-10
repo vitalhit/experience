@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="stiky">
+
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-9">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12"> 
+                    <table class="tb stacktable">
+                        <tr>
+                            <td>id</td>
+                            <td>info</td>
+                            <td>event_id</td>
+                            <td>public_id</td>
+                            <td>public_vk_id</td>
+                        </tr>
+                        <tr>
+                        <td><span class=""><a href="/crm/post/update?id={{ model.id }}">{{ model.id }}</a></span></td>
+                            <td>{{ model.info }}</td>
+                            <td>{{ model.event_id}}</td>
+                            <td>{{ model.public_id}}</td>
+                            <td>{{ model.public_vk_id}}</td>
+                        </tr>
+                </table>
+                </div>
+            </div>
+        </div>
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12"> 
+                    <b>id:</b><br>{{ model.id}}<br><br>
+                    <b>info:</b><br>{{ model.info}}<br><br>
+                    <b>public_id:{{ model.public_id}}</b><br>
+                    <b>public_id:{{ model.public_vk_id}}</b><br>
+                        
+
+                </div>
+            </div>    
+        </div>
+       <!--  <div class="mini_header mt0"><span>ВИЗИТЫ <div class="badge">{{ client.visits|length }}</div></span></div>
+
+        <div class="newblo">
+            <table class="table stacktable">
+                <tr>
+                    <td>Начало</td>
+                    <td>Окончание</td>
+                    <td>Скидка</td>
+                    <td>Стоимость</td>
+                </tr>
+                {% for row in client.visits|reverse %}
+                    <tr>
+                        <td>{{ row.start|date('d.m в H:i') }}</td>
+                        <td>{{ row.end|date('d.m в H:i') }}</td>
+                        <td>{{ row.discount_money }}</td>
+                        <td>{{ row.money }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div> -->
+
+    </div>
+</div>

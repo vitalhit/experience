@@ -1,0 +1,115 @@
+<ul class="breadcrumb tac">
+	<li><a href="/tickets/all">Все</a></li>
+	<li class="active"><a href="/tickets/month">Месяц</a></li>
+	<li><a href="/tickets/index">Сегодня</a></li>
+</ul>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-3">
+		<h1>Билеты</h1>
+	</div>
+	<div class="col-xs-3 col-sm-1">
+		<h3 class="itog tac">{{ tickets_count }}<span>{{ word }}</span> </h3>
+	</div>
+
+
+	<div class="col-xs-3 col-sm-2">
+		<h3 class="itog tac">{{ tickets_sum[0].nal|number_format(0, '.', ' ')  }}р<span>наличка</span> </h3>
+	</div>
+	<div class="col-xs-3 col-sm-2">
+		<h3 class="itog tac">{{ tickets_sum[0].beznal|number_format(0, '.', ' ')  }}р<span>безнал</span> </h3>
+	</div>
+	<div class="col-xs-3 col-sm-2">
+		<h3 class="itog tac">{{ tickets_sum[0].yandex|number_format(0, '.', ' ')  }}р<span>яндекс</span> </h3>
+	</div>
+	<div class="col-xs-3 col-sm-2">
+		<h3 class="itog tac">{{ tickets_sum[0].summa|number_format(0, '.', ' ')  }}р<span>Итого</span> </h3>
+	</div>
+
+
+
+	<div class="col-xs-12 col-sm-12">
+		{% for event in biblioevents %}
+			<a class="btn btn-xs btn-info" href="#{{event.events.biblioevents.id}}">{{event.events.biblioevents.name}}</a>
+		{% endfor %}
+	</div>
+</div>
+
+	<table class="table stacktable mb0">
+		<tr>
+			<td># Покупка</td>
+			<td>Дата События</td>
+			<td>Кто</td>
+			<td class="tac">Цена</td>
+			<td class="tac">Шт</td>
+			<td class="tac">Сумма</td>
+			<td class="tac">Оплата</td>
+			<td class="tac"></td>
+		</tr>
+	{% for event in biblioevents %}
+	
+		<tr>
+			<td class="tac" colspan="8">
+				<h4 class="m0">
+					{% if event.events.biblioevents.name %}
+						{{ event.events.biblioevents.name }} <span>{{ event.events.event_id }}</span>
+					{% else %}
+						Без  названия
+					{% endif %}
+				</h4>
+			</td>
+		</tr>
+
+	{% set money_nal = 0 %}
+	{% set money_bez = 0 %}
+	{% set money_yan = 0 %}
+
+	{% for row in tickets %}
+	{% if row.events.event_id == event.events.event_id %}
+			
+		<tr>
+			<td><a href="/tickets/view?id={{ row.id }}"><span>{{ row.id }}</span> {{ row.date|date('d.m.Y H:i') }}</a></td>
+			<td>{% if row.events.id %}<a href="/events/view?id={{ row.events.id }}">{{ row.events.date|date('d.m.Y H:i') }}</a>{% else %} нет события {% endif %}</td>
+			<td><a href="/persons/view?id={{ row.persons.id }}">{{ row.persons.second_name }} {{ row.persons.name }}</a></td>
+			<td class="tac">{{ row.money|number_format(0, '.', ' ') }}</td>
+			<td class="tac">{{ row.count }} <span>шт</span></td>
+			<td class="tac">{{ row.money*row.count }}</td>
+			<td class="tar">
+				{% if row.type == 1 %}
+					Наличка
+					{% set money_nal = money_nal + row.money*row.count %}
+				{% elseif row.type == 2 %}
+					БезНал
+					{% set money_bez = money_bez + row.money*row.count %}
+				{% elseif row.type == 3 %}
+					Билетник
+				{% elseif row.type == 4 %}
+					GR
+				{% elseif row.type == 9 %}
+					Яндекс
+					{% set money_yan = money_yan + row.money*row.count %}
+				{% else %}
+					-
+				{% endif %}
+			</td>
+			<td><a href="/tickets/update?id={{ row.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+
+		</tr>
+		{% else %}
+		{% endif %}
+		{% endfor %}
+		<tr>
+			<td class="tar">Наличка: </td>
+			<td class="tal">{{ money_nal|number_format(0, '.', ' ') }}</td>
+			<td class="tar">Безнал: </td>
+			<td class="tal">{{ money_bez|number_format(0, '.', ' ') }}</td>
+			<td class="tar">Яндекс: </td>
+			<td class="tal">{{ money_yan|number_format(0, '.', ' ') }}</td>
+			<td class="tar">Итог: </td>
+			<td class="tal">{{ (money_nal + money_bez + money_yan)|number_format(0, '.', ' ') }}</td>
+		</tr>
+
+	{% endfor %}
+	</table>
+
+

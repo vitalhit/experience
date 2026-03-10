@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <h2>Отчеты</h2>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="steps">
+            {{ this.render('/module/report_step.twig', {'company' : company}) | raw }}
+            <div class="newblo">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-9 newblos">
+        <div>
+            <div class="newblo btop">
+                <p><b>Отчеты</b></p>
+                <table class="tb">
+                    <tr>
+                        <th>id</th>
+                        <th>date</th>
+                        <th>task_id</th>
+                        <th>event_id</th>
+                        <th>info<br>
+                        info_public</th>
+                        <th>user_id</th>
+                        <th>client_id</th>
+                        <th>minuts</th>
+                    </tr>    
+                        {% for row in all %}
+                                <tr>
+                                    <td><p><a href="/crm/report/update?id={{ row.id }}">{{ row.id }}</a></p></td>
+                                    <td><p>{{ row.date }}</p></td>
+                                    <td><p>{{ row.task_id }}</p></td> 
+                                    <td><p>{{ row.event_id }}</p></td> 
+                                    <td><p>{{ row.info}}</p>
+                                    <p>{{ row.info_public}}</p></td>
+                                    <td><p>{{ row.user_id}}</p></td>
+                                    <td><p>{{ row.client_id}}</p></td>
+                                    <td><p>{{ row.minuts}}</p></td>
+                                    
+                                </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>       
+    </div>
+</div>
+
+<script>
+$('.js_slide').click(function () {
+    $(this).parent().find('table').slideToggle(200);
+    $(this).parent().next('.tbmob').slideToggle(200);
+});
+</script>

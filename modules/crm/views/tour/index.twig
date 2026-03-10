@@ -1,0 +1,179 @@
+<div class="row">
+	<div class="hidden-xs col-lg-12">
+		<div class="newblo">
+			<h2>Туры</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/menu_tour.twig') | raw }}
+	</div>
+
+
+	
+
+	<div class="col-xs-12 col-lg-9">
+		<div class="mini_header mt20"><span>Планы</span></div>
+		<div class="row newblos">
+			{% for row in tours %}
+				{% if row.status == 0 %}
+				
+					<div class="col-xs-12 col-md-3">
+						
+							<div class="newblo n_company">
+								<div class="content">
+									<p class="mini p_a_l">#{{ row.id }}</p>
+									<h3 class="h70 fs28"><a href="/crm/tour/view?id={{ row.id }}">{{ row.name }}</a></h3>
+									<p class="mini"><a href="/crm/tour/update?id={{ row.id }}">edit</a></p>
+									{% if row.alias %} 
+									<p class="mini"><a href="https://acapromo.ru/t/{{row.alias}}">acapromo.ru:{{row.alias}} </a></p>
+									{% else %}
+									<p class="mini"><a href="https://acapromo.ru/tour?id={{ row.id }}">acapromo.ru:{{row.alias}}</a></p>
+									{% endif %}
+
+								</div>
+							</div>
+						
+					</div>
+				{% endif %}
+			
+			{% endfor %}
+		</div>
+	</div>
+
+	
+	<div class="col-xs-12 col-lg-9">
+		<div class="mini_header mt20"><span>Активные(работают)</span></div>
+		<div class="row newblos">
+			{% for row in tours %}
+				{% if row.status == 1 %}
+				
+					<div class="col-xs-12 col-md-3">
+						
+							<div class="newblo n_company">
+								<div class="content">
+									<p class="mini p_a_l">#{{ row.id }}</p>
+									<h3 class="h70 fs28"><a href="/crm/tour/view?id={{ row.id }}">{{ row.name }}</a></h3>
+									<p class="mini"><a href="/crm/tour/update?id={{ row.id }}">edit</a></p>
+									{% if row.alias %} 
+									<p class="mini"><a href="https://acapromo.ru/t/{{row.alias}}">acapromo.ru:{{row.alias}} </a></p>
+									{% else %}
+									<p class="mini"><a href="https://acapromo.ru/tour?id={{ row.id }}">acapromo.ru:{{row.alias}}</a></p>
+									{% endif %}
+
+								</div>
+							</div>
+						
+					</div>
+				{% endif %}
+			
+			{% endfor %}
+		</div>
+
+		<div class="mini_header mt20"><span>ПО ССЫЛКЕ</span></div>
+		
+		<div class="row newblos">
+			{% for row in tours %}
+				{% if row.status == 7 %}
+					<div class="col-xs-12 col-md-3">
+						
+							<div class="newblo n_company">
+								<div class="content">
+									<p class="mini p_a_l">#{{ row.id }}</p>
+									<h3 class="h70 fs28"><a href="/crm/tour/view?id={{ row.id }}">{{ row.name }}</a></h3>
+									<p class="mini"><a href="/crm/tour/update?id={{ row.id }}">edit</a>
+									<div class="h26">
+										{% for art in row.artists %}									
+											<img src="/uploads/users/{{ art.image }}" class="w26 mr0 img-circle">
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+
+		<div class="mini_header mt20"><span>НЕАКТИВНЫЕ</span></div>
+		
+		<div class="row newblos">
+			{% for row in tours %}
+				{% if row.status == 0 %}
+					<div class="col-xs-12 col-md-3">
+						
+							<div class="newblo n_company">
+								<div class="content">
+									<p class="mini p_a_l">#{{ row.id }}</p>
+									<h3 class="h70 fs28"><a href="/crm/tour/view?id={{ row.id }}">{{ row.name }}</a></h3>
+									<p class="mini"><a href="/crm/tour/update?id={{ row.id }}">edit</a></p>
+									<div class="h26">
+										{% for art in row.artists %}
+											<img src="/uploads/users/{{ art.image }}" class="w26 mr0 img-circle">
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+
+		<div class="mini_header mt20"><span>Завершены</span></div>
+		
+		<div class="row newblos">
+			{% for row in tours %}
+				{% if row.status == 100 %}
+					<div class="col-xs-12 col-md-3">
+						
+							<div class="newblo n_company">
+								<div class="content">
+									<p class="mini p_a_l">#{{ row.id }}</p>
+									<h3 class="h70 fs28"><a href="/crm/tour/view?id={{ row.id }}">{{ row.name }}</a></h3>
+									<p class="mini"><a href="/crm/tour/update?id={{ row.id }}">edit</a></p>
+									{% if row.alias %} 
+									<p class="mini"><a href="https://acapromo.ru/t/{{row.alias}}">acapromo.ru:{{row.alias}} </a></p>
+									{% else %}
+									<p class="mini"><a href="https://acapromo.ru/tour?id={{ row.id }}">acapromo.ru:{{row.alias}}</a></p>
+									{% endif %}
+									<div class="h26">
+										{% for art in row.artists %}									
+											<img src="/uploads/users/{{ art.image }}" class="w26 mr0 img-circle">
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+
+		<div class="mini_header mt20"><span>Удалены</span></div>
+		
+		<div class="row newblos">
+			{% for row in tours %}
+				{% if row.status == -1 %}
+					<div class="col-xs-12 col-md-3">
+						
+							<div class="newblo n_company">
+								<div class="content">
+									<p class="mini p_a_l">#{{ row.id }}</p>
+									<h3 class="h70 fs28"><a href="/crm/tour/view?id={{ row.id }}">{{ row.name }}</a></h3>
+									<p class="mini"><a href="/crm/tour/update?id={{ row.id }}">edit</a></p>
+									<div class="h26">
+										{% for art in row.artists %}									
+											<img src="/uploads/users/{{ art.image }}" class="w26 mr0 img-circle">
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+

@@ -1,0 +1,20 @@
+<form class="form" method="POST" action="/crm/smena/startsmena">
+
+	<h2>{{ user.username }}</h2>
+
+	<div class="ta-c mini">
+		<p>Вы начинаете новую смену</p>
+		<p>Просто нажмите одну из кнопок и начнется смена. Все визиты и покупки внесенные вами будут прикреплены к этой смене. </p>
+		<p>Вспомните завершить смену в конце работы.</p>
+		<p>Удачного дня!</p>
+	</div>
+
+	<div class="line"> </div>
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-4"><input type="submit" name="type" class="btn btn-primary" value="Ресепшн"></div>  
+		<div class="col-xs-12 col-sm-4"><input type="submit" name="type" class="btn btn-primary" value="Бар"></div>  
+		<div class="col-xs-12 col-sm-4"><input type="submit" name="type" class="btn btn-primary" value="Другое"></div>  
+	</div>
+
+</form>

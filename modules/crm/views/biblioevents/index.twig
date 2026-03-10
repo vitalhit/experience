@@ -1,0 +1,367 @@
+<div class="row">
+	<div class="hidden-xs col-lg-12">
+		<div class="newblo">
+			<h2>События</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/event_step.twig', {'biblioevent' : model, 'user' : user}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<div class="mini_header mt0"><span>Будующие</span></div>
+		<table class="tb stacktable">
+			<tr class="visible-xs">
+				<td>id</td>
+				<td>Картинка</td>
+				<td>Название</td>
+				<td>Даты</td>
+				<td>Билеты</td>
+				<!--<td>брони</td>
+				<td>возвраты</td>-->
+				<td>Кол-во</td>
+				<td>Сумма</td>
+				<td>Место</td>
+				<td></td>
+			</tr>
+			{% for row in biblioev %}
+				{% if row.biblioevent.status == 1  and row.biblioevent.events|length  and row.biblioevent.del != 1  %}
+					<tr>
+						<td>{{ row.biblioevent.id }}</td>
+						<td>
+							{% if row.biblioevent.image %}
+								<img src="/uploads/users/{{ row.biblioevent.image }}" class="plogo">
+							{% endif %}
+						</td>
+						
+						<td><a class="mw300 din" href="/crm/biblioevents/view?id={{ row.biblioevent.id }}">{{ row.biblioevent.name }}</a> {{ row.biblioevent.cities.name }}</td>
+						<td class="tac">
+							{% if row.biblioevent.events|length > 0 %}
+								<a href="/crm/events/create?biblioeventid={{ row.biblioevent.id }}"><span class="normal glyphicon glyphicon-calendar"> {{ row.biblioevent.events|length }}</span>
+								</a>
+							{% else %}
+								<span class="normal glyphicon glyphicon-calendar"></span>
+							{% endif %}
+						</td>
+						<td class="tac">
+							{% if row.tickets > 0 %}
+								<a href="/crm/biblioevents/view?id={{ row.biblioevent.id }}"><span class="normal glyphicon glyphicon-user"> {{ row.tickets }}</span>
+								</a>
+							{% else %}
+								<span class="normal glyphicon glyphicon-user"></span>
+							{% endif %}
+						</td>
+						<!--<td class="bl"><span>брони</span><br> {{ 0 + row.t_zayavka_c }} {{ 0 + row.t_zayavka_s }}</td>-->
+						<!--<td><span>возвраты</span><br>{{ 0 + row.t_back_c }} {{ 0 + row.t_back_s }}</td>-->
+						<td>{{ 0 + row.t_pay_c }}</td>
+						<td>{{ 0 + row.t_pay_s }}</td>
+
+						<td class="bl">
+							<a target="_blank" href="/{{row.biblioevent.cities.alias}}/place/{{row.biblioevent.places.id}}">
+								{% if row.biblioevent.places.logo %}
+									<img src="/uploads/{{ row.biblioevent.places.logo }}" class="plogo">
+								{% elseif row.biblioevent.places.foto %}
+									<img src="/uploads/users/{{ row.biblioevent.places.foto }}" class="plogo">
+								{% else %}
+									{{ row.biblioevent.places.name }}
+								{% endif %}
+							</a>
+						</td>
+						<td>
+							<div class="col-xs-4">
+								{% if row.biblioevent.url %}
+									<a href="{{ row.biblioevent.url }}" target="_blank"><span class="normal glyphicon glyphicon-link"></span></a>
+								{% endif %}
+							</div>
+							<div class="col-xs-4">
+								<a href="/crm/biblioevents/update?id={{ row.biblioevent.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+							</div>
+							<div class="col-xs-4">
+								<a href="/crm/biblioevents/delete?id={{ row.biblioevent.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>
+							</div>
+						</td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+		<div class="mini_header mt0"><span>События без дат(прошедшие)</span></div>
+		<table class="tb stacktable">
+			<tr class="visible-xs">
+				<td>id</td>
+				<td>Картинка</td>
+				<td>Название</td>
+				<td>Даты</td>
+				<td>Билеты</td>
+				<!--<td>брони</td>
+				<td>возвраты</td>-->
+				<td>Кол-во</td>
+				<td>Сумма</td>
+				<td>Место</td>
+				<td></td>
+			</tr>
+			{% for row in biblioev %}
+				
+				{% if row.biblioevent.status == 1  %}
+					   <tr>
+						<td>{{ row.biblioevent.id }}</td>
+						<td>
+							{% if row.biblioevent.image %}
+								<img src="/uploads/users/{{ row.biblioevent.image }}" class="plogo">
+							{% endif %}
+						</td>
+						<td><a class="mw300 din" href="/crm/biblioevents/view?id={{ row.biblioevent.id }}">{{ row.biblioevent.name }}</a><br> {{ row.biblioevent.cities.name }}</td>
+						<td class="tac">
+							{% if row.biblioevent.events|length > 0 %}
+								<a href="/crm/events/create?biblioeventid={{ row.biblioevent.id }}"><span class="normal glyphicon glyphicon-calendar"> {{ row.biblioevent.events|length }}</span>
+								</a>
+							{% else %}
+								<span class="normal glyphicon glyphicon-calendar"></span>
+							{% endif %}
+						</td>
+						<td class="tac">
+							{% if row.tickets > 0 %}
+								<a href="/crm/biblioevents/view?id={{ row.biblioevent.id }}"><span class="normal glyphicon glyphicon-user"> {{ row.tickets }}</span>
+								</a>
+							{% else %}
+								<span class="normal glyphicon glyphicon-user"></span>
+							{% endif %}
+						</td>
+						<!--<td class="bl"><span>брони</span><br> {{ 0 + row.t_zayavka_c }} {{ 0 + row.t_zayavka_s }}</td>-->
+						<!--<td><span>возвраты</span><br>{{ 0 + row.t_back_c }} {{ 0 + row.t_back_s }}</td>-->
+						<td>{{ 0 + row.t_pay_c }}</td>
+						<td>{{ 0 + row.t_pay_s }}</td>
+
+						<td class="bl">
+							<a target="_blank" href="/{{row.biblioevent.cities.alias}}/place/{{row.biblioevent.places.id}}">
+								{% if row.biblioevent.places.logo %}
+									<img src="/uploads/{{ row.biblioevent.places.logo }}" class="plogo">
+								{% elseif row.biblioevent.places.foto %}
+									<img src="/uploads/users/{{ row.biblioevent.places.foto }}" class="plogo">
+								{% else %}
+									{{ row.biblioevent.places.name }}
+								{% endif %}
+							</a>
+						</td>
+						<td>
+							<div class="col-xs-4">
+								{% if row.biblioevent.url %}
+									<a href="{{ row.biblioevent.url }}" target="_blank"><span class="normal glyphicon glyphicon-link"></span></a>
+								{% endif %}
+							</div>
+							<div class="col-xs-4">
+								<a href="/crm/biblioevents/update?id={{ row.biblioevent.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+							</div>
+							<div class="col-xs-4">
+								<a href="/crm/biblioevents/delete?id={{ row.biblioevent.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>
+							</div>
+						</td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+
+		<div class="mini_header mt20"><span>СОБЫТИЯ ПО ССЫЛКЕ</span></div>
+		<table class="tb stacktable">
+			<tr class="visible-xs">
+				<td>id</td>
+				<td>Картинка</td>
+				<td>Название</td>
+				<td>Даты</td>
+				<td>Билеты</td>
+				<td>брони</td>
+				<td>возвраты</td>
+				<td>оплаты</td>
+				<td>Место</td>
+				<td></td>
+			</tr>
+			{% for row in biblioev %}
+				{% if row.biblioevent.status == 7  and row.biblioevent.del != 1 %}
+					<tr>
+						<td>{{ row.biblioevent.id }}</td>
+						<td>
+							{% if row.biblioevent.image %}
+								<img src="/uploads/users/{{ row.biblioevent.image }}" class="plogo">
+							{% endif %}
+						</td>
+						<td><a class="mw300 din" href="/crm/biblioevents/view?id={{ row.biblioevent.id }}">{{ row.biblioevent.name }}</a> {{ row.biblioevent.cities.name }}</td>
+						<td class="tac">
+							{% if row.biblioevent.events|length > 0 %}
+								<a href="/crm/events/create?biblioeventid={{ row.biblioevent.id }}"><span class="normal glyphicon glyphicon-calendar"> {{ row.biblioevent.events|length }}</span>
+								</a>
+							{% else %}
+								<span class="normal glyphicon glyphicon-calendar"></span>
+							{% endif %}
+						</td>
+						<td class="tac">
+							{% if row.tickets > 0 %}
+								<a href="/crm/biblioevents/view?id={{ row.biblioevent.id }}"><span class="normal glyphicon glyphicon-user"> {{ row.tickets }}</span>
+								</a>
+							{% else %}
+								<span class="normal glyphicon glyphicon-user"></span>
+							{% endif %}
+						</td>
+						<td class="bl"><span>брони</span><br> {{ 0 + row.t_zayavka_c }} {{ 0 + row.t_zayavka_s }}</td>
+						<td><span>возвраты</span><br>{{ 0 + row.t_back_c }} {{ 0 + row.t_back_s }}</td>
+						<td><span>оплаты</span><br>{{ 0 + row.t_pay_c }} {{ 0 + row.t_pay_s }}</td>
+
+						<td class="bl">
+							<a target="_blank" href="/{{row.biblioevent.cities.alias}}/place/{{row.biblioevent.places.id}}">
+								{% if row.biblioevent.places.logo %}
+									<img src="/uploads/{{ row.biblioevent.places.logo }}" class="plogo">
+								{% elseif row.biblioevent.places.foto %}
+									<img src="/uploads/users/{{ row.biblioevent.places.foto }}" class="plogo">
+								{% else %}
+									{{ row.biblioevent.places.name }}
+								{% endif %}
+							</a>
+						</td>
+						<td>
+							<div class="col-xs-4">
+								{% if row.biblioevent.url %}
+									<a href="{{ row.biblioevent.url }}" target="_blank"><span class="normal glyphicon glyphicon-link"></span></a>
+								{% endif %}
+							</div>
+							<div class="col-xs-4">
+								<a href="/crm/biblioevents/update?id={{ row.biblioevent.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+							</div>
+							<div class="col-xs-4">
+								<a href="/crm/biblioevents/delete?id={{ row.biblioevent.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>
+							</div>
+						</td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+
+		<div class="mini_header mt20"><span>НЕАКТИВНЫЕ СОБЫТИЯ</span></div>
+
+		<table class="tb stacktable">
+			<tr class="visible-xs">
+				<td>id</td>
+				<td>Картинка</td>
+				<td>Название</td>
+				<td>Даты</td>
+				<td>Билеты</td>
+				<!--<td>брони</td>
+				<td>возвраты</td>-->
+				<td>Кол-во</td>
+				<td>Сумма</td>
+				<td>Место</td>
+				<td></td>
+			</tr>
+			{% for row in biblioev %}
+				{% if row.biblioevent.status == 0  and row.biblioevent.del != 1 %}
+					<tr>
+						<td>{{ row.biblioevent.id }}</td>
+						<td><a href="/crm/biblioevents/view?id={{ row.biblioevent.id }}">{{ row.biblioevent.name }}</a></td>
+						<td class="tac">
+							{% if row.biblioevent.events|length > 0 %}
+								<a href="/crm/events/create?biblioeventid={{ row.biblioevent.id }}"><span class="normal glyphicon glyphicon-calendar"> {{ row.biblioevent.events|length }}</span>
+								</a>
+							{% else %}<span class="normal glyphicon glyphicon-calendar"> 0</span>{% endif %}
+							</td>
+						<td class="tac">
+								{% if row.tickets > 0 %}
+									<a href="/crm/biblioevents/view?id={{ row.biblioevent.id }}"><span class="normal glyphicon glyphicon-user"> {{ row.tickets }}</span>
+									</a>
+								{% else %}<span class="normal glyphicon glyphicon-user"> 0</span>{% endif %}
+								</td>
+								<td>{{ row.biblioevent.categoryevents.category }}</td>
+							<td>
+								<a target="_blank" href="/{{row.biblioevent.cities.alias}}/place/{{row.biblioevent.places.id}}">
+									{% if row.biblioevent.places.logo %}
+										<img src="/uploads/{{ row.biblioevent.places.logo }}" class="plogo">
+									{% else %}
+										{{ row.biblioevent.places.name }}
+									{% endif %}
+								</a>
+							</td>
+							<!-- <td>{{ row.biblioevent.info }}</td>-->         
+							<td>{% if row.biblioevent.url %} <a href="{{ row.biblioevent.url }}" target="_blank">ссылка</a>{% endif %}</td>
+							<td><a href="/crm/biblioevents/update?id={{ row.biblioevent.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+							<td><a href="/crm/biblioevents/delete?id={{ row.biblioevent.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+
+		<div class="mini_header mt20"><span>Удаленные события</span></div>
+
+		<table class="tb stacktable">
+			<tr >
+				<td>id</td>
+				<td>Картинка</td>
+				<td>Название</td>
+				<td>Даты</td>
+				<td>Билеты</td>
+				<!--<td>брони</td>
+				<td>возвраты</td>-->
+				<td>Кол-во</td>
+				<td>Сумма</td>
+				<td>Место</td>
+				<td></td>
+			</tr>
+			{% for row in biblioev %}
+				{% if row.biblioevent.del == 1  %}
+					<tr>
+						<td>{{ row.biblioevent.id }}</td>
+						<td class="hidden-xs">
+							{% if row.biblioevent.image %}
+								<img src="/uploads/users/{{ row.biblioevent.image }}" class="plogo">
+							{% endif %}
+						</td>
+						
+						<td><a class="mw300 din" href="/crm/biblioevents/view?id={{ row.biblioevent.id }}">{{ row.biblioevent.name }}</a></td>
+						<td class="tac">
+							{% if row.biblioevent.events|length > 0 %}
+								<a href="/crm/events/create?biblioeventid={{ row.biblioevent.id }}"><span class="normal glyphicon glyphicon-calendar"> {{ row.biblioevent.events|length }}</span>
+								</a>
+							{% else %}
+								<span class="normal glyphicon glyphicon-calendar"></span>
+							{% endif %}
+						</td>
+						<td class="tac">
+							{% if row.tickets > 0 %}
+								<a href="/crm/biblioevents/view?id={{ row.biblioevent.id }}"><span class="normal glyphicon glyphicon-user"> {{ row.tickets }}</span>
+								</a>
+							{% else %}
+								<span class="normal glyphicon glyphicon-user"></span>
+							{% endif %}
+						</td>
+						<!--<td class="bl"><span>брони</span><br> {{ 0 + row.t_zayavka_c }} {{ 0 + row.t_zayavka_s }}</td>-->
+						<!--<td><span>возвраты</span><br>{{ 0 + row.t_back_c }} {{ 0 + row.t_back_s }}</td>-->
+						<td>{{ 0 + row.t_pay_c }}</td>
+						<td>{{ 0 + row.t_pay_s }}</td>
+
+						<td class="bl">
+							<a target="_blank" href="/{{row.biblioevent.cities.alias}}/place/{{row.biblioevent.places.id}}">
+								{% if row.biblioevent.places.logo %}
+									<img src="/uploads/{{ row.biblioevent.places.logo }}" class="plogo">
+								{% elseif row.biblioevent.places.foto %}
+									<img src="/uploads/users/{{ row.biblioevent.places.foto }}" class="plogo">
+								{% else %}
+									{{ row.biblioevent.places.name }}
+								{% endif %}
+							</a>
+						</td>
+						<td>
+							<div class="col-xs-4">
+								{% if row.biblioevent.url %}
+									<a href="{{ row.biblioevent.url }}" target="_blank"><span class="normal glyphicon glyphicon-link"></span></a>
+								{% endif %}
+							</div>
+							<div class="col-xs-4">
+								<a href="/crm/biblioevents/update?id={{ row.biblioevent.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+							</div>
+							<div class="col-xs-4">
+								<a href="/crm/biblioevents/delete?id={{ row.biblioevent.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>
+							</div>
+						</td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+	</div>
+</div>
+
+

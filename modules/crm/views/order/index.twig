@@ -1,0 +1,68 @@
+{{ use('/yii/widgets') }}
+
+<ul class="search_result"></ul>
+
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <div class="row">
+              
+                <div class="col-xs-12 col-lg-12">
+                    <h2>All orders</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="steps">
+            {{ this.render('/module/step_order.twig', {'company' : company}) | raw }}
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-6">
+        
+        <table class="tb stacktable">
+            <tr>
+
+                <td>id</td>
+                <td>title</td>
+                <td>info</td>
+                <td>task</td>
+                <td><span class="small">date_create</span></td>
+                <td><span class="small">date_start</span></td>
+                <td><span class="small">date_end</span></td>
+                <td><span class="small">date_complete</span></td>
+                <td><span class="small">closed</span></td>
+            </tr>
+            {% for one in all %}
+            <tr>
+                <td><a href="/crm/order/update?id={{ one.id}}">{{ one.id}}</a></td>
+                <td><a href="/crm/order/update?id={{ one.id}}">{{ one.title}}</a></td>
+                <td>{% if one.info_client %}c: {{ one.info_client}}{% endif %}
+                    {% if one.info_draft %}d: {{ one.info_draft}}{% endif %}<br>
+                    {% if one.info %}i: {{ one.info}}{% endif %}
+                    {% if one.info_report %}R: {{ one.info_report}}{% endif %}
+                    </td>
+                <td>{{ one.task}}</td>
+                <td><span class="small">{{ one.date_create|date("d-m-y")}}</span></td>
+                <td><span class="small">{{ one.date_start|date("d-m-y")}}</span></td>
+                <td><span class="small">{{ one.date_end|date("d-m-y")}}</span></td>
+                <td><span class="small">{{ one.date_complete|date("d-m-y")}}</span></td>
+                <td>{{ one.closed}}</td>
+                
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+    {{link_pager_widget({
+        'pagination': pages
+    }) }}
+
+
+
+    <div class="popup end popup_d"></div>
+
+    <div class="overlay"></div>
+

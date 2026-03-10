@@ -1,0 +1,29 @@
+<textarea cols="6" rows="1">{% if model.link_vk %}[{{model.link_vk}}|{{ biblioevent.name }}]{% else %}{{ biblioevent.name }} {%endif%}
+
+
+{% if model.info %} {{ model.info }} {% else %} {{ biblioevent.info }}{%endif%}
+
+https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source={% if newsmaker.utm_source %}{{newsmaker.utm_source}}{% else %}media{% endif %}&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content={% if newsmaker.utm_content %}{{newsmaker.utm_content}}{% else %}{{newsmaker.site}}{% endif %}&utm_term={{ model.id }}
+{% if biblioevent.link_vk_img %}{{biblioevent.link_vk_img}}{%endif%}{% if biblioevent.img.vk %} https://vk.com/{{ biblioevent.img.vk }}{% endif %} 
+{{ biblioevent.link_vk_audio }} 
+{% for row in mybands %}{{ row.band.link_vk_audio }}{% endfor %}</textarea>
+
+<br>Розыгрыш<br>
+<textarea>Розыгрыш билетов на {{ biblioevent.name }}
+
+Афиша Петербурга разыгрывает 2 билета на {{ biblioevent.name }}, который пройдет  {{model.date|date('d.m.Y  H:i')}}  в {{ biblioevent.places.name }}
+
+Для участия в конкурсе необходимо:
+- быть участником групп [{{model.link_vk}}|{{ biblioevent.name }}] и [1afishaspb|Афиша Петербурга]
+- сделать репост конкурса у себя на стене
+
+Итоги конкурса мы подведем {{model.date|date('d.m.Y')}} после 22-00
+
+Победитель, выбранный генератором случайных чисел, получит два билета на концерт.
+
+	                
+{% if biblioevent.img.vk %} https://vk.com/{{ biblioevent.img.vk }}{% else %}{{ biblioevent.link_vk_img }}{% endif %} 
+{{ biblioevent.link_vk_audio }}
+
+{% for row in mybands %}{{ row.band.link_vk_audio }}{% endfor %}
+</textarea>

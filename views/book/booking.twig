@@ -1,0 +1,20 @@
+<!-- template: booking.twig -->
+
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{{ booking.title}}</h2>
+		</div>
+	</div>
+	
+
+	<div class="col-xs-12 col-lg-12">
+
+		{{ booking.info | raw }}
+			
+		{{ this.render('/book/form/_form_landing.php', {'model' : model, 'booking' : booking, 'events' : events ,  'event_id' : event_id , 'person' : person , 'city' : city }) | raw }}
+
+		{{ this.render('/site/block/_metrika.twig') | raw }}
+
+	</div>
+</div>

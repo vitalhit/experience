@@ -1,0 +1,86 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<div class="row">
+				<div class="col-xs-12 col-lg-3">
+					<h2>Статусы гостей</h2>    
+				</div>
+				<div class="col-xs-12 col-lg-9">
+					<div class="row">
+						<div class="col-xs-12 col-sm-9">
+							
+						</div>
+
+						<div class="col-xs-12 col-sm-3">
+							<a href="/crm/persons/recount" class="btn btn-primary mt20 pull-right">Пересчитать - 30 сек</a>
+						</div>
+					</div>
+				</div>
+			</div>       
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/person_step.twig', {'company' : company}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+
+		<div class="row">
+			<div class="col-xs-12 col-md-6">
+				<div class="newblo">
+
+
+					<h2>Статусы гостей</h2>
+					<table class="table stacktable">
+						<tr>
+							<td width="50%">Статус</td>
+							<td>Гости</td>
+							<td>Mail</td>
+							<td>Денег</td>
+						</tr>
+						{% for stat in allstatuscount %}
+							<tr>
+								<td><a href="/crm/persons/status?pinstatus={{ stat[0] }}">{{ stat[0] }}</a></td>
+								<td class="tar">{{ stat[1] }}</td>
+								<td class="tar">{{ stat[2] }}</td>
+								<td class="tar">{{ stat[3]|number_format(0, '.', ' ') }}</td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+
+
+			<div class="col-xs-12 col-md-6">
+				<div class="newblo">
+					<h2>Гости c выбранным статусом</h2>
+					<table class="table stacktable">
+						<tr>
+							<td>Имя</td>
+							<td>Mail</td>
+							<td>Визиты</td>
+							<td>Билеты</td>
+							<td>Продажи</td>
+							<td>Абонементы</td>
+							<td>Аренда</td>
+							<td>Всего</td>
+						</tr>
+						{% for pers in personsinstatus %}
+							<tr>
+								<td><a target="_blank" href="/crm/persons/view?id={{ pers.id }}">{{ pers.second_name }} {{ pers.name }}</td>
+								<td>{{ pers.mail }}</td>
+								<td class="tar">{{ pers.sum_visits|number_format(0, '.', ' ') }}</td>
+								<td class="tar">{{ pers.sum_tickets|number_format(0, '.', ' ') }}</td>
+								<td class="tar">{{ pers.sum_sells|number_format(0, '.', ' ') }}</td>
+								<td class="tar">{{ pers.sum_abonements|number_format(0, '.', ' ') }}</td>
+								<td class="tar">{{ pers.sum_rents|number_format(0, '.', ' ') }}</td>
+								<td class="tar"><b>{{ (pers.sum_visits + pers.sum_tickets + pers.sum_sells + pers.sum_abonements + pers.sum_rents)|number_format(0, '.', ' ') }}</b></td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

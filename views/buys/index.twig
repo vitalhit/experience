@@ -1,0 +1,81 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4">
+		<h1>Пополнения</h1>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4">
+		закупили и поставили на склад
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-2">
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-2">
+		<a class="btn btn-primary pull-right" href="/buys/create">+ Добавить закупку</a>
+	</div>
+</div>
+
+<table class="table stacktable">
+	<tr>
+		<td>Дата</td>
+		<td>Товар</td>
+		<td>Кол-во</td>
+		<td class="ta-r pr15">Стоимость</td>
+		<td>Описание</td>
+		<td colspan="2">Редактировать</td>
+	</tr>
+	{% for row in buys %}
+	<tr>
+		<td>{{ row.date|date('d.m H:i') }}</td>
+		<td>{{ row.goods.name }}</td>
+		<td>{{ row.count }}</td>
+		<td class="ta-r pr15">{{ row.price }} р</td>
+		<td>{{ row.info }}</td>
+		<td><a href="/buys/update?id={{ row.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+		<td><a href="/buys/delete?id={{ row.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+	</tr>
+	{% endfor %}
+</table>
+
+
+
+
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-6">
+		<h1>Остатки на складе</h1>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4">
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-2">
+	</div>
+</div>
+
+<table class="table stacktable">
+	<tr>
+		<td>Товар</td>
+		<td class="ta-r">Закуплено</td>
+		<td class="ta-r">Продано</td>
+		<td class="ta-r">Остаток</td>
+		<td class="ta-r">Закуплено</td>
+		<td class="ta-r">Продано</td>
+		<td class="ta-r pr15">Выгода</td>
+	</tr>
+	{% for sklad in sklads %}
+	<tr class="{% if sklad.itogo - sklad.price < 0 %} red {% endif %}" >
+		<td>{{ sklad.goods.name }}</td>
+		<td class="ta-r">{{ sklad.type }}</td>
+		<td class="ta-r">{{ sklad.count }}</td>
+		<td class="ta-r">
+			{% if sklad.info == null %}
+				{{ sklad.count }}
+			{% else %}
+				{{ sklad.info }}
+			{% endif %}
+		</td>
+		<td class="ta-r">
+		{% if sklad.price %}
+			{{ sklad.price }} р
+		{% endif %}
+		</td>
+		<td class="ta-r">{{ sklad.itogo }} р</td>
+		<td class="ta-r pr15">{{ sklad.itogo - sklad.price }} р</td>
+	</tr>
+	{% endfor %}
+</table>

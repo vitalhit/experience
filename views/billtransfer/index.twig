@@ -1,0 +1,65 @@
+<h1>Операции</h1>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-4">
+	<h2>Доход</h2>
+		<table class="table stacktable">
+			<tr>
+				<td>Дата</td>
+				<td>Откуда</td>
+				<td>Куда</td>
+				<td>Сумма</td>
+			</tr>
+			{% for row in dohod %}
+			<tr>
+				<td><a href="/billtransfer/view?id={{ row.id }}">{{ row.date|date('d.m H:i') }}</a></td>
+				<td>{{ row.name }}</td>
+				<td>{{ row.billTo.name }}</td>
+				<td class="ta-r">{{ row.summa }} р</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+
+	<div class="col-xs-12 col-sm-4">
+	<h2>Расход</h2>
+		<table class="table stacktable">
+			<tr>
+				<td>Дата</td>
+				<td>Откуда</td>
+				<td>Куда</td>
+				<td>Сумма</td>
+			</tr>
+			{% for row in rashod %}
+			<tr>
+				<td><a href="/billtransfer/view?id={{ row.id }}">{{ row.date|date('d.m H:i') }}</a></td>
+				<td>{{ row.billFrom.name }}</td>
+				<td>{{ row.name }}</td>
+				<td class="ta-r">{{ row.summa }} р</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+
+	<div class="col-xs-12 col-sm-4">
+	<h2>Перевод</h2>
+		<table class="table stacktable">
+			<tr>
+				<td>Дата</td>
+				<td>Откуда</td>
+				<td>Куда</td>
+				<td>Сумма</td>
+			</tr>
+			{% for row in perevod %}
+			<tr>
+				<td><a href="/billtransfer/view?id={{ row.id }}">{{ row.date|date('d.m H:i') }}</a></td>
+				<td>{{ row.billFrom.name }}</td>
+				<td>{{ row.billTo.name }}</td>
+				<td class="ta-r">{{ row.summa }} р</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>

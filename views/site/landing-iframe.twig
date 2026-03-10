@@ -1,0 +1,47 @@
+{% if biblioevent.landing.seodesc %}
+	{{ this.registerMetaTag({name: 'keywords', content: biblioevent.landing.seodesc}) | raw }}
+{% else %}
+	{% set seodesc = [biblioevent.name, ' ', biblioevent.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'keywords', content: seodesc}) | raw }}
+{% endif %}
+
+{% if biblioevent.landing.seokey %}
+	{{ this.registerMetaTag({name: 'description', content: biblioevent.landing.seokey}) | raw }}
+{% else %}
+	{% set seokey = [biblioevent.name, ' ', biblioevent.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'description', content: seokey}) | raw }}
+{% endif %}
+
+
+{% if biblioevent.landing.ogtitle %}
+	{{ this.registerMetaTag({name: 'og:title', content: biblioevent.landing.ogtitle}) | raw }}
+{% else %}
+	{% set ogtitle = [biblioevent.name, ' ', biblioevent.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'og:title', content: ogtitle}) | raw }}
+{% endif %}
+
+{% if biblioevent.landing.ogdescription %}
+	{{ this.registerMetaTag({name: 'og:description', content: biblioevent.landing.ogdescription}) | raw }}
+{% else %}
+	{% set ogdescription = [biblioevent.name, ' ', biblioevent.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'og:description', content: ogdescription}) | raw }}
+{% endif %}
+
+{% if biblioevent.landing.ogimage %}
+	{% set ogimage = ['/web/uploads/users/', biblioevent.landing.ogimage ]|join %}
+{% elseif biblioevent.landing.image %}
+	{% set ogimage = ['/web/uploads/users/', biblioevent.landing.image ]|join %}
+{% else %}
+	{% set ogimage = ['/web/uploads/users/', biblioevent.image ]|join %}
+{% endif %}
+{{ this.registerMetaTag({name: 'og:image', content: ogimage}) | raw }}
+
+{% set ogurl = [biblioevent.cities.alias, '/event/', biblioevent.id]|join %}
+{{ this.registerMetaTag({name: 'og:url', content: ogurl}) | raw }}
+
+{{ this.registerMetaTag({name: 'og:type', content: 'website'}) | raw }}
+
+{% if biblioevent.button_head %}{{ biblioevent.button_head | raw }}{% endif %}
+
+
+<iframe width="100%" height="100%" src="https://docs.google.com/spreadsheets/d/1LwKkPVWyvntkB86pOhuSVuMjdnqK_1_gmvAW9EOI5Oc/edit?usp=sharing"></iframe>

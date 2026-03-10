@@ -1,0 +1,93 @@
+{{ use('/yii/widgets') }}
+
+
+
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12 col-lg-9">
+                    {% if deal %}
+                    Сделка {{deal}}: <p id="demo">{% for eventdeal in eventdeals %} {% if deal == eventdeal.deal_id %}{{eventdeal.profit }}+{%endif%}{% endfor %}</p>
+
+
+
+                    {% else %}
+                    <h2>Все EventDeal</h2>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        {{ this.render('/module/eventdeal_step.twig', {'company' : company}) | raw }}
+    </div>
+
+    <div class="col-xs-12 col-lg-9">
+
+        <table class="tb stacktable">
+            <tr>
+                <td></td>
+                <td>event_id</td>
+                <td>deal_id</td>
+                <td>media_id</td>
+                <td>Biblioevent<br>Date</td>
+                <td>Info</td>
+                <td>Status</td>
+                <td>Date Craet</td>
+                <td>Date Closed</td>
+
+                <td>Percent</td>
+                <td>Profit<br>
+                <span style="color: red;">{{sum_deals}}</span></td>                
+            </tr>
+            {% if deal %}
+                {% for eventdeal in eventdeals %}
+                      {% if deal == eventdeal.deal_id %}
+            <tr>
+                <td><span><a href="/crm/eventdeal/update?id={{ eventdeal.id }}">{{ eventdeal.id }}</a></span></td>
+                <td><span><a href="/crm/events/update?id={{ eventdeal.event_id }}">{{ eventdeal.event_id }}</a>
+
+
+                </span></td>
+                <td><span><a href="https://igoevent.com/crm/eventdeal/?deal_id={{ eventdeal.deal_id }}">{{ eventdeal.deal_id }}</a></span></td>
+                <td><span>{% if eventdeal.media_id == 2 and eventdeal.event.biblioevents.link_kg %} <a href="{{ eventdeal.event.biblioevents.link_kg }}">KudaGo({{ eventdeal.media_id }})</a> {% else %}{{ eventdeal.media_id }} {%endif%}<br><a href="/crm/newsmakers/view?id={{ eventdeal.newsmaker_id }}">newsmaker:{{ eventdeal.newsmaker_id }}</a></span></td>
+                <td><span><a href="https://igoevent.com/crm/biblioevents/view?id={{ eventdeal.event.biblioevents.id }}&event_id={{ eventdeal.event_id }}">{{ eventdeal.event.biblioevents.name }} ({{ eventdeal.event.biblioevents.id }}) </a><br>{{ eventdeal.event.date|date('y.m.d H:i') }}</span></td>
+                <td><span>{{ eventdeal.info }}</span></td>
+                <td><span>{{ eventdeal.status }}</span></td>
+                <td><span>{{ eventdeal.date_create }}</span></td>
+                <td><span>{{ eventdeal.date_closed }}</span></td>
+                <td><span>{{ eventdeal.percent }}%</span></td>
+                <td><span>{{ eventdeal.profit }}</span></td>
+                
+            </tr>
+                     {% endif %}
+                {% endfor %}
+            {% else %}
+                {% for eventdeal in eventdeals %}
+              <tr>
+                <td><span><a href="/crm/eventdeal/update?id={{ eventdeal.id }}">{{ eventdeal.id }}</a></span></td>
+                <td><span><a href="/crm/events/update?id={{ eventdeal.event_id }}">{{ eventdeal.event_id }}</a>
+
+
+                </span></td>
+                <td><span><a href="https://igoevent.com/crm/eventdeal/?deal_id={{ eventdeal.deal_id }}">{{ eventdeal.deal_id }}</a></span></td>
+                <td><span>{% if eventdeal.media_id == 2 and eventdeal.event.biblioevents.link_kg %} <a href="{{ eventdeal.event.biblioevents.link_kg }}">KudaGo({{ eventdeal.media_id }})</a> {% else %}{{ eventdeal.media_id }} {%endif%}<br><a href="/crm/newsmakers/view?id={{ eventdeal.newsmaker_id }}">newsmaker:{{ eventdeal.newsmaker_id }}</a></span></td>
+                <td><span><a href="https://igoevent.com/crm/biblioevents/view?id={{ eventdeal.event.biblioevents.id }}&event_id={{ eventdeal.event_id }}">{{ eventdeal.event.biblioevents.name }} ({{ eventdeal.event.biblioevents.id }}) </a><br>{{ eventdeal.event.date|date('y.m.d H:i') }}</span></td>
+                <td><span>{{ eventdeal.info }}</span></td>
+                
+                
+                <td><span>{{ eventdeal.status }}</span></td>
+                <td><span>{{ eventdeal.date_create }}</span></td>
+                <td><span>{{ eventdeal.date_closed }}</span></td>
+                <td><span>{{ eventdeal.percent }}%</span></td>
+                <td><span>{{ eventdeal.profit }}</span></td>
+            </tr>
+                {% endfor %}
+            {% endif %}
+            
+        </table>
+    </div>
+</div>
+
+    

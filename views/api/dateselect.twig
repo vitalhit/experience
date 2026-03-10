@@ -1,0 +1,185 @@
+<div class="endreg">
+    <div class="ttl">Закончить регистрацию?</div>
+    <p>После этого вернуть введенные вами данные будет невозможно.</p>
+    <a class="widget_button1 igo_popup_goon">Нет, продолжить</a>
+    <a class="widget_button2 igo_popup_close">Завершить</a>
+</div>
+
+<div class="igo_form">
+    <div class="igo_close"></div>
+    <p class="info">Чтобы зарегистрироваться на это событие, заполните анкету. Информация о Вас будет доступна только организаторам этого события, и больше никому.</p>
+
+    <!--div class="igo_scheme"></div-->
+    
+    <form class="form-horizontal" id="igo_form" method="POST" action="">
+        <div style="background: #d2f0ff; padding: 5px 5px 0 5px; overflow: hidden;">
+            <div class="row">
+                <label class="col-xs-12 col-sm-3 cred">Выберите дату</label>
+                <div class="col-xs-12 col-sm-9">
+                    <select name="event_id" id="event_id" class="form-control">
+                        {% for ev in events %}
+                        <option value="{{ ev.id }}" >{{ ev.date|date('d.m.Y H:i') }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div> 
+        
+        {% if promo %}
+            <p class="tac">Введите промокод </p>
+            <div class="row">
+                <div class="col-xs-8 col-lg-6 col-lg-offset-2"><input type="text" name="promocode" class="promocode form-control"></div>
+                <div class="col-xs-4"><div class="btn btn-primary m0">промо</div></div>
+            </div>
+        {% endif %}
+ 
+
+        <div class="ajaxseats">
+            <br>
+            <p class="tac"><b>Место: </b>{% if event.place %}{{ event.place }}{% else %}{{ event.biblioevents.places.name }}{% endif %}</p>
+            <p class="tac"><b>Адрес: </b>{% if event.address %}{{ event.address }}{% else %}{{ event.biblioevents.places.address }}{% endif %}</p>
+
+        	<div class="row mt10">
+        		<p class="col-xs-6 col-sm-8">Тип билета</p>
+        		<p class="col-xs-3 col-sm-2">Цена</p>
+        		<p class="col-xs-3 col-sm-2">Кол-во</p>
+        	</div>
+
+        	<input type="hidden" name="utm_source" value="">
+        	<input type="hidden" name="utm_medium" value="">
+        	<input type="hidden" name="utm_campaign" value="">
+        	<input type="hidden" name="utm_content" value="">
+        	<input type="hidden" name="utm_term" value="">
+        	<input type="hidden" name="id" class="id" value="">
+            <input type="hidden" name="company_id" class="company_id" value="{{ event.biblioevents.company_id }}">
+            <input type="hidden" name="type" value="9">
+            <input type="hidden" name="from_url">
+        	<div class="igo_tick">
+        		{% for row in seats %}
+        			{% if row.price == 0 %}
+        				{% set itemval = 1 %}
+        				{% else %}
+        					{% set itemval = 0 %}
+        					{% endif %}
+        					
+        						<div class="form-group row">
+        							<label class="form-label "><b>{{ row.name }}</b> — <b>{{ row.price }}</b> р.<smalL>{{ row.info }}</smalL></label> 
+        							{# <p class="help-block">{{ row.info }}</span> #}
+                                    <div class="">
+                                        <input type="hidden" name="money[]" class="igo_money" value="{{ row.price }}">
+                                        <input type="hidden" name="seat_id[]" value="{{ row.id }}">
+                                        <input class="form-control igo_count " id="{{ row.id }}" type="text" name="seat[]" placeholder="" value="{{ itemval }}">
+                                    </div>
+                                </div>
+        					
+        				{% endfor %}
+
+        				<div class="promotickets"></div>
+
+        				<span class="counttik hidden"></span>  
+        			</div>
+
+        			<div class="igo_user">
+
+        				<div class="form-group">
+        					<label class="col-xs-12 col-sm-3">E-mail</label>
+        					<div class="col-xs-12 col-sm-9"><input class="form-control igo_mail required" type="text" name="mail" value=""></div>
+        				</div>
+
+        				<div class="form-group">
+        					<label class="col-xs-12 col-sm-3">Фамилия</label>
+        					<div class="col-xs-12 col-sm-9"><input class="form-control secondname required" type="text" name="second_name" value=""></div>
+        				</div>
+
+        				<div class="form-group">
+        					<label class="col-xs-12 col-sm-3">Имя</label>
+        					<div class="col-xs-12 col-sm-9"><input class="form-control name required" type="text" name="name" value=""></div>
+        				</div>
+
+        				<div class="form-group">
+        					<label class="col-xs-12 col-sm-3">Телефон</label>
+        					<div class="col-xs-12 col-sm-9"><input class="form-control phone required" type="text" name="phone" value=""></div>
+        				</div>
+
+        				{% if event.field1 %}
+        					<div class="form-group">
+        						<label class="col-xs-12 col-sm-3">{{ event.field1 }}</label>
+        						<div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field1" value=""></div>
+        					</div>
+        				{% endif %}
+
+        				{% if event.field2 %}
+        					<div class="form-group">
+        						<label class="col-xs-12 col-sm-3">{{ event.field2 }}</label>
+        						<div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field2" value=""></div>
+        					</div>
+        				{% endif %}
+
+        				{% if event.field3 %}
+        					<div class="form-group">
+        						<label class="col-xs-12 col-sm-3">{{ event.field3 }}</label>
+        						<div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field3" value=""></div>
+        					</div>
+        				{% endif %}
+
+        				<div class="form-group col-xs-12">
+        					<label class="reg_accept">
+        						<input type="checkbox" name="subscribe" checked="checked">
+        						<span>Я хочу получать информацию об интересных событиях</span>
+        					</label>
+        				</div>
+        				<div class="form-group col-xs-12">
+        					<label class="reg_accept">
+        						<input type="checkbox" name="accepted_terms" onchange="document.getElementById('submit').disabled = !this.checked" checked checked="checked">
+        						<span>Я согласен с условиями <a target="_blank" href="https://igoevent.com/pdf/iGoEvent_useragreement.pdf">Пользовательского соглашения</a> и <a href="https://igoevent.com/site/oferta/{{ biblioevent.id }}" target="_blank"> Договором оказания услуг </a> 
+        						</span>
+        					</label>
+        				</div>
+        				<button type="submit" id="submit" class="btn btn-primary center-block submit">{{ event.button }}</button>
+        			</div>
+
+
+        		</div>
+
+    </form>
+</div>
+
+
+<script>
+    // Выбор даты
+    $(document).on('change', '#event_id', function() {
+    	var event_id = $('#event_id').val();
+    	console.log(event_id);
+    	$.ajax({
+    		type: 'get',
+    		url: 'https://igoevent.com/api/formselect?id='+event_id,
+			dataType : "json",
+    		success: function(data){
+    			$(".ajaxseats").fadeOut(0);
+    			$(".ajaxseats").html(data).fadeIn(500);
+    		}
+    	})
+    });
+
+    // Промо билеты
+    $(document).on('change', '.promocode', function() {
+        var promocode = this.value;
+        var event_id = $('#event_id').val();
+        console.log(promocode);
+        if(this.value.length >= 2){
+            $.ajax({
+                type: 'get',
+                url: "https://igoevent.com/api/promocode",
+                data: {'promocode': promocode, 'event_id' : event_id},
+                response: 'text',
+                success: function(data){
+                    $(".igo_popup .promotickets").fadeOut(0);
+                    $(".igo_popup .promotickets").html(data).fadeIn(500);
+                }
+            })
+        }
+    });
+</script>
+
+
+

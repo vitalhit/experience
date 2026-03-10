@@ -1,0 +1,2 @@
+{% for tik in tickets %}{{ tik.persons.name }};{{ tik.persons.second_name }};{{ tik.barcode }};{{ tik.seats.name }}{% if tik.seat %}{{ tik.seat }}{% endif %};{{ tik.money }};{{tik.promocode}};{{ tik.persons.mail }};{{ tik.persons.phone}};{{tik.utm_source}};{{tik.utm_campaign}};{{tik.utm_medium}};{{tik.utm_content}};{{tik.utm_term}}
+{% endfor %}

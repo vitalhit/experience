@@ -1,0 +1,52 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-4">
+		<h1>Продажи</h1>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4">
+		Список всего, что было продано
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-1"><h3 class="itog">{{ 0 + summnal2 }}<span>нал</span></h3></div>
+	<div class="col-xs-12 col-sm-6 col-md-1"><h3 class="itog">{{ 0 + summbez2 }}<span>безнал</span></h3></div>
+	<div class="col-xs-12 col-sm-6 col-md-1"><h3 class="itog">{{ 0 + summgr2 }}<span>gr</span></h3></div>
+	<div class="col-xs-12 col-sm-6 col-md-1"><h3 class="itog">{{ 0 + summnal2 + summbez2 + summgr2}}<span>итог</span></h3></div>
+</div>
+
+<table class="table stacktable">
+	<tr>
+		<td>Гость</td>
+		<td>Товар</td>
+		<td>Дата</td>
+		<td class="ta-r pr15">Стоимость</td>
+		<td class="ta-c">Кол-во</td>
+		<td class="ta-r pr15">Итого</td>
+		<td>Тип оплаты</td>
+		<td>Инфо</td>
+		<td colspan="2">Редактировать</td>
+	</tr>
+	{% for row in sells %}
+		<tr>
+			<td><a href="/persons/view?id={{ row.persons.id }}">{{ row.persons.second_name }} {{ row.persons.name }}</a></td>
+			<td><a href="/goods/view?id={{ row.goods.id }}">{{ row.goods.name }}</a></td>
+			<td>{{ row.date|date('d.m H:i') }}</td>
+			<td class="ta-r pr15">{{ row.price }}</td>
+			<td class="ta-c">{{ row.count }}</td>
+			<td class="ta-r pr15">{{ row.itogo }}</td>
+			<td class="ta-c">
+				{% if row.type == 1 %}
+					Наличка
+				{% elseif row.type == 2 %}
+					БезНал
+				{% elseif row.type == 3 %}
+					Билетник
+				{% elseif row.type == 4 %}
+					GoodRepublic
+				{% else %}
+					-
+				{% endif %}
+			</td>
+			<td>{{ row.info }}</td>
+			<td><a href="/sells/update?id={{ row.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+			<td><a href="/sells/delete?id={{ row.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+		</tr>
+	{% endfor %}
+</table>

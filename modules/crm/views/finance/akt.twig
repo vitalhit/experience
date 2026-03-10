@@ -1,0 +1,86 @@
+<div class="akt">
+
+	<h2>АКТ  №{{ model.act_number }}</h2>
+
+	<table class="tb">
+		<tr>
+			<td><p>г. Москва</p></td>
+			<td class="tar"><p>{{ model.date_act|date('d.m.Y') }}</p></td>
+		</tr>
+	</table>
+
+	<table border="1">
+		<tr>
+			<td>Заказчик:</td>
+			<td><p>{{ contragent1.name }}, {% if contragent1.inn %} ИНН  {{ contragent1.inn }} {% endif %}
+				{% if contragent1.raschet%}, р/с {{ contragent1.raschet }}{% endif %}
+				{% if contragent1.bank %}в банке {{ contragent1.bank }}{% endif %}
+				{% if contragent1.bik %}, БИК {{ contragent1.bik }}{% endif %}
+				{% if contragent1.korr  %}, к/с {{ contragent1.korr }} {% endif %}
+				{% if contragent1.doc_number %} Паспорт. {{contragent1.doc_number}} Выдан: {{contragent1.doc_place }}  {{doc_date|date('d.m.Y') }}{% endif%}</p>
+			</td>
+		</tr>
+		<tr>
+			<td>Исполнитель:</td>
+			<td><p>{{ contragent2.name }}, ИНН {{ contragent2.inn }}, р/с {{ contragent2.raschet }} в банке {{ contragent2.bank }}, БИК {{ contragent2.bik }}, к/с {{ contragent2.korr }}</p></td>	
+		</tr>
+	</table>
+	<p>&nbsp;</p>
+
+
+	<table border="1">
+		<tr>
+			<td>№</td>
+			<td> Наименование работ, услуг</td>
+			<td>Кол-во</td>
+			<td>Ед.</td>
+			<td>Цена</td>
+			<td>Сумма</td>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>{{ model.name }}</td>
+			<td>1</td>
+			<td>1</td>
+			<td>{{ model.summa }}{% if model.summa_k %}.{{ model.summa_k }} {%endif%}</td>
+			<td>{{ model.summa }}{% if model.summa_k %}.{{ model.summa_k }} {%endif%}</td>
+		</tr>
+		
+	</table>
+
+	
+	<p><b>Всего оказано услуг 1, на сумму {{ model.summa }} рублей {% if model.summa_k %}{{ model.summa_k }} копеек {%endif%}</b></p>
+	<p><b>{{ money.summa_p }}</b></p>
+
+<p>Вышеперечисленные услуги выполнены полностью и в срок. Заказчик претензий по объему, качеству и
+срокам оказания услуг не имеет.</p>
+
+	<br><br>
+
+	<h2>ПОДПИСИ СТОРОН:</h2>
+
+	<table class="tb">
+		<tr>
+			<td width="50%">
+				<p><b>Заказчик:</b></p>
+				<p>{{ contragent1.name }}</p>
+				<p>ИНН: {{ contragent1.inn }} </p>
+				<p>Почтовый адрес: {{ contragent1.faddress }}</p>
+				<p>Юридический адрес: {{ contragent1.jaddress }}</p>
+				<p>&nbsp;</p>
+				<p>_________________ {% if contragent1.man %} ({{ contragent1.man }}){% endif %}</p>
+			</td>
+			<td width="50%">
+				<p><b>Исполнитель:</b></p>
+				<p> {{ contragent2.name }}</p>
+				<p>ИНН: {{ contragent2.inn }} </p>
+				<p>Почтовый адрес: {{ contragent2.jaddress }}</p>
+				<p>Юридический адрес: {{ contragent2.jaddress }}</p>
+				<p>&nbsp;</p>
+				<p>_________________ {% if contragent2.man %} ({{ contragent2.man }}){% endif %}</p>
+			</td>
+		</tr>
+	</table>
+</div>
+
+

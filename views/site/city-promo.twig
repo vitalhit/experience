@@ -1,0 +1,212 @@
+<div class="container title-section">
+	<div class="row">
+		<div class="title-geo">
+			<h1>Я иду <small class="geo-in-this">в {{ city.name }}</small></h1>
+			<ul class="geo-in-row">
+				{% for row in cities %}
+					<li class="city {% if row.alias == city.alias %}active{% endif %}"><a href="/{{ row.alias }}">{{ row.name }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+
+		<ul class="week-row">
+			{% set mnths = ['','янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'] %}
+			{% set week = ['','пн','вт','ср','чт','пт','сб','вс'] %}
+			{% for i in 0..6 %}
+				<li>
+					<a href="/{{ city.alias }}?date={{ mon|date('Y-m-d') }}" {% if mon|date('Y-m-d') == now|date('Y-m-d') %} class="cred"{% endif %}>
+						{{ mon|date('d') }}
+						<span>{{ mnths[mon|date("n")] }}</span>
+						<small {% if i > 4 %}class="weekend"{% endif %}>{{ week[i + 1] }}</small>
+					</a>
+				</li>
+				{% set mon = [mon|date_modify("+1 day")|date('Y-m-'), mon|date_modify("+1 day")|date('d')]|join %}
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+
+
+
+
+<div class="container">
+	<div class="section-block">
+{# 		<div class="top-row">
+			<a class="event top-big" href="/stranicza" style="background: url(/images/top-1.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Богемская рапсодия <small>18+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">кино биография</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event top-mid notmid" href="/stranicza" style="background: url(/images/top-2.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>День рождения «Ролл Холл» <small>18+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">фестиваль</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event" href="/stranicza" style="background: url(/images/top-3.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>10 развлечений не дороже 500 руб. <small>6+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">развлечение</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event" href="/stranicza" style="background: url(/images/top-4.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Стильные квесты на Хеллоуин <small>16+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">квест</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event top-mid" href="/stranicza" style="background: url(/images/top-5.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Божественная комедия Сальвадора Дали <small>16+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">выставка</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event top-big fl-r" href="/stranicza" style="background: url(/images/top-8.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Киноночи ноября в «Люмьер-Холле» <small>18+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">развлечение</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event" href="/stranicza" style="background: url(/images/top-6.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Иммерсивная выставка Samskara <small>16+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">выставка</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event" href="/stranicza" style="background: url(/images/top-7.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Полёт на воздушномшаре <small>14+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">развлечение</span>
+				<span class="views">9214</span>
+			</a>
+		</div> #}
+
+		<div class="event-row">
+			{% if date == 'past' %}
+				<h2>Прощедшие события</h2>
+			{% endif %}
+
+			{% if biblioevents %}
+				{% for row in biblioevents %}
+					{% if row.image and row.oneactiveevent.status_promo >= 1 %}
+
+						<div class="event" style="height: 500px!important;">
+							
+							<a class="img-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}{% if iuser.username %}?utm_source=partner&utm_medium={%if iuser.utm_medium%}{{iuser.utm_medium}}{%else%}u{{iuser.id}}{%endif%}{%endif%}">
+			 					{# <span class="comments">12</span><span class="like">410</span> #}
+								<img src="/uploads/users/{{ row.img.imgrazdel }}">
+							</a>
+							{# <span class="type-event">категория</span> #}
+							<a class="title-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}{% if iuser.username %}?utm_source=partner&utm_medium={%if iuser.utm_medium%}{{iuser.utm_medium}}{%else%}u{{iuser.id}}{%endif%}{%endif%}">
+								<h3>{{ row.name }} {# <small>6+</small> #}</h3>
+							</a>
+							{% if date %}
+								{% if date != 'past' %}
+									{% for event in row.events %}
+										{% if event.date|date('Y-m-d') == date %}
+											<span class="point">{{ event.date|date('d.m.Y ') }} в {{ event.date|date('H:i') }}</span> 
+
+										{% endif %}
+										{% if row.link_vk %}<a style="float: right; margin-right: 20px;"class="soc" href="https://vk.com/{{ event.link_vk }}"> <img src="/images/vk.png" alt=""></a>{% endif %}
+										{% if row.link_vk %}<a style="float: right; margin-right: 20px;"class="soc" href="https://vk.com/{{ event.link_vk }}"> <img src="/images/vk.png" alt=""></a>{% endif %}
+										{% if row.link_kg %}<a style="float: right; margin-right: 20px;"class="soc" href="https://vk.com/{{ event.link_kg }}"> <img src="/images/kg.png" alt="">kg</a>{% endif %}
+							{% if row.link_fb %}<a style="float: right; margin-right: 20px;"class="soc" href="{{ event.link_fb }}"> <img src="/images/fb.png" alt=""></a>{% endif %}
+									{% endfor %}
+								{% endif %}
+							{% else %}
+								<span class="point">{{row.places.name}}<br>
+								{{row.places.address}}<br>
+								{{ row.oneactiveevent.date|date('d.m.Y ') }} в {{ row.oneactiveevent.date|date('H:i') }}</span><br>
+								
+								{% if row.oneactiveevent.link_vk %}<a style="float: right; margin: 0 5px 0 0; "class="soc" href="https://vk.com/{{ row.oneactiveevent.link_vk }}"> <img src="/images/vk.png" width="70%" alt=""></a>{% endif %}
+								{% if row.oneactiveevent.link_fb %}<a style="float: right; margin: 0 5px 0 0;"class="soc" href="{{ row.oneactiveevent.link_fb }}"> <img width="70%" src="/images/fb.png" alt=""></a>{% endif %}
+								{% if row.oneactiveevent.link_kg %}<a style="float: right; margin: 0 5px 0 0;"class="soc" href="{{ row.oneactiveevent.link_kg }}"> <img width="70%" src="/images/kg.png" alt=""></a>{% endif %}
+							{% endif %}
+							<div class="clear"></div>
+							{% if iuser.id %} <textarea style="width: 100%!important; border: 1px solid red;">{{ row.name }}
+{{ row.oneactiveevent.date|date('d.m.Y ') }} в {{ row.oneactiveevent.date|date('H:i') }}
+
+{% if row.oneactiveevent.info %} {{row.oneactiveevent.info }} {%else%}{{ row.info }}{%endif%}
+
+
+https://igoevent.com/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}{% if iuser.username %}?utm_source=partner&utm_medium={%if iuser.utm_medium%}{{iuser.utm_medium}}{%else%}u{{iuser.username}}{%endif%}{%endif%}
+
+
+Место: {{row.places.name}}
+Адрес: {{row.places.address}}
+
+{% if row.img.vk %} https://vk.com/{{ row.img.vk }}
+{% endif%}{{ row.link_vk_audio }}
+{{ row.link_vk_img }}
+
+							</textarea> {% else %}<span style="color: red!important">Авторизуйтесь и будет текст поста!!</span> {% endif %}
+							{# <span class="views">9214</span> #}
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% else %}
+				<h1>В этом городе нет событий!</h1>
+			{% endif %}
+		</div>
+		
+		<div class="clear"></div>
+		{{ this.render('_bottom.twig', {'ads' : ads}) | raw }}
+	</div>
+
+	<div class="sidebar-block">
+		{{ this.render('_right.twig', {'ads' : ads}) | raw }}
+	</div>
+</div>
+
+
+<footer class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-10 col-md-8">
+			<img class="logo-footer" src="/images/logo-mini.svg">
+			<p class="copyrite">© 2018-{{now|date("Y")}} iGoEvent.com — мы создаем события. Права на текстовые и другие материалы, размещенные на сайте, охраняются законом.
+				При цитировании обязательна прямая ссылка на iGoEvent.com.
+			</p>
+			<p class="copyrite">Сайт сделал <a href="http://vitalhit.com/">Хитров Виталий Глебович</a></p>
+			<ul class="footer-nav">
+				<li><a href="/page/about">О проекте</a></li>
+				<li><a href="/page/contacts">Контакты</a></li>
+				<li class="years"><img src="/images/ico-18-plus.svg"></li>
+			</ul>
+			<noindex>
+				<script type="text/javascript">document.write("<a rel='nofollow' href='//www.liveinternet.ru/click' "+"target=_blank><img src='//counter.yadro.ru/hit?t26.1;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";h"+escape(document.title.substring(0,150))+";"+Math.random()+"' alt='' title='LiveInternet: показано число посетителей за"+" сегодня' "+"border='0' width='88' height='15'><\/a>");
+				</script>
+				<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88249632-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-88249632-1');
+</script>
+
+			</noindex>
+		</div>
+	</div>
+</footer>
+
+<script type="text/javascript" src="/js/igoeventapi.js"></script>
+<link rel="stylesheet" href="/css/igoeventapi.css">
+<link href="/css/front.css" rel="stylesheet">

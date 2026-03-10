@@ -1,0 +1,123 @@
+
+<div class="col-xs-12 col-sm-6"><h1>Счета</h1></div>
+<a class="btn btn-success pull-right" href="/bills/create">Создать счет</a>
+
+<div class="clear"></div>
+
+
+<div class="col-xs-12 col-sm-4">
+	<div class="col-xs-12">
+		<h2>Доход +</h2>
+		<form class="form-horizontal" method="POST" action="/billtransfer/dohod">
+			<input class="form-control" type="hidden" name="type" value="1" />
+
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 mb10">
+					<input class="form-control" type="text" name="name" placeholder="Название">
+				</div>
+				<div class="col-xs-12 col-sm-6 mb10">
+					<select class="form-control" name="bill_id_to">
+						{% for bill in bills %}
+						<option value="{{ bill.id }}">{{ bill.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+
+				<div class="clear mb10"></div>
+
+				<div class="col-xs-12 col-sm-6">
+					<input class="form-control red" type="text" name="summa" placeholder="Сумма">
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<input class="form-control btn btn-primary" type="submit" name="" value="Зачислить" />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+<div class="col-xs-12 col-sm-4">
+	<div class="col-xs-12">
+		<h2>Расход -</h2>
+		<form class="form-horizontal" method="POST" action="/billtransfer/rashod">
+			<input class="form-control" type="hidden" name="type" value="2" />
+
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 mb10">
+					<input class="form-control" type="text" name="name" placeholder="Название">
+				</div>
+				<div class="col-xs-12 col-sm-6 mb10">
+					<select class="form-control" name="bill_id_from">
+						{% for bill in bills %}
+						<option value="{{ bill.id }}">{{ bill.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+
+				<div class="clear mb10"></div>
+
+				<div class="col-xs-12 col-sm-6">
+					<input class="form-control red" type="text" name="summa" placeholder="Сумма">
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<input class="form-control btn btn-primary" type="submit" name="" value="Списать" />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+<div class="col-xs-12 col-sm-4">
+	<div class="col-xs-12">
+		<h2>Перевод &#8631;</h2>
+		<form class="form-horizontal" method="POST" action="/billtransfer/perevod">
+			<input class="form-control" type="hidden" name="type" value="3" />
+
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<select class="form-control" name="bill_id_from">
+						{% for bill in bills %}
+						<option value="{{ bill.id }}">{{ bill.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-xs-12 col-sm-6">
+					<select class="form-control" name="bill_id_to">
+						{% for bill in bills %}
+						<option value="{{ bill.id }}">{{ bill.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+
+				<div class="clear mb10"></div>
+
+				<div class="col-xs-12 col-sm-6">
+					<input class="form-control red" type="text" name="summa" placeholder="Сумма">
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<input class="form-control btn btn-primary" type="submit" name="" value="Перевести" />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+<div class="clear mb10"></div>
+
+
+{% for row in bills %}
+<div class="col-xs-12 col-sm-6 col-lg-4">
+	<div class="blocks">
+		<h2><a href="/bills/view?id={{ row.id }}">{{ row.name }} <span>{{ row.id }}</span></a></h2>
+		<p class="itog ta-c"> {{ row.summa }} р</p>
+		<p class="ta-c">{{ row.info }}</p>
+	</div>
+</div>
+{% endfor %}
+

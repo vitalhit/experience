@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-3">
+		<h1>Абонементы</h1>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4">
+		
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-3">
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-2">
+		<a href="/abonements/create" class="btn btn-primary mt20 pull-right">+ Добавить Абонемент</a>
+	</div>
+</div>
+
+<h2>Активные</h2>
+
+<table class="table stacktable">
+	<tr>
+		<td>#</td>
+		<td>Гость</td>
+		<td>Начало</td>
+		<td>Окончание</td>
+		<td>Кол-во визитов</td>
+		<td>Остаток визитов</td>
+		<td>Стоимость</td>
+		<td>Статус</td>
+		<td>Информация</td>
+		<td></td>
+	</tr>
+	{% for row in abonements %}
+		<tr>
+			<td>{{ row.id }}</td>
+			<td><a href="/abonements/view?id={{ row.id }}">{{ row.persons.name }}{{ row.persons.second_name }}</a></td>
+			<td>{{ row.start|date('d.m') }}</td>
+			<td>{{ row.end|date('d.m') }}</td>
+			<td>{{ row.countvis }}</td>
+			<td>{{ row.balance }}</td>
+			<td>{{ row.price }}</td>
+			<td>{{ row.status }}</td>
+			<td>{{ row.info }}</td>
+			<td><a href="/abonements/update?id={{ row.id|e }}">edit</a></td>
+		</tr>
+	{% endfor %}
+</table>
+

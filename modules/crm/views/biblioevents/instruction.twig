@@ -1,0 +1,127 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{{ biblioevent.name}}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/event_step.twig', {'biblioevent' : biblioevent, 'user' : user}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<h2 class="mt0">Инструкция <br><span>по интеграции в другой сайт</span></h2>
+		<h3>Виджет "Много кнопок"</h3>
+		<textarea class="code"><div class="igoevent_event" id="{{ biblioevent.id }}">&nbsp;</div>
+<script type="text/javascript" src="https://igoevent.com/web/js/igoeventapi.js"></script>
+<link rel="stylesheet" href="https://igoevent.com/web/css/igoeventapi.css">
+		</textarea> 
+		
+		<hr>
+
+		<h3>Виджет "Выбор даты"</h3>
+		<textarea class="code"><div class="igoevent_event2">
+	<a id="{{ biblioevent.id }}" href="https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}" class="igo_btn">Купить билет</a>
+</div>
+<script type="text/javascript" src="https://igoevent.com/web/js/igoeventapi.js"></script>
+<link rel="stylesheet" href="https://igoevent.com/web/css/igoeventapi.css">
+		</textarea>
+		
+		<hr>
+
+		<h3>Виджет "Чистый JS"</h3>
+		<textarea class="code"><a id="{{ biblioevent.id }}" href="https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}" class="igo_btn">Купить билет</a>
+
+<div id="igo_popup" class="igo_popup"></div>
+<div class="igo_overlay"></div>
+<div class="loading"><div class="loadico"></div></div>
+<link rel="stylesheet" href="https://igoevent.com/web/css/api.css">
+<script type="text/javascript" src="https://igoevent.com/js/api.js"></script>
+		</textarea>
+		 
+		<hr>
+		<h4>Ссылки c utm метками для продвижения user:{{user.utm_medium}}</h4>
+		<p>
+			instagram:<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=insta&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+			<br><br>
+			facebook:<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=fb-public&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+			<br><br>
+			facebook(встреча):<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=fb-event&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+			<br><br>
+			Вконтакте(для посева):<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=partner&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+			<br><br>
+			Вконтакте(для встречи):<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=vk-event&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+			<br><br>
+			Вконтакте(для таргета):<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=vk-target&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+			<br><br>
+			Email-маркетинг(для почтовой рассылки):<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=email&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+			<br><br>
+			What's app:<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=whatsapp&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+			<br><br>
+			<span style="color:red;">YouTube</span>:<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=yt&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+			<br><br>
+			Для KudaGo:<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=kudago.com&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+			<br><br>
+			Для СМИ:<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=media&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+			<br><br>
+			Для ok.ru:<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=ok&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ biblioevent.id }}
+
+		</p>
+		
+		<h4>Текст для розыгрыша Мск</h4>
+<p>
+	Мы разыгрываем 5 билетов на {{ biblioevent.name }}<br><br>
+
+
+Чтобы получить один из 5-ти билетов выполни правила:<br>
+1. Подпишись на — [igoeventmsk|igoevent.com: Москва]<br>
+2. Сделай репост этой записи<br>
+
+Итоги подведём во вторник ... при помощи Random_app.<br><br>
+
+Если не веришь в удачу, билеты здесь:<br>
+https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=contest&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=contest&utm_term={{ biblioevent.id }}<br>
+
+
+	{{ biblioevent.vk_img }}
+</p>
+
+		<h4>Подведение итогов</h4>
+		<p>Итак, поздравляем победителей:
+<br><br>
+Ссылки на розыгрыш: https://randstuff.ru/vkwin/jceo1v/<br><br>
+
+Просим победителей написать в директ нашего паблика письмо вида: "концерт \ эл.почта"<br>
+Пример : {{ biblioevent.name }} \ mail@mail.ru<br>
+Ссылка на директ: https://vk.com/im?sel=-137542835<br><br>
+
+🎈Кто не победил - не расстраивайтесь, увидимся на концерте - такое событие нельзя пропускать! 🔥Билеты можно приобрести здесь https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=contest&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=contest&utm_term={{ biblioevent.id }}
+	</p>
+	<h4>Текст для розыгрыша СПб</h4>
+		<p>Итак, поздравляем победителей:
+<br><br>
+Ссылки на розыгрыш: https://randstuff.ru/vkwin/jceo1v/<br><br>
+
+Просим победителей написать в директ нашего паблика письмо вида: "концерт \ эл.почта"<br>
+Пример : {{ biblioevent.name }} \ mail@mail.ru<br>
+Ссылка на директ: https://vk.com/im?sel=-143192051<br><br>
+
+🎈Кто не победил - не расстраивайтесь, увидимся на концерте - такое событие нельзя пропускать! 🔥Билеты можно приобрести здесь https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=contest&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=contest&utm_term={{ biblioevent.id }}
+			</p>
+			<h4>Текст для розыгрыша паблика без региона</h4>
+		<p>Итак, поздравляем победителей:
+<br><br>
+Ссылки на розыгрыш: https://randstuff.ru/vkwin/jceo1v/<br><br>
+
+Просим победителей написать в директ нашего паблика письмо вида: "концерт \ город \ эл.почта"<br>
+Пример :  {{ biblioevent.name }} \ Петербург \ mail@mail.ru<br>
+Ссылка на директ: https://vk.com/im?sel=-143192051<br><br>
+
+🎈Кто не победил - не расстраивайтесь, увидимся на концерте - такое событие нельзя пропускать! 🔥Билеты можно приобрести здесь https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=contest&utm_medium={{user.utm_medium}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=contest&utm_term={{ biblioevent.id }}
+			</p>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	$('.steps .inst').addClass('active');
+</script>

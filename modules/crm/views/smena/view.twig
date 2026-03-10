@@ -1,0 +1,127 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <a class="btn-success small btn btn-xs" href="/crm/smena/update?id={{model.id}}"><span class="glyphicon glyphicon-pencil"></span></a><h2>Смена {{model.title}} (id: {{model.id}})</h2>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="steps">
+            {{ this.render('/module/smena_step.twig', {'company' : company}) | raw }}
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-9 newblos">
+
+        
+
+
+
+    <div >
+            <div class="newblo btop">
+                <p><b><a name="withoutevent">Поступления</a></b>&nbsp;|&nbsp;<b><a  href="/crm/finance/create">+</a></b></p>
+                <table class="tb stacktable">
+                    {% for row in finance %}
+                        <tr>
+                            <td><small>{{ row.id}}<br>{{ row.date|date('d.m.Y') }}</small><br>
+
+                             {% if row.event_id == false %} <a class="btn btn-danger btn-xs">Нет даты</a> {% endif %}
+                         </td>
+                            <td><a href="/crm/finance/update?id={{ row.id|e }}">{{ row.name|e }}</a><br>
+                                
+                                <div class="row">
+                                    <div class="col-xs-4 col-lg-4">
+                                        <a  style="font-size: 9px; display: block;  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 120px;" href="/crm/contragent/update?id={{ row.from_contragent }}">{{ row.contragent.name }}</a>  
+                                    </div>
+                                    
+                                    <div class="col-xs-4 col-lg-4">
+                                    <a style="font-size: 9px; display: block;  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 120px;" href="/crm/contragent/update?id={{ row.to_contragent }}">{{ row.contragentto.name }}</a>
+                                    </div>
+                                    {% if row.personf.name or row.personto.name %}
+                                    <div class="clear"></div>
+                                    <div class="col-xs-4 col-lg-4">
+                                        <span>{{ row.personf.name }} {{ row.personf.second_name }}: 
+                                        {{ row.from_user_id }}</span>
+
+                                    </div>
+                                    
+                                    <div class="col-xs-4 col-lg-4">
+                                        <span>{{ row.personto.name }} {{ row.personto.second_name }} : {{ row.to_user_id }}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <span class="small">
+                                    <a class="btn btn-success btn-xs" href="https://igoevent.com/crm/finance/bill?&id={{ row.id }}">счет</a> <a class="btn btn-success btn-xs" href="https://igoevent.com/doc?&id={{ row.id }}">договор</a>
+                                    <a class="btn btn-success btn-xs" href="https://igoevent.com/crm/finance/akt?&id={{ row.id }}">акт</a><br>
+
+                                     {% if row.status_logistics == 1 %} <a class="btn btn-danger btn-xs">Требуются документы</a> {% endif %}
+                                    
+                                    {% if row.link %}<br>
+                                        <a class="btn btn-primary btn-xs" href="{{row.link}}">скан договора</a>
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td class="tac">
+                                {% if row.task_id %}
+                                    <a href="/crm/tasks/update?id={{row.task_id}}"><span class="glyphicon glyphicon-th-list"></span></a>
+                                {% endif %}
+                            </td>
+                            
+                            <td>
+                                
+                                
+                            </td>
+                            <td>{% if row.status == 1 %}
+                                    <p  class="c_green"><b class="small">Приход</b></p>
+                                {% elseif row.status == 2 %}
+                                    <p class="C_blue"><b class="small">Конвертация</b></p>
+                                {% elseif row.status == 3 %}
+                                    <p class="c_red"><b class="small">Расход</b></p>
+                                {% endif %}
+                                <p class="tar "><b>{{ row.summa|number_format(0, '.', ' ') }}</b> <span class="glyphicon glyphicon-rub lite"></span></p> 
+                                <p>{% if row.state == 1 %}
+                                    <b class="r_blue"></b>
+                                    <span>на&nbsp;подпись</span>
+                                {% elseif row.state == 2 %}
+                                    <b class="r_yell"></b>
+                                    <span>подписан</span>
+                                {% elseif row.state == 3 %}
+                                    <b class="r_green"></b>
+                                    <span>проведен</span>
+                                {% elseif row.state == -1 %}
+                                        <b class="r_red"></b><span>не актуальна</span>
+                                {% endif %}</p>
+                                {% if row.info_pay_machine %}Чек:{{row.info_pay_machine}}<br>
+                                    {%endif%}
+                                    {% if row.info_pay_bank%}
+                                    №перевода:{{row.info_pay_bank}}<br>
+                                    {%endif%}
+                            </td>
+                            <td>
+                                
+                            </td>
+                            <td><a href="/crm/finance/update?id={{ row.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        </div>
+        <div class="col-xs-12 col-lg-9 newblos">
+            <div >
+                <div class="newblo btop">
+                    <p>Итог: {% for row in finance %} {{ row.summa|number_format(0, '.', '') }}+ {%endfor%} = </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$('.js_slide').click(function () {
+    $(this).parent().find('table').slideToggle(200);
+    $(this).parent().next('.tbmob').slideToggle(200);
+});
+</script>

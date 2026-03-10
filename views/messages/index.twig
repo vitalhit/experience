@@ -1,0 +1,20 @@
+<h1>Отправить напоминание</h1>
+
+<table class="table">
+<tr>
+	<th>Выставлен</th>
+	<th>Гость</th>
+	<th>Тема</th>
+	<th>Текст</th>
+	<th></th>
+</tr>
+{% for row in messages %}
+<tr>
+	<td><a href="/messages/view?id={{ row.id }}"><span>{{ row.id }}</span> {{ row.create_at|date('d.m H:i') }}</a></td>
+	<td><a href="/persons/view?id={{ row.person_id }}">{{ row.person_id }}</a></td>
+	<td class="tac">{{ row.theme }}</td>
+	<td class="tac">{{ row.text }}</td>
+	<td class="tar">{{ row.status }}</td>
+</tr>
+{% endfor %}
+</table>

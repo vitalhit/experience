@@ -1,0 +1,85 @@
+<div class="row">
+
+    <div class="col-xs-12 col-sm-12">
+        <h2>
+            {{ person.second_name }} {{ person.name }} {{ person.middle_name }}<br>
+            <span><b>Ваш user_id: {{ user_id }}</b></span>
+            <!-- <span><a href="/persons/update?id={{ person.id }}" class="btn btn-primary">Редактировать</a></span> -->
+        </h2>
+    </div>
+
+    <!--     <div class="col-xs-12 col-sm-2 col-sm-offset-1"><h3 class="itog">{{ 0 + person.sum_visits }}<span>Визиты</span></h3></div>
+        <div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_tickets }}<span>Билеты</span></h3></div>
+        <div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_sells }}<span>Покупки</span></h3></div>
+        <div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_abonements }}<span>Абонем.</span></h3></div>
+        <div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_rents }}<span>Аренды</span></h3></div>
+    -->
+</div>
+
+<div class="row">
+
+    <div class="col-xs-12 col-sm-4">
+        <h2>Профиль <span>id {{ person.id }}</span></h2>
+        <div class="blocks">
+            <p><b>Статус:</b> {{ person.status }}</p>
+            <p><b>Дата рождения:</b> {{ person.birthday|date('d.m.Y') }}</p>
+            <p><b>E-mail:</b> {{ person.mail }}</p>
+            <p><b>Телефон:</b> {{ person.phone }}</p>
+            <p><b>Пол:</b> {% if person.sex == 0 %} женщина {% else %} мужчина {% endif %} </p>
+            <p><b>Группы:</b> {{ person.groups }}</p>
+            <p><b>Откуда:</b> {{ person.froms.url }}</p>
+            <p><b>Получать письма:</b> {% if person.sendmail == 1 %} Да {% else %} Нет {% endif %} </p>
+            <p><b>Пожелания:</b> {{ person.vishes }}</p>
+        </div>
+    </div>
+
+
+    <div class="col-xs-12 col-sm-8">
+        <h2>Билеты <span>{{ person.tickets|length }}</span> </h2>
+
+        <table class="table stacktable">
+            <tr>
+                <td>№</td>
+                <td>Дата</td>
+                <td class="tar">Стоимость</td>
+                <td class="tar">Кол-во</td>
+                <td class="tar">Итог</td>
+                <td class="tar">Статус</td>
+                <td class="tar"></td>
+            </tr>
+            {% for row in person.tickets|reverse %}
+            <tr class="{% if row.status == 5  or row.summa == 0 %} green {% else %} yellow {% endif %}">
+                <td>{{ row.id }}</td>
+                <td>{{ row.date|date('d.m в H:i') }}</td>
+                <td class="tar">{{ row.money }} р</td>
+                <td class="tar">{{ row.count }}</td>
+                <td class="tar">{{ row.summa }} р</td>
+                <td class="tar">
+                    {% if row.status == 5 %}
+                        Оплачен
+                    {% else %}
+                        {% if row.summa == 0 %} Регистрация {% else %} Бронь {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if row.status == 5 or row.summa == 0 %}
+                    <a href="/site/ticket?barcode={{model.barcode}}"><span class="glyphicon glyphicon-eye-open"></span> смотреть</a>
+                    {% else %}
+                    <a href="/site/pay?order_id={{ row.order_id }}"> <span class="glyphicon glyphicon-ruble"></span> Оплатить</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+</div>
+
+
+
+
+

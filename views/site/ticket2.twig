@@ -1,0 +1,60 @@
+{{ this.render('bar.php', {'barc' : barc, 'ticket' : ticket}) | raw }}
+
+<div class="container">
+
+    <button class="btn btn-primary" onclick="window.print();">Печатать</button>
+
+    <div class="row noprint">
+        <div class="col-xs-8 col-xs-offset-2">
+            <!--LiveInternet counter--><script type="text/javascript">
+document.write('<a href="//www.liveinternet.ru/click" '+
+'target="_blank"><img src="//counter.yadro.ru/hit?t26.1;r'+
+escape(document.referrer)+((typeof(screen)=='undefined')?'':
+';s'+screen.width+'*'+screen.height+'*'+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+';u'+escape(document.URL)+
+';h'+escape(document.title.substring(0,150))+';'+Math.random()+
+'" alt="" title="LiveInternet: показано число посетителей за'+
+' сегодня" '+
+'border="0" width="88" height="15"><\/a>')
+</script><!--/LiveInternet-->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88249632-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-88249632-1');
+</script>
+
+
+            <h4>Электронный билет на событие</h4>
+            <p class="noprint"><b>{{ event.name }}</b></p>
+            <p class="cred noprint">Внимание!</p>
+            <p class="noprint">Ссылка на эту страницу позволяет открыть электронный билет с любого компьютера! Не допускайте того, чтобы она попала к посторонним людям</p>
+        </div>
+    </div>
+
+    {% if ticket %}
+    <div  style="position:absolute; ">
+        
+    <img style="position:relative; z-index: 80;" src="https://igoevent.com/web/uploads/15kop-ticket-bg.jpg" align="center" width="97%" height="97%">
+    <div style="position:absolute; z-index: 100; top: 10%; right: 12%; background-color: white; " id="ticketBarcode"></div>
+    </div>
+    
+  {% endif %}
+</div>
+<style type="text/css">
+    .container { padding-top: 0px !important;}
+    h1 { margin-top: 50px;}
+    button { float: right; padding: 5px 10px; }
+    #ticketBarcode div { font-size: 16px !important; }
+</style>
+
+
+<style type="text/css" media="print">
+    h1 { margin: 10px 0; font-size: 28px;}
+    h2 { margin: 20px 0; font-size: 21px;}
+    button, .noprint {display: none !important; }
+    #ticketBarcode div { font-size: 16px !important; }
+</style>

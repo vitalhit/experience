@@ -1,0 +1,116 @@
+<form class="form" method="POST" action="persons/visitend?uid={{user.id}}">
+	<input type="hidden" value="{{money}}" id="money_in">
+	<input type="hidden" value="{{end}}" name="end">
+	<input type="hidden" value="{{discount_money|round}}" name="discount_money" id="discount_money">
+	<input type="hidden" value="{{fin_money}}" id="fin_money" name="fin_money">
+	<h3 class="super money"><span>Стоимость визита</span> {{money}}<span>р</span></h3>
+	<h3 class="super fin_discount"><span>Скидка</span> {{discount_money|round}}<span>р</span></h3>
+	<h3 class="super fin_money"><span>Итого стоимость</span> {{fin_money|round}}<span>р</span></h3>
+
+	<p>{{ visit.id|e }} - номер визита</p>
+	<div class="discont"><input type="text" class="discount_input" name="" value="{{ user.discount|e }}" placeholder="Скидка"></div>
+	
+
+	<h2><a href="/persons/view?id={{ user.id|e }}">{{ user.second_name|e }} {{ user.name|e }} {{ user.middle_name|e }}</a><span>{{ user.id|e }}</span></h2>
+	<div class="row ta-c mini">
+		<p class="col-xs-12 col-sm-4">VIP</p>
+		<p class="col-xs-12 col-sm-4">ivanov@mail.ru</p>
+		<p class="col-xs-12 col-sm-4">+79118787654</p>
+	</div>
+
+	<div class="line"></div>
+
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-4">
+			<p class="big"><span>с</span>{{ visit.start|date('H:i') }}</p>
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<p class="big"><span>по</span>{{ end|date('H:i') }}</p>
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<p class="big"><span>всего</span> 2:20</p>
+		</div>     
+	</div>
+
+	<div class="line"></div>
+
+	<h4>Покупки</h4>
+	<div class="row mini">
+		<div class="col-xs-12 col-sm-5"><p>Наименование</p></div>
+		<div class="col-xs-12 col-sm-2"><p>Кол-во</p></div>
+		<div class="col-xs-12 col-sm-2"><p>Цена</p></div>
+		<div class="col-xs-12 col-sm-2"><p>Сумма</p></div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-5"><p>Кофе латте</p></div>
+		<div class="col-xs-12 col-sm-2"><p>1 шт</p></div>
+		<div class="col-xs-12 col-sm-2"><p>120р</p></div>
+		<div class="col-xs-12 col-sm-2"><p>120р</p></div>
+		<div class="col-xs-12 col-sm-1"><a class="btn_del"></a></div>     
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-5"><p>Магнитик</p></div>
+		<div class="col-xs-12 col-sm-2"><p>2 шт</p></div>
+		<div class="col-xs-12 col-sm-2"><p>150р</p></div>
+		<div class="col-xs-12 col-sm-2"><p>300р</p></div>
+		<div class="col-xs-12 col-sm-1"><a class="btn_del"></a></div>     
+	</div>
+
+	<div class="line"></div>
+
+	<h4>До-продажа</h4>
+	<div class="row mini">
+		<div class="col-xs-12 col-sm-5"><p>Наименование</p></div>
+		<div class="col-xs-12 col-sm-2"><p>Кол-во</p></div> 
+		<div class="col-xs-12 col-sm-2"><p>Цена</p></div> 
+		<div class="col-xs-12 col-sm-2"><p>Сумма</p></div>     
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-5">
+			<select class="control-label" placeholder="Наименование">
+				<option>Чай в пакетике</option>
+				<option>Чай заворной</option>
+				<option>ЧКофе латте</option>
+			</select>
+		</div>
+		<div class="col-xs-12 col-sm-2"><input type="text" name="count" /></div> 
+		<div class="col-xs-12 col-sm-2"><p>100p</p></div> 
+		<div class="col-xs-12 col-sm-2"><p>300р</p></div>
+		<div class="col-xs-12 col-sm-1"><a class="btn_del"></a></div>
+	</div>
+
+	<div class="mt50"></div>
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-3"> <a href="" class="btn btn_grey">Я случайно</a></div>
+		<div class="col-xs-12 col-sm-3"> <a href="/visits/update?id=1" class="btn btn_grey">Редактировать</a></div>   
+		<div class="col-xs-12 col-sm-3"> <a href="/visits/delete?id=1" class="btn btn-danger" title="Delete" aria-label="Delete" data-confirm="Are you sure you want to delete this item?" data-method="post" data-pjax="0">Удалить</a></div>   
+		<div class="col-xs-12 col-sm-3"><input type="submit" name="" class="btn btn-primary" value="Да, завершить!" /></div>  
+
+	</div>
+
+
+</form>
+
+
+
+
+<script type="text/javascript">
+
+	$(function(){
+
+		$('.discont').bind("change keyup", function() {
+			var discount = $("#money_in").val() / 100 * $(".discount_input").val();
+			var result = $("#money_in").val() - discount;
+
+			$("#fin_money").val(Math.round(result,0));
+			$(".fin_discount").html(Math.round(discount,0));
+			$("#discount_money").val(Math.round(discount,0));
+			$(".fin_money").html(Math.round(result,0));
+		});
+
+	})
+
+</script>

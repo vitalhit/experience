@@ -1,0 +1,49 @@
+<h2>Рассадка: {{seating.name}}
+	<span>{{seating.id}}</span>
+	<span class="editseating pull-right">редактировать</span>
+</h2>
+
+<form method="POST" action="/events/editseats?id={{eventid}}&seatingid={{seating.id}}">
+
+	<p class="tac">Отредактируйте рассадку. <a class="btn btn-primary" href="/seats/create?seatingid={{seating.id}}">редактировать / добавить Билеты</a></p><br><br>
+
+	<div class="row">
+		<p class="col-xs-12 col-md-12"><label>Измените название рассадки</label><input class="form-control" type="text" name="seating_name" value="{{seating.name}}"></p>
+	
+		<p class="col-xs-12 col-md-4">
+			<label>Название билета</label>
+		</p>
+		<p class="col-xs-12 col-md-2">
+			<label>Цена 1 билета</label>
+		</p>
+		<p class="col-xs-12 col-md-2">
+			<label>Количество</label>
+		</p>
+		<p class="col-xs-12 col-md-4">
+			<label>Описание</label>
+	   </p>
+	</div>
+
+	{% for row in allseats %}
+
+		<input type="hidden" name="id[]" value="{{ row.id }}">
+
+		<div class="row">
+			<p class="col-xs-12 col-md-4">
+				<input class="form-control" type="text" name="name[]" value="{{ row.name }}">
+			</p>
+			<p class="col-xs-12 col-md-2">
+				<input class="form-control" type="text" name="price[]" value="{{ row.price }}">
+			</p>
+			<p class="col-xs-12 col-md-2">
+				<input class="form-control" type="text" name="count[]" value="{{ row.count }}">
+			</p>
+			<p class="col-xs-12 col-md-4">
+				<input class="form-control" type="text" name="info[]" value="{{ row.info }}">
+			</p>
+		</div>
+
+	{% endfor %}
+
+	<button type="submit" class="btn btn-primary">Отправить</button>
+</form>

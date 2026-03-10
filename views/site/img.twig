@@ -1,0 +1,33 @@
+<div class="img">
+	<h3 class="tac">Выберите изображение</h3>
+	{% for row in img %}
+		{% if row.status >= 0 %}
+		<div class="img100">
+			<img src="/uploads/users/{{ row.imgthumb }}" class="img-responsive js_pickimg" tag="{{ row.image }}" id="{{ id }}"><span class="overimg">{{ row.imgname }}</span>
+			<a class="mini mb5" href="https://crm.igoevent.com/admin/img/update?id={{ row.id }}">редактировать</a>({{row.id}})
+		</div>
+		{% endif %}
+	{% endfor %}
+</div>
+
+
+
+
+<script type="text/javascript">
+	//Наличие алиаса
+	$('.js_pickimg').click(function(){
+        var image = $(this).attr('tag');
+		var id = $(this).attr('id');
+		$.ajax({
+			type: 'get',
+			url: "/site/setimg",
+			data: {'image': image, 'id': id},
+			response: 'text',
+			success: function(data){
+				if (data) {
+					$('.biblioevents-image').html(image);
+				}
+			}
+		});
+	});
+</script>

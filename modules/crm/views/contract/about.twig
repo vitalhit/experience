@@ -1,0 +1,304 @@
+{% if cron %}
+	<div class="newblo">
+		<div class="row">
+			<div class="col-xs-8 col-lg-2">
+				<a href="/admin/statistics/sendticket?date={{now|date('Y-m-d')}}"><h4 class="itog {% if cron.mes == 0 %} c_red {% else %} c_green {% endif %} tac">{{ cron.mes }} / {{ cron.mes_need }}<span>отправлено писем</span></h4></a>
+			</div>
+			<div class="col-xs-4 col-lg-1">
+				<a href="/messages/sendticket" class="btn btn-info ma btn-xs">Отправить</a>
+			</div>
+			<div class="col-xs-8 col-lg-2 bl">
+				<h4 class="itog {% if cron.mes > 0 and cron.lk == 0 %} c_red {% else %} c_green {% endif %} tac">{{ cron.lk }} / {{ cron.lk_need }}<span>лк создано</span></h4>
+			</div>
+			<div class="col-xs-4 col-lg-1">
+				<a href="/api/cronlk" class="btn btn-info ma btn-xs">Создать</a>
+			</div>
+			<div class="col-xs-8 col-lg-2 bl">
+				<a href="/admin/statistics/messages"><h4 class="itog {% if cron.rem == 0 %} c_red {% else %} c_green {% endif %} tac">{{ cron.rem }}<span>отправлено напоминаний</span></h4></a>
+			</div>
+			<div class="col-xs-4 col-lg-1">
+				<a href="/messages/remember" class="btn btn-info ma btn-xs">Напомнить</a>
+			</div>
+			<div class="col-xs-8 col-lg-3 bl">
+				<a href="/admin/statistics/logpay?date={{now|date('Y-m-d')}}"><h4 class="itog {% if cron.log == 0 %} c_green {% else %} c_red {% endif %} tac">{{ cron.log }}<span>ошибок оплаты</span></h4></a>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if vk is null %}
+	<div class="newblo">
+		<div class="row">
+			<div class="col-xs-12 col-md-6 col-lg-8">
+				<h2>Разреши получать уведомления в VK</h2>
+			</div>
+			<div class="col-xs-12 col-md-6 col-lg-4 mt10">
+				<script type="text/javascript" src="https://vk.com/js/api/openapi.js?160"></script>
+				<div id="vk_allow"></div>
+				<script type="text/javascript">
+				VK.Widgets.AllowMessagesFromCommunity("vk_allow", {}, 136527321);
+				VK.Observer.subscribe("widgets.allowMessagesFromCommunity.allowed", function f(userId) {
+					var vk_id = userId;
+					var group_id = 136527321;
+					$.ajax({
+						type: "POST",
+						url: "/crm/company/vkupdate",
+						data: {'vk_id': vk_id, 'group_id': group_id, 'type': 1},
+						success: function(data){
+							$('.'+data.status).fadeIn().animate({"top": "80px"}, 1000);
+							$('.'+data.status).children('p').html(data.msg);
+						}
+					});
+					console.log(vk_id);
+				});
+				VK.Observer.subscribe("widgets.allowMessagesFromCommunity.denied", function f(userId) {
+					var vk_id = userId;
+					var group_id = 136527321;
+					$.ajax({
+						type: "POST",
+						url: "/crm/company/vkupdate",
+						data: {'vk_id': vk_id, 'group_id': group_id, 'type': 2},
+						success: function(data){
+							$('.'+data.status).fadeIn().animate({"top": "80px"}, 1000);
+							$('.'+data.status).children('p').html(data.msg);
+						}
+					});
+					console.log(vk_id);
+				});
+				</script>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{{ company.name }}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/company_step.twig', {'company' : company}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9 newblos">
+		
+		<div class="mini_header mt0"><span>Отчеты</span></div>
+		<div class="row">
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/company/dohod">
+					<div class="newblo btop">
+						<h3>Отчет по&nbsp;продажам по&nbsp;месяц</h3>
+					</div>
+				</a>
+			</div>
+		</div>	
+		<div class="mini_header mt0"><span>СОБЫТИЯ</span></div>
+		
+		<div class="row">
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/biblioevents/">
+					<div class="newblo btop">
+						<h3>События</h3>
+						<h3 class="bignum"><span class="glyphicon glyphicon-globe"></span>{{ biblioevents }}</h3>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/events">
+					<div class="newblo btop">
+						<h3>Даты</h3>
+						<h3 class="bignum"><span class="normal glyphicon glyphicon-calendar"></span> {{ events }}</h3>
+					</div>
+				</a>
+			</div>
+
+
+
+
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/biblioevents/alltickets">
+					<div class="newblo btop">
+						<h3>Билеты</h3>
+						<h3 class="bignum"><span class="glyphicon glyphicon-shopping-cart"></span>{{ tickets }}</h3>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/persons/allpersons">
+					<div class="newblo btop">
+						<h3>Гости</h3>
+						<h3 class="bignum"><span class="normal glyphicon glyphicon-user"></span> {{ persons }}</h3>
+					</div>
+				</a>
+			</div>
+
+		</div>
+		<div class="mini_header"><span>Проекты/сделки/финансы</span></div>
+
+		<div class="row">
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/projects/my">
+					<div class="newblo ptop">
+						<h3>Проекты</h3>
+						<h3 class="bignum"><span class="glyphicon glyphicon-folder-open"></span>{{ projects }}</h3>
+					</div>
+				</a>
+			</div>
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/finance">
+					<div class="newblo ptop">
+						<h3>Сделки/финансы</h3>
+						<h3 class="bignum"><span class="glyphicon glyphicon-folder-open"></span></h3>
+					</div>
+				</a>
+			</div>
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/clients/index">
+					<div class="newblo btop">
+						<h3>Клиенты</h3>
+						<h3 class="bignum"><span class="normal glyphicon glyphicon-user"></span> {{ clients }}</h3>
+					</div>
+				</a>
+			</div>
+		</div>
+
+<!--
+		<div class="mini_header"><span>ЗАДАЧИ</span></div>
+
+		<div class="row">
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/projects/my">
+					<div class="newblo ptop">
+						<h3>Проекты</h3>
+						<h3 class="bignum"><span class="glyphicon glyphicon-folder-open"></span>{{ projects }}</h3>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/tasks/my">
+					<div class="newblo ptop">
+						<h3>Задачи</h3>
+						<h3 class="bignum"><span class="glyphicon glyphicon-th-list"></span> {{ tasks }}</h3>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/tasks/my?status=1&status2=2&owner={{user_id}}">
+					<div class="newblo ptop">
+						<h3>Новые</h3>
+						<h3 class="bignum bluebadge">{{ tasks_new }}</h3>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/tasks/my?status=5&creator={{user_id}}">
+					<div class="newblo ptop">
+						<h3>Проверить</h3>
+						<h3 class="bignum purpbadge">{{ tasks_check }}</h3>
+					</div>
+				</a>
+			</div>
+		</div>
+
+		<div class="mini_header"><span>ДЕНЬГИ</span></div>
+
+		<div class="row">
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/biblioevents/alltickets">
+					<div class="newblo gtop">
+						<h3>Билеты</h3>
+						<h3 class="bignum">{{ m_tickets|number_format(0, '.', ' ') }}<span>р</span></h3>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/rents">
+					<div class="newblo gtop">
+						<h3>Аренда</h3>
+						<h3 class="bignum">{{ m_rents|number_format(0, '.', ' ') }}<span>р</span></h3>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/persons">
+					<div class="newblo gtop">
+						<h3>Резиденция</h3>
+						<h3 class="bignum">{{ m_visits|number_format(0, '.', ' ') }}<span>р</span></h3>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/finance/index">
+					<div class="newblo rtop">
+						<h3>Расходы</h3>
+						<h3 class="bignum">{{ m_finance|number_format(0, '.', ' ') }}<span>р</span></h3>
+					</div>
+				</a>
+			</div>
+		</div>
+
+		<div class="mini_header"><span>ЗАЯВКИ</span></div>
+
+		<div class="row">
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/biblioevents/alltickets">
+					<div class="newblo ytop">
+						<h3>Билеты</h3>
+						<h3 class="bignum">{{ z_tickets|number_format(0, '.', ' ') }}<span>р</span></h3>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-12 col-md-3">
+				<a href="/crm/rents">
+					<div class="newblo ytop">
+						<h3>Аренда</h3>
+						<h3 class="bignum">{{ z_rents|number_format(0, '.', ' ') }}<span>р</span></h3>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-12 col-md-3">
+				<a>
+					<div class="newblo ytop newblo_grey">
+						
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-12 col-md-3">
+				<a>
+					<div class="newblo ytop newblo_grey">
+					</div>
+				</a>
+			</div>
+		</div>
+
+		<div class="mini_header"><span>ТОВАРЫ</span></div>
+
+		<div class="row">
+			<div class="col-xs-12 col-md-12">
+				<div class="newblo newblo_grey">
+					<h3 class="tac"><br>БУДУТ ПОЗЖЕ</h3>
+				</div>
+			</div>
+		</div>
+-->		
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+$('.steps .about').addClass('active');
+</script>

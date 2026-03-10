@@ -1,0 +1,12 @@
+<textarea cols="6" rows="1">{% if model.link_vk %}[{{model.link_vk}}|{{ biblioevent.name }}]{% else %}{{ biblioevent.name }} {%endif%}
+
+{% if model.info %} {{ model.info }} {% else %} {{ biblioevent.info }}{%endif%}
+
+Место: {{ biblioevent.places.name }}
+Адрес: {{ biblioevent.places.adress }}
+https://vk.com/{{ model.link_vk }}
+
+
+{% if biblioevent.link_vk_img %}{{biblioevent.link_vk_img}}{%endif%}{% if biblioevent.img.vk %} https://vk.com/{{ biblioevent.img.vk }}{% endif %} 
+{{ biblioevent.link_vk_audio }} 
+{% for row in mybands %}{{ row.band.link_vk_audio }}{% endfor %}</textarea><br>

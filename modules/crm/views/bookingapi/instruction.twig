@@ -1,0 +1,48 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<div class="row">
+				<div class="col-xs-12 col-lg-3">
+					<form method="get">
+						<select name="list_id" class="form-control" onchange="this.form.submit()">
+							<option value="">Заявки из всех листов</option>
+							{% for row in lists %}
+								<option value="{{ row.id }}" {% if row.id == list_id %}selected{% endif %}>{{ row.name }}</option>
+							{% endfor %}
+						</select>
+					</form>        
+				</div>
+				<div class="col-xs-12 col-lg-3">
+				</div>
+				<div class="col-xs-12 col-lg-3">
+					<h2>Инструкция</h2>            
+				</div>
+			</div>       
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/person_step.twig', {'company' : company}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<div class="newblo">
+
+				<h2><span>по интеграции формы заявки в другой сайт</span><br>
+					{% for row in lists %}
+						{% if row.id == list_id %}
+							{{ row.name }}
+						{% endif %}
+					{% endfor %}
+				</h2>
+
+		</div>
+			<p>Вставьте в нужное место вашего сайта: </p>
+			<p>ОБЯЗАТЕЛЬНО: заполните id="id события" и/или tag="id листа", можно и оба параметра!</p>
+
+			<xmp class="code oh" style="background: #fff;"><div class="igoevent_event" id="" tag="{{list_id}}"></div>
+<script type="text/javascript" src="https://igoevent.com/web/js/igoeventapi.js"></script>
+<link rel="stylesheet" href="https://igoevent.com/web/css/igoeventapi.css">
+			</xmp>
+		</div>
+</div>

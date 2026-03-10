@@ -1,0 +1,14 @@
+<h2>Проверьте правильность данных.</h2>
+
+<p>ФИО: {{user.name}} {{user.second_name}}</p>
+<p>Mail: {{user.mail}}</p>
+<p>Телефон: {{user.phone}}</p>
+<p>Сумма: {{sum|number_format(2, '.', '')}}</p>
+<p>Событие: {{event.biblioevents.name}}</p>
+
+<form action="https://igoevent.com/yoo/payment" method="post">
+	<input name="orderId" class="order_id" value="{{order_id}}" type="hidden"/>
+	<input name="userId" class="user_id" value="{{user.id}}" type="hidden"/>
+	<input name="description" value="{{event.biblioevents.name}}" type="hidden"/>
+	<input type="submit" class="btn btn-primary" value="Оплатить"/>
+</form>

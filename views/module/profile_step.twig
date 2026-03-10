@@ -1,0 +1,25 @@
+		<div class="steps">
+			<div class="newblo">
+				<h2>Профиль</h2>
+				<div class="step index">
+					<a href="/profile/index"><span class="glyphicon glyphicon-user"></span> Профиль</a>
+				</div>
+			</div>
+			<div class="newblo">
+				{% if person.image %}
+					<img src="/uploads/users/{{ person.image }}" class="img-responsive img-circle">
+				{% else %}
+					<img src="/images/noimage.png" class="img-responsive img-circle">
+				{% endif %}
+				<h2 class="mt0 mb10">{% if person.name %}{{ person.name }} {{ person.second_name }}{% endif %}</h2>
+				<a href="/profile/update" class="btn btn-primary ma w120">Редактировать</a>
+				<h4>User_id: {{ user_id }}<br>Профиль id: {{ person.id }}</h4>
+				<p><b>Статус:</b> {{ person.status }}</p>
+				<p><b>Дата рождения:</b> {{ person.birthday|date('d.m.Y') }}</p>
+				<p><b>E-mail:</b> {{ person.mail }}</p>
+				<p><b>Телефон:</b> {{ person.phone }}</p>
+				<p><b>Пол:</b> {% if person.sex == 0 %} женщина {% else %} мужчина {% endif %} </p>
+				<p><b>Получать письма:</b> {% if person.sendmail == 1 %} Да {% else %} Нет {% endif %} </p>
+				<p><b>Пожелания:</b> {{ person.vishes }}</p>
+			</div>
+		</div>

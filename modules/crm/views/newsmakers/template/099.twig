@@ -1,0 +1,13 @@
+<textarea>{{ biblioevent.name }}
+
+{{ biblioevent.info }}
+
+https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source={% if newsmaker.utm_source %}{{newsmaker.utm_source}}{% else %}media{% endif %}&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content={% if newsmaker.utm_content %}{{newsmaker.utm_content}}{% else %}{{newsmaker.site}}{% endif %}&utm_term={{ model.id }}
+
+Дата: {{model.date|date('d.m.Y  H:i')}}
+Цена без скидки:  рублей
+Цена со скидкой:  рублей
+
+Как получить скидку: используете промокод КультурнаяРазморозка на странице события https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source={% if newsmaker.utm_source %}{{newsmaker.utm_source}}{% else %}media{% endif %}&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content={% if newsmaker.utm_content %}{{newsmaker.utm_content}}{% else %}{{newsmaker.site}}{% endif %}&utm_term={{ model.id }}
+Инструкция, как использовать промо-код: https://igoevent.com/page/use-promocode 
+</textarea> 

@@ -1,0 +1,27 @@
+<div class="row">
+	<div class="col-xs-12">
+		<h1>Группы и проекты на igoevent.com</h1>
+	</div>
+</div>
+
+	<div class="col-xs-12">
+		<div class="event-row">
+		{% for row in bands %}	
+			<div class="event" style="min-width: 240px; max-width: 320px;">
+				<a class="img-event" href="/band/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+					{# <span class="comments">12</span><span class="like">410</span> #}
+					<img src="/uploads/users/{{ row.image }}">
+					
+				</a>
+				<a class="title-event" href="/band/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								<h3>{{ row.name }}</h3>
+				</a>
+
+				{# <span class="type-event">категория</span> #}
+				
+				 <!--<span>id: {{ row.id }}, status: {{ row.status }}</span> -->
+				{# <span class="views">9214</span> #}
+			</div>
+		{% endfor %}
+		</div>
+	</div>

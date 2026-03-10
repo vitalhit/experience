@@ -1,0 +1,9 @@
+<h3>Рассадка: {{seatings.name}} <span id="seatings_id">{{seatings.id}}</span></h3>
+
+{% for row in seats %}
+	<p class="w70p">{{ row.name }}</p>
+	<p class="w10p tar">{{ row.price }} р</p>
+	<span class="result w10p tar">{{ row.count }} шт</span>
+	<p>{{ row.info }}</p>
+{% endfor %}
+

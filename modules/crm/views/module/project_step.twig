@@ -1,0 +1,51 @@
+<div class="steps">
+	<div class="newblo">
+		<h2>Проект</h2>
+
+		<div class="step events">
+			<a href="/crm/projects/my"><span class="glyphicon glyphicon-globe"></span> Все проекты</a>
+			<a href="/crm/projects/create" class="btn btn-success btn-xs">+ проект</a>
+		</div>
+		{% if project.id %}
+			<div class="step project">
+				<a href="/crm/projects/update?id={{ project.id }}"><span class="glyphicon glyphicon-flag"></span> Описание проекта</a>
+			</div>
+			<div class="step tasks">
+				<a href="/crm/tasks/my?projectid={{ project.id }}"><span class="glyphicon glyphicon-th-list"></span> Задачи </a>
+				<a href="/crm/tasks/create?projectid={{ project.id }}" class="btn btn-success btn-xs">+ задача</a>
+				{% if model %}
+					<a href="/crm/tasks/create?projectid={{ project.id }}&tasksid={{ model.id }}" class="btn btn-success btn-xs">+ шаг</a>
+				{% endif %}
+			</div>
+		{% endif %}
+	</div>
+	{# <div class="newblo">
+		<div class="step events">
+			<a href="/crm/projects-status"><span class="glyphicon glyphicon-globe"></span> Cтатусы проектов</a>
+			<a href="/crm/projects-status/create" class="btn btn-success btn-xs"> + статус</a>
+		</div>
+		
+		<div class="step events">
+			<a href="/crm/tasks-status"><span class="glyphicon glyphicon-globe"></span> Статусы задач</a>
+			<a href="/crm/tasks-status/create" class="btn btn-success btn-xs"> + статус</a>
+		</div>
+		
+		<div class="step events">
+			<a href="/crm/tasks-type"><span class="glyphicon glyphicon-globe"></span> Типы задач</a>
+			<a href="/crm/tasks-type/create" class="btn btn-success btn-xs"> + статус</a>
+		</div>
+	</div> #}
+{# 	<div class="newblo">
+		<h2>Обозначения</h2>
+		<p><span class="badge menu_badge_check">Х</span> - "Проверить!"</p>
+		<p><span class="badge menu_badge_new">Х</span> - "Новыая задача!"</p>
+	</div> #}
+</div>
+
+
+
+
+
+
+
+

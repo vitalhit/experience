@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="stiky">
+            {{ this.render('/module/city_step.twig', {'model' : model}) | raw }}
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-9">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12"> 
+                    <table class="tb stacktable">
+                        <tr>
+                            <td>id</td>
+                            <td>name</td>
+                            <td>alias</td>
+                        </tr>
+                            <td><span>{{ model.id }}</span></td>
+                            <td><span><a href="/crm/city/update?id={{ model.id }}">{{ model.name }}</a></span></td>
+                            <td><span>{{ model.alias }}</span></td>
+
+                        </tr>
+                </table>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>

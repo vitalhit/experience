@@ -1,0 +1,74 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{{ biblioevent.name }}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/event_step.twig', {'biblioevent' : biblioevent, 'user' : user}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<table class="table dates">
+			<tbody>
+				<tr>
+					<th>Даты события</th>
+					<th>Место</th>
+					<th>Статус</th>
+					<th>Кнопка</th>
+					<th>Билетов</th>
+					<th>Гости</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+				{% for date in dates %}
+					<tr class="{% if date.status == 0 %} noactive {% endif %}">
+						<td>{{ date.date|date("d.m.Y H:i") }}</td>
+						<td>{% if date.place %}{{ date.place }}{% else %} {{ biblioevent.places.name}} {% endif %} </td>
+						<td>{% if date.status == 1%}Активна{% else %} Скрыта {% endif %}</td>
+						<td>{{ date.button }}</td>
+						<td>
+							<a href="/seats/create?event_id={{ date.id }}&biblioeventid={{ date.event_id }}"><span class="glyphicon glyphicon-shopping-cart"></span></a>
+							{% set counts = 0 %}
+							{% for row in date.seats %}
+								{% set counts = counts + row.count %}
+							{% endfor %}
+							{% if counts == 0 %} <span class="cred normal">нет билетов!</span> {% else %} {{ counts }}{% endif %}		
+						</td>
+						<td><a href="/biblioevents/view?id={{ biblioevent.id }}&event_id={{ date.id }}"><span class="glyphicon glyphicon-user"></span></a></td>
+						<!-- <td>{{ date.info }}</td> -->
+						<td><a href="/events/duplicate?id={{ date.id }}"><span class="glyphicon glyphicon-duplicate"></span></a></td>
+						<td><a href="/events/update?id={{ date.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+						<td><a href="/events/fields?id={{ date.id }}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
+						<td><a href="/events/delete?id={{ date.id }}" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<h2>Дополнительные поля в форме регистрации <br> на {{ model.date|date("d.m.Y H:i") }}</h2>
+		{{ this.render('_fieldsform.php', {'model' : model, 'biblioevent' : biblioevent, 'biblioevents' : biblioevents}) | raw }}
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+	// Даты
+	$(document).ready(function() {
+		$('#events-event_id').on('change', function() {
+			var biblioeventid = this.value;
+			$.ajax({
+				type: 'get',
+				url: "/events/get-dates",
+				data: {'biblioeventid': biblioeventid},
+				response: 'text',
+				success: function(data){
+					$('.dates').html(data);
+					$('.left_blo').css({minHeight: $('.wrap').height()});
+				}
+			}); 
+		});
+	});
+</script>

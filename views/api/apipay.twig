@@ -1,0 +1,14 @@
+<h2>Проверьте правильность данных.</h2>
+
+<p>ФИО: {{ user.name }} {{ user.second_name }}</p>
+<p>Mail: {{ user.mail }}</p>
+<p>Телефон: {{ user.phone }}</p>
+<p>Сумма: {{ sum|number_format(2, '.', '') }}</p>
+{% if discount %} <p> {{discount}} </p>{%endif%}
+<p>Событие: {{ event.biblioevents.name }}</p>
+
+<form onsubmit="ym(41253789,'reachGoal','go_pay'); return true;" action="https://igoevent.com/yoo/payment" method="post">
+    <input name="order_id" value="{{ order_id }}" type="hidden"/>
+    <input name="user_id" value="{{ user.id }}" type="hidden"/>
+    <input type="submit" class="btn btn-primary" value="Оплатить"/>
+</form>

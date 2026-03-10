@@ -1,0 +1,296 @@
+{% if place.landing.seodesc %}
+	{{ this.registerMetaTag({name: 'keywords', content: place.landing.seodesc}) | raw }}
+{% else %}
+	{% set seodesc = [place.name, ' ', place.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'keywords', content: seodesc}) | raw }}
+{% endif %}
+
+{% if place.landing.seokey %}
+	{{ this.registerMetaTag({name: 'description', content: place.landing.seokey}) | raw }}
+{% else %}
+	{% set seokey = [place.name, ' ', place.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'description', content: seokey}) | raw }}
+{% endif %}
+
+
+{% if place.landing.ogtitle %}
+	{{ this.registerMetaTag({name: 'og:title', content: place.landing.ogtitle}) | raw }}
+{% else %}
+	{% set ogtitle = [place.name, ' ', place.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'og:title', content: ogtitle}) | raw }}
+{% endif %}
+
+{% if place.landing.ogdescription %}
+	{{ this.registerMetaTag({name: 'og:description', content: place.landing.ogdescription}) | raw }}
+{% else %}
+	{% set ogdescription = [place.name, ' ', place.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'og:description', content: ogdescription}) | raw }}
+{% endif %}
+
+{% if place.landing.ogimage %}
+	{% set ogimage = ['/uploads/users/', place.landing.ogimage ]|join %}
+{% elseif place.landing.image %}
+	{% set ogimage = ['/uploads/users/', place.landing.image ]|join %}
+{% else %}
+	{% set ogimage = ['/uploads/users/', place.image ]|join %}
+{% endif %}
+{{ this.registerMetaTag({name: 'og:image', content: ogimage}) | raw }}
+
+{% set ogurl = [place.cities.alias, '/event/', place.id]|join %}
+{{ this.registerMetaTag({name: 'og:url', content: ogurl}) | raw }}
+
+{{ this.registerMetaTag({name: 'og:type', content: 'website'}) | raw }}
+
+
+
+
+<div class="container-full title-page" style="background: url('/uploads/places/{{ place.foto }}') 50% 50% no-repeat transparent;">
+	<div class="container">
+		<div class="breadcrumbs">
+			<a class="home-link" href="/"><img src="/images/logo-mini-white.svg"></a>
+			<a href="/{{ place.cities.alias }}">{{ place.cities.name }}</a>
+		</div>
+		<div class="statics">
+			<!--<span class="years">6+</span>
+			 <span class="views">921</span> -->
+			 <noindex><span class=""><a rel="nofollow" href="https://crm.igoevent.com/admin/places/update?id={{ place.id }}" class="u-profile">Edit</a></span ></noindex>
+		</div>
+
+
+		<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 title-block">
+			<h1>{% if place.landing.title %}{{ place.landing.title }}{% else %}{{ place.name }}{% endif %}</h1>
+			{% if place.landing.anons %}<p>{{ place.landing.anons }}</p>{% endif %}
+
+			<div class="row">
+				<div class="col-xs-12 col-lg-4">
+					<p class="tac">{{ place.address }} </p>
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<p class="tac">{% if place.metro %} метро {{ place.metro }} {% endif %}</p>
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<p class="tac">{{ place.phone }}</p>
+				</div>
+				<div class="col-xs-12 col-lg-4">
+					<p class="tac">{% if place.pathshort %} {{ place.pathshort }}{% endif %}
+					</p>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="section-block">
+		<div class="event-row">
+			{% if biblioevents %}
+				{% for row in biblioevents %}
+				{% for item in row.activeevents %}
+					{% if row.image %}
+						<div class="event">
+							<a class="img-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								{# <span class="comments">12</span><span class="like">410</span> #}
+								<img src="/uploads/users/{{ row.img.imgrazdel }}">
+							</a>
+							 <span class="type-event">{{row.categoryevents.title}}</span> 
+							<a class="title-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								<h3>{% if item.title %} {{item.title}} {%else%}{{ row.name }}{% endif %} {# <small>6+</small> #}</h3>
+							</a>
+
+
+							
+							<span class="point">{{ item.date|date('d.m.Y ') }} в {{ item.date|date('H:i') }}</span><br> <div class="clear"></div>
+
+							
+
+
+
+							{% if row.activeevents.link_vk %}<a style="float: right; margin: 0 5px 0 0px;"class="soc" href="https://vk.com/{{ row.oneactiveevent.link_vk }}"> <img width="70%" src="/images/vk.png" alt=""></a>{% endif %}
+							{% if row.activeevents.link_fb %}<a style="float: right; margin: 0 5px 0 0px;"class="soc" href="{{ row.oneactiveevent.link_fb }}"> <img width="70%" src="/images/fb.png" alt=""></a>{% endif %}
+							<!--{# <span class="views">9214</span> #} -->
+						</div>
+					{% endif %}
+					{% endfor %}
+				{% endfor %}
+			{% else %}
+				<h1>В этом месте нет событий!</h1>
+			{% endif %}
+		</div>
+		<div class="clear"></div>
+		<div class="content-block">
+			{% if place.description %}
+			<h1>{{place.name}}</h1>
+			<div class="info" style="text-align: left;">
+				{{ place.description|raw }}
+			</div>
+			{%endif%}
+
+			{% for post in place.posts %}
+			 <div class="info" style="text-align: left;">
+			 <h4>{{ post.title }}</h4>
+			 <p>{{ post.text }}
+
+			 </div>
+			{% endfor %}
+
+			 {% if place.info %}
+			 <div class="info" style="text-align: left;">
+			 	<h2> <small>описание</small> {{place.name}} </h2>
+			 {{place.info|raw}} 
+			</div>{%endif%} 
+			{% if place.rider %}
+			 <div class="info" style="text-align: left;">
+			 	<h2> <small>технические харектеристики и райдер </small> {{place.name}} </h2>
+			 {{place.rider|raw}} 
+			</div>{%endif%}
+		</div>
+		<div class="clear"></div>
+		<div class="content-block">
+			{% if biblioevent.places.no_address == 3 %}
+			<h2>Место <small>проведения события: онлайн</small></h2>
+			{% else %}
+			<h2><small>{{ place.type }}</small> {{ place.name }}</h2>
+
+						<div class="row">
+							<div class="col-xs-12 col-lg-3">
+								{%if place.site %}<p class="tac">Сайт: <a href="https://{{ place.site }}">{{ place.site }}</a> </p>{% endif %}
+							</div>
+							<div class="col-xs-12 col-lg-3">
+								<p class="tac">{% if place.link_vk %}  <a href="https://vk.com/{{ place.link_vk }}"><img src="/images/vk.png" alt=""></a>{% endif %}</p>
+							</div>
+							<div class="col-xs-12 col-lg-3">
+								<p class="tac">{% if place.link_fb %}  <a href="https://facebook.com/{{ place.link_fb }}"><img src="/images/fb.png" alt=""></a>{% endif %}</p>
+							</div>
+							<div class="col-xs-12 col-lg-3">
+								<p class="tac">{% if place.link_insta %}  <a href="https://instagram.com/{{ place.link_insta }}"><img src="/images/insta.png" alt=""></a>{% endif %}</p>
+							</div>
+						</div>
+			
+			<div class="contacts">
+
+				{% if place.address %}<span class="pointer"><span class="mini">Адрес</span>{{ place.address }}</span>{% endif %}
+				{% if place.metro %}<span class="pointer"><span class="mini">Метро</span>{{ place.metro }}</span>{% endif %}
+				
+{#				<a class="point" href="/{{ biblioevent.places.cities.alias }}/place/{% if biblioevent.places.alias %}{{ biblioevent.places.alias }}{% else %}{{ biblioevent.places.id }}{% endif %}">
+					<img src="/uploads/places/{{ place.foto }}">
+					{{ biblioevent.places.name }}
+				</a> #}
+
+
+				<div id="map" class="map">
+					{% if place.shema %}<h4>Схема зала {{ place.name }}</h4>
+					<img src="/uploads/places/{{ place.shema }}" class="img-responsive">
+					{% endif %}
+					{% if place.map %} <h4>Как добраться {{ place.name }}</h4>
+					<img src="/uploads/places/{{ place.map }}" class="img-responsive">
+					{% endif %}
+					<div class="row">
+					{% if place.foto_street %} 
+						<div class="col-xs-12 col-lg-6">
+							<h4>Здание {{ place.name }}</h4>
+							<img src="/uploads/places/{{ place.foto_street }}" class="img-responsive">
+						</div>
+					{% endif %}
+					{% if place.foto_stage %}
+						<div class="col-xs-12 col-lg-6">
+							<h4>Как выглядит сцена/зал {{ place.name }}</h4>
+							<img src="/uploads/places/{{ place.foto_stage }}" class="img-responsive">
+						</div>
+					{% endif %}
+					</div>
+										<p class="tac">{{ place.path|raw }}</p>
+					<!--<p class="tac">{{ biblioevent.places.phone }}</p> -->
+					<!--{% if place.description %}<p class="tac">{{ place.description|raw }}</p>{% endif %} -->
+				</div>
+			</div>
+			{% endif %}
+		</div>
+		<div class="clear"></div>
+		<div class="content-block">
+			{% if place.video or place.video_map or place.video_car  %}
+				<div class="row video-row">
+					{% if place.video and place.video_map and place.video_car %}
+						<div class="col-xs-12 col-lg-4">
+
+							<iframe width="560" height="315" src="https://www.youtube.com/embed/{{ place.video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						</div> 	
+						<div class="col-xs-12 col-lg-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ place.video_map }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div> 	
+						<div class="col-xs-12 col-lg-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ place.video_car }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div> 	
+
+					{% elseif place.video and place.video_map and (place.video_car is empty) %}
+						<div class="col-xs-12 col-lg-4 col-lg-offset-2">
+							<iframe width="560" height="315" src="https://www.youtube.com/embed/{{ place.video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						</div> 	
+						<div class="col-xs-12 col-lg-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ biblioevent.landing.video2 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div>
+
+
+					{% elseif place.video and (place.video_map is empty) and (place.video_car is empty) %}
+						<div class="col-xs-12 col-lg-6 col-lg-offset-3">
+							<iframe width="560" height="315" src="https://www.youtube.com/embed/{{ place.video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						</div> 	
+					{% elseif (place.video is empty) and place.video_map and (place.video_car is empty) %}
+						<div class="col-xs-12 col-lg-4 col-lg-offset-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ place.video_map }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div>
+					{% elseif (place.video is empty) and (place.video_map is empty) and place.video_car %}
+						<div class="col-xs-12 col-lg-4 col-lg-offset-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ place.video_car }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div>
+					{% endif %}
+				</div>
+
+			{% endif %}
+		</div>
+
+		{{ this.render('_bottom.twig', {'ads' : ads}) | raw }}
+	</div>
+
+
+	<div class="sidebar-block">
+		{{ this.render('_right.twig', {'ads' : ads}) | raw }}
+	</div>
+</div>
+
+
+
+<footer class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-10 col-md-8">
+			<img class="logo-footer" src="/images/logo-mini.svg">
+			<p class="copyrite">© 2018-{{now|date("Y")}} iGoEvent.com — мы создаем события. Права на текстовые и другие материалы, размещенные на сайте, охраняются законом.
+				При цитировании обязательна прямая ссылка на iGoEvent.com.
+			</p>
+			<p class="copyrite"><a href="http://vitalhit.com/" target="_blank">vitalhit</a></p>
+			<ul class="footer-nav">
+				<li><a href="https://igoevent.com/page/about">О проекте</a></li>
+				<li><a href="https://igoevent.com/page/contacts">Контакты</a></li>
+				<li class="years"><img src="/images/ico-18-plus.svg"></li>
+			</ul>
+			<noindex>
+				<script type="text/javascript">document.write("<a rel='nofollow' href='//www.liveinternet.ru/click' "+"target=_blank><img src='//counter.yadro.ru/hit?t26.1;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";h"+escape(document.title.substring(0,150))+";"+Math.random()+"' alt='' title='LiveInternet: показано число посетителей за"+" сегодня' "+"border='0' width='88' height='15'><\/a>");
+				</script>
+				<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88249632-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-88249632-1');
+</script>
+
+			</noindex>
+		</div>
+	</div>
+</footer>
+
+<script type="text/javascript" src="/js/igoeventapi.js"></script>
+<link rel="stylesheet" href="/css/igoeventapi.css">
+<link href="/css/front.css" rel="stylesheet">

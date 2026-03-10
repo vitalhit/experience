@@ -1,0 +1,130 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{{ biblioevent.name }}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/event_step.twig', {'biblioevent' : model, 'user' : user}) | raw }}
+	</div>
+
+	<div class="hidden-xs col-lg-9">
+		<table class="tb dates">
+			<tbody>
+				<tr>
+					<th>&nbsp;</th>
+					<th>Даты события</th>
+					<th>Мест</th>
+					<th colspan="2" class="tac">Брони</th>
+					<th colspan="2" class="tac">Возвраты</th>
+					<th colspan="2" class="tac">Гости+регистрации</th>
+					<th>Профит * 0,94 * 0,92</th>
+					<th>Инфо</th>
+					<th></th>
+					<th>ссылки</th>
+					
+				</tr>
+				{% for row in dates %}
+					<tr class="{% if (row.date.status == 0) or (row.date.date|date('Y-m-d') < now|date('Y-m-d')) %} noactive black {% else %} green {% endif %}">
+						<td><a href="/crm/finance/create?event_id={{ row.date.id }}"><span class="glyphicon glyphicon-rub"></span></a></td>
+						<td>{{ row.date.date|date('d.m H:i') }}<br>
+							<small>id:{{ row.date.id }}</small></td>
+						<td><a href="/crm/seats/create?event_id={{ row.date.id }}&biblioeventid={{ row.date.event_id }}">
+								{% if row.s_count == 0 %} <span class="cred normal">нет!</span> {% else %} {{ row.s_count - row.t_zayavka_c - row.t_back_c - row.t_pay_c}} / {{ row.s_count }} {% endif %}
+							</a></td>
+						<td class="tar bl c_yell">{{ row.t_zayavka_c_t }} ({{ row.t_zayavka_c }})</td>
+						<td class="tar c_yell">{{ row.t_zayavka_s }}<span>р</span></td>
+						<td class="tar bl c_red">{{ 0 + row.t_back_c }}</td>
+						<td class="tar c_red">{{ 0 + row.t_back_s }}<span>р</span></td>
+						<td class="tar bl "><a href="/crm/biblioevents/view?id={{ biblioevent.id }}&event_id={{ row.date.id }}">{{ row.t_pay_c_t }} ({{ row.t_pay_c }})</a>+{{ row.t_reg_c_t }} ({{ row.t_reg_c }})</td>
+						<td class="tar c_green">{{ 0 + row.t_pay_s }}<span>р</span></td>
+						<!-- <td>{{ row.date.info }}</td> -->
+						<td class="bl mini"> {{ row.profit }} р.</td>
+						<td class="bl mini">  {{ row.date.info }}</td>
+						<td>
+							<span>{% if row.date.link_vk_id %}<a href="https://vk.com/event{{ row.date.link_vk_id }}">vk</a>,{% else %} <s><a href="https://vk.com/groups?w=groups_create">vk</a></s>,{% endif %}
+							{% if row.date.link_fb %}<a href="{{ row.date.link_fb }}">fb</a>,{% else %} <s>fb</s>,{% endif %}
+							{% if row.date.link_yt %}<a href="{{ row.date.link_yt }}">yt</a>,{% else %} <s>yt</s>,{% endif %}
+							{% if row.date.link_kg %}<a href="{{ row.date.link_kg }}">kg</a><br>{% else %} <s>kg</s><br>{% endif %}
+							
+							{% if row.date.link_insta %}<a href="{{ row.date.link_insta }}">insta</a>,{% else %} <s>insta</s>,{% endif %}
+
+							
+  						
+  							<br>
+							<a href="https://igoevent.com/crm/eventdeal/create?event_id={{row.date.id}}&deal_id=&media_id=2&newsmaker_id=36&percent=20&status=1&date_closed={{date.date|date('Y-m-d')}} 23:00&date_create=&info=добавлено из events">+deal</a>	
+							
+							</span>
+						</td>
+						<td><a href="/crm/events/duplicate?id={{ row.date.id }}"><span class="glyphicon glyphicon-duplicate"></span></a>
+						<a href="/crm/events/fields?id={{ row.date.id }}"><span class="glyphicon glyphicon-list-alt"></span></a>
+						<a class="din" href="/crm/events/update?id={{ row.date.id }}"><span class="glyphicon glyphicon-pencil"></span></a> 
+						
+						<a class="din" href="/crm/eventdeal/create?new={{ row.date.id }}"><span class="glyphicon glyphicon-briefcase"></span></a>
+						<!--<a class="din ml20" href="/crm/events/delete?id={{ row.date.id }}" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>-->
+						</td>
+
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="visible-xs col-xs-12">
+		<h2>{{ biblioevent.name }}</h2>
+		{% for row in dates %}
+			<div class="newblo {% if (row.date.status == 0) or (row.date.date|date('Y-m-d') < now|date('Y-m-d')) %} noactive dtop {% else %} gtop {% endif %}">
+				<div class="col-xs-12 tac">{{ row.date.date|date('d.m H:i') }} <span class="mini">
+					<a href="/crm/seats/create?event_id={{ row.date.id }}&biblioeventid={{ row.date.event_id }}">
+						{% if row.s_count == 0 %} <span class="cred normal">нет!</span> {% else %} {{ row.s_count - row.t_zayavka_c - row.t_back_c - row.t_pay_c}} / {{ row.s_count }} {% endif %}
+						</a>
+					</span>
+				</div>
+
+				<div class="clear mt20"></div>
+				<div class="col-xs-6 tac c_yell p0">{{ row.t_zayavka_c_t }} ({{ row.t_zayavka_c }}) {{ row.t_zayavka_s }}<span>р</span><br><span class="mini">брони</span></div>
+				<div class="col-xs-6 tac bl c_red p0">{{ 0 + row.t_back_c }} {{ 0 + row.t_back_s }}<span>р</span><br><span class="mini">возвраты</span></div>
+
+				<div class="clear mt20"></div>
+				<div class="col-xs-6 tac c_blue p0">{{ row.t_reg_c_t }} ({{ row.t_reg_c }}) <br><span class="mini">регистрации</span></div>
+				<div class="col-xs-6 tac bl c_green p0"><a class="c_green tdu" href="/crm/biblioevents/view?id={{ biblioevent.id }}&event_id={{ row.date.id }}">{{ row.t_pay_c_t }} ({{ row.t_pay_c }})</a> {{ 0 + row.t_pay_s }}<span>р</span><br><span class="mini">гости</span></div>
+
+				<div class="clear mt20"></div>
+				<div class="col-xs-12 tac"><span class="mini">{{row.date.info}}</span></div>
+
+				<div class="clear mt20"></div>
+				<div class="col-xs-2 tac"><a href="/crm/finance/create?event_id={{ row.date.id }}"><span class="glyphicon glyphicon-rub"></span></a></div>
+				<div class="col-xs-2 tac"><a href="/crm/events/duplicate?id={{ row.date.id }}"><span class="glyphicon glyphicon-duplicate"></span></a></div>
+				<div class="col-xs-2 tac"><a href="/crm/events/fields?id={{ row.date.id }}"><span class="glyphicon glyphicon-list-alt"></span></a></div>
+				<div class="col-xs-2 tac"><a class="din" href="/crm/events/update?id={{ row.date.id }}"><span class="glyphicon glyphicon-pencil"></span></a></div>
+				<div class="col-xs-2 tac"><a class="din ml20" href="/crm/events/delete?id={{ row.date.id }}" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></div>
+			</div>
+		{% endfor %}
+
+
+
+
+
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+	// Даты
+	$(document).ready(function() {
+		$('#events-event_id').on('change', function() {
+			var biblioeventid = this.value;
+			$.ajax({
+				type: 'get',
+				url: "/crm/events/get-dates",
+				data: {'biblioeventid': biblioeventid},
+				response: 'text',
+				success: function(data){
+					$('.dates').html(data);
+					$('.left_blo').css({minHeight: $('.wrap').height()});
+				}
+			}); 
+		});
+	});
+</script>

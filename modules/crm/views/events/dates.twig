@@ -1,0 +1,24 @@
+<tbody>
+	<tr>
+		<th>Даты события</th>
+		<th>Статус</th>
+		<th>Кнопка</th>
+		<th>Типы билетов</th>
+		<th>Инфо</th>
+		<th></th>
+		<th></th>
+		<th></th>
+	</tr>
+	{% for date in dates %}
+	<tr>
+		<td>{{ date.date|date("d.m.Y H:i") }}</td>
+		<td>{{ date.status }}</td>
+		<td>{{ date.button }}</td>
+		<td>Сколько <a href="/seats/create?event_id={{ date.id }}"><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
+		<td>{{ date.info }}</td>
+		<td><a href="/events/duplicate?id={{ date.id }}"><span class="glyphicon glyphicon-duplicate"></span></a></td>
+		<td><a href="/events/update?id={{ date.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+		<td><a href="/events/delete?id={{ date.id }}" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+	</tr>
+	{% endfor %}
+</tbody>

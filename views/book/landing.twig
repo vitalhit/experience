@@ -1,0 +1,422 @@
+
+<!-- {{biblioevent.img.imgmid }} -->
+<a target="_blank" href="https://t.me/+79254244207" title="Задать вопрос команде"><div class="ask_question" style="opacity: 1; display: block;"></div></a>
+
+
+<div class="title-page" 
+	style="background: 
+		{% if biblioevent.landing.bg_color %} #{{biblioevent.landing.bg_color}}
+			{% else %} 
+			url('/uploads/users/{% if biblioevent.landing.image %}{{ biblioevent.landing.image }}{% else %}{{ biblioevent.img.imgmid }}{% endif %}') 50% 
+				{% if biblioevent.landing.imagept %}{{ biblioevent.landing.imagept}}{% elseif biblioevent.img.imagept %}{{ biblioevent.img.imagept }}{%else%}50{%endif%}% 
+				no-repeat transparent; {% endif %}">
+	<div class="container">
+		<div class="breadcrumbs">
+			<a class="home-link" href="/"><img src="/images/logo-mini-white.svg"></a>
+			<a href="/{{ biblioevent.cities.alias }}">{{ biblioevent.cities.name }}</a>
+			<a href="/{{ biblioevent.places.cities.alias }}/place/{% if biblioevent.places.alias %}{{ biblioevent.places.alias }}{% else %}{{ biblioevent.places.id }}{% endif %}">{{ biblioevent.places.name }}</a>
+			<a class="this-link">{{ biblioevent.company.name }}</a>
+		</div>
+		<div class="statics">
+			<span class="years">{{ biblioevent.age }}</span>
+		</div>
+		<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 title-block">
+			<h1 style="text-align: center!important;">{{booking.title}}</h1>
+
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<div class="container">
+	<div class="section-block">
+		<div class="content">
+			
+			{{ booking.info | raw }}
+			
+
+			{{ this.render('/book/form/_form_landing.php', {'model' : model, 'booking' : booking, 'events' : events ,  'event_id' : event_id , 'person' : person , 'city' : city}) | raw }}
+
+			{% if biblioevent.landing.info_program_show == 2 %}
+				{% for band in bands %}
+				<div class="row ">
+						<div class="event col-xs-12 col-lg-3 d-flex justify-content-center" >
+			 				<div style=" margin: auto; width: 200px; align-items: center; background-image:url(/uploads/users/{{band.band.image }});
+			 					background-size: cover;
+			 					background-position: center center;">
+			 					<img style="width: 200px;"src="/uploads/users/{{band.band.image }}">
+							</div>
+						</div>
+						<div class="col-xs-12 col-lg-8" >	
+						<h4 style="text-align: center;">  <a href="/band/{{band.band.alias }}">{{band.band.name }}</a> </h4>
+						{{band.band.info_event|raw }}
+						<div style=" text-align: right; position: absolute; right: 15px; top: 5px; "><div>
+						 {% if band.band.link_vk %}<a class="soc" href="https://vk.com/{{ band.band.link_vk }}"> <img style="padding-top: 1px;"src="/images/vk.png" alt=""></a>{% endif %}
+						 {% if band.band.link_yt %}<a class="soc" href="{{ band.band.link_yt }}"><img src="/images/yt.png" alt=""></a>{% endif %}
+						  {% if band.band.link_site %}<a class="soc" href="https://{{ band.band.link_site }}"><img src="/images/web.png" alt=""></a>{% endif %}
+						  <br><br>
+						</div></div>
+						</div>
+						<div class="col-xs-12 col-lg-12">
+						<hr>
+						</div>
+				</div>
+				{% endfor %}
+
+				{% for band in bands %}
+				<div class="row ">
+						<div class="event col-xs-12 col-lg-3 d-flex justify-content-center" >
+			 				<div style=" margin: auto; width: 200px; align-items: center; background-image:url(/uploads/users/{{band.band.image }});
+			 					background-size: cover;
+			 					background-position: center center;">
+			 					<img style="width: 200px;"src="/uploads/users/{{band.band.image }}">
+							</div>
+						</div>
+						<div class="col-xs-12 col-lg-8" >	
+						<h4 style="text-align: center;">  <a href="/band/{{band.band.alias }}">{{band.band.name }}</a> </h4>
+						{{band.band.info_event|raw }}
+						<div style=" text-align: right; position: absolute; right: 15px; top: 5px; "><div>
+						 {% if band.band.link_vk %}<a class="soc" href="https://vk.com/{{ band.band.link_vk }}"> <img style="padding-top: 1px;"src="/images/vk.png" alt=""></a>{% endif %}
+						 {% if band.band.link_yt %}<a class="soc" href="{{ band.band.link_yt }}"><img src="/images/yt.png" alt=""></a>{% endif %}
+						  {% if band.band.link_site %}<a class="soc" href="https://{{ band.band.link_site }}"><img src="/images/web.png" alt=""></a>{% endif %}
+						  <br><br>
+						</div></div>
+						</div>
+						<div class="col-xs-12 col-lg-12">
+						<hr>
+						</div>
+				</div>
+				{% endfor %}
+			{% endif %}
+
+<!-- ссылки на социальные сети igoevent.com --> 
+
+			{% if biblioevent.cities.id == 2 %}
+
+			<hr>
+			<p>
+				Мы в социальных сетях: 
+				<a target='_blank' href='{% if biblioevent.link_tg %}https://t.me/{{biblioevent.link_tg}}{%else%}https://t.me/+enR8Ln7GzWQxOWRi{% endif %}'>Телеграм</a>, <a  target='_blank'  href="{% if biblioevent.link_vk %}https://vk.com/{{biblioevent.link_vk}}{%else%}https://vk.com/igoeventspb{% endif %}">ВКонтакте</a>
+			</p>
+			{% endif %}
+			{% if biblioevent.cities.id == 1%}
+			<p>
+				Мы в социальных сетях: 
+				<a  target='_blank'  target='_blank' href='{% if biblioevent.link_tg %}https://t.me/{{biblioevent.link_tg}}{%else%}https://t.me/+yRqvo2-2i7E2MGE6{% endif %}'>Телеграм</a>, <a  target='_blank'  target='_blank'  href="{% if biblioevent.link_vk %}https://vk.com/{{biblioevent.link_vk}}{%else%}https://vk.com/igoeventmsk{% endif %}">ВКонтакте</a>
+			</p>
+			{% endif %}
+
+<!-- // ссылки на социальные сети igoevent.com --> 
+
+			{% if biblioevent.landing.info_tariff %}
+				{{ biblioevent.landing.info_tariff | raw }}
+			{% endif %}
+			
+			{% if biblioevent.landing.text2 %}
+				{{ biblioevent.landing.text2 | raw }}
+			{% endif %}
+			
+		</div>
+		<div class="clear"></div>
+		<div class="content">
+		{% for post in place.posts %}
+			 {% if post.published == 1 %}
+			 <div class="info" style="text-align: left;">
+			 <h4>{{ post.title }}</h4>
+			 <p>{{ post.text }}
+			 </div>
+			 {% endif %}
+		{% endfor %}
+
+
+		{% for post in biblioevent.posts %}
+			{% if post.published == 1 %}
+			 <div class="info" style="text-align: left;">
+			 <h4>{{ post.title }}</h4>
+			 <p>{{ post.text }}
+			 </div>			 
+			 {% endif %}
+		{% endfor %}
+		</div>
+
+		<div class="content-block">
+			{% if biblioevent.landing.video1 %}
+				{% if biblioevent.landing.videotitle %}
+					<h2>{{biblioevent.landing.videotitle}}</h2>
+				{% endif %}
+
+				<div class="row video-row">
+					{% if biblioevent.landing.video1 and biblioevent.landing.video2 and biblioevent.landing.video3 %}
+						<div class="col-xs-12 col-lg-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ biblioevent.landing.video1 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div> 	
+						<div class="col-xs-12 col-lg-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ biblioevent.landing.video2 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div> 	
+						<div class="col-xs-12 col-lg-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ biblioevent.landing.video3 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div> 	
+
+					{% elseif biblioevent.landing.video1 and biblioevent.landing.video2 and (biblioevent.landing.video3 is empty) %}
+						<div class="col-xs-12 col-lg-4 col-lg-offset-2">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ biblioevent.landing.video1 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div> 	
+						<div class="col-xs-12 col-lg-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ biblioevent.landing.video2 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div>
+
+
+					{% elseif biblioevent.landing.video1 and (biblioevent.landing.video2 is empty) and (biblioevent.landing.video3 is empty) %}
+						<div class="col-xs-12 col-lg-10 col-lg-offset-1">
+							<iframe style="height:300px!important" src="https://www.youtube.com/embed/{{ biblioevent.landing.video1 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+							
+						</div> 	
+					{% endif %}
+				</div>
+
+			{% endif %}
+		</div>
+
+		<div class="content-block">
+			{% if biblioevent.landing.image1 or biblioevent.landing.image2 or biblioevent.landing.image3 or biblioevent.landing.image4 or biblioevent.landing.image5 or biblioevent.landing.image6 or biblioevent.landing.image7 or biblioevent.landing.image8 or biblioevent.landing.image9 %}
+				{% if biblioevent.landing.imagetitle %}
+					<h2>{{biblioevent.landing.imagetitle}}</h2>
+				{% endif %}
+
+
+				<div class="row foto-row">
+					{% if biblioevent.landing.image1 %}
+						<div class="foto foto-big">
+							<a href="/uploads/users/{{biblioevent.landing.image1}}" data-lightbox="imagegroup">
+								<img src="/uploads/users/{{biblioevent.landing.image1}}" class="img-responsive" alt="{{biblioevent.landing.image1title}}">
+							</a>
+							<p class="tac">{{biblioevent.landing.image1title}}</p>
+							<p class="tac">{% if biblioevent.landing.image1link %}<a href="{{biblioevent.landing.image1link}}">{{biblioevent.landing.image1author}}</a>{% else %}{{biblioevent.landing.image1author}}{% endif %}</p>
+						</div> 	
+					{% endif %}
+					{% if biblioevent.landing.image2 %}
+						<div class="foto">
+							<a href="/uploads/users/{{biblioevent.landing.image2}}" data-lightbox="imagegroup">
+								<img src="/uploads/users/{{biblioevent.landing.image2}}" class="img-responsive" alt="{{biblioevent.landing.image2title}}">
+							</a>
+							<p class="tac">{{biblioevent.landing.image2title}}</p>
+							<p class="tac">{% if biblioevent.landing.image2link %}<a href="{{biblioevent.landing.image2link}}">{{biblioevent.landing.image2author}}</a>{% else %}{{biblioevent.landing.image2author}}{% endif %}</p>
+						</div> 	
+					{% endif %}
+					{% if biblioevent.landing.image3 %}
+						<div class="foto">
+							<a href="/uploads/users/{{biblioevent.landing.image3}}" data-lightbox="imagegroup">
+								<img src="/uploads/users/{{biblioevent.landing.image3}}" class="img-responsive" alt="{{biblioevent.landing.image3title}}">
+							</a>
+							<p class="tac">{{biblioevent.landing.image3title}}</p>
+							<p class="tac">{% if biblioevent.landing.image3link %}<a href="{{biblioevent.landing.image3link}}">{{biblioevent.landing.image3author}}</a>{% else %}{{biblioevent.landing.image3author}}{% endif %}</p>
+						</div> 	
+					{% endif %}
+					{% if biblioevent.landing.image4 %}
+						<div class="foto">
+							<a href="/uploads/users/{{biblioevent.landing.image4}}" data-lightbox="imagegroup">
+								<img src="/uploads/users/{{biblioevent.landing.image4}}" class="img-responsive" alt="{{biblioevent.landing.image4title}}">
+							</a>
+							<p class="tac">{{biblioevent.landing.image4title}}</p>
+							<p class="tac">{% if biblioevent.landing.image4link %}<a href="{{biblioevent.landing.image4link}}">{{biblioevent.landing.image4author}}</a>{% else %}{{biblioevent.landing.image4author}}{% endif %}</p>
+						</div> 	
+					{% endif %}
+					{% if biblioevent.landing.image5 %}
+						<div class="foto">
+							<a href="/uploads/users/{{biblioevent.landing.image5}}" data-lightbox="imagegroup">
+								<img src="/uploads/users/{{biblioevent.landing.image5}}" class="img-responsive" alt="{{biblioevent.landing.image5title}}">
+							</a>
+							<p class="tac">{{biblioevent.landing.image5title}}</p>
+							<p class="tac">{% if biblioevent.landing.image5link %}<a href="{{biblioevent.landing.image5link}}">{{biblioevent.landing.image5author}}</a>{% else %}{{biblioevent.landing.image5author}}{% endif %}</p>
+						</div> 	
+					{% endif %}
+					{% if biblioevent.landing.image6 %}
+						<div class="foto">
+							<a href="/uploads/users/{{biblioevent.landing.image6}}" data-lightbox="imagegroup">
+								<img src="/uploads/users/{{biblioevent.landing.image6}}" class="img-responsive" alt="{{biblioevent.landing.image6title}}">
+							</a>
+							<p class="tac">{{biblioevent.landing.image6title}}</p>
+							<p class="tac">{% if biblioevent.landing.image6link %}<a href="{{biblioevent.landing.image6link}}">{{biblioevent.landing.image6author}}</a>{% else %}{{biblioevent.landing.image6author}}{% endif %}</p>
+						</div> 	
+					{% endif %}
+					{% if biblioevent.landing.image7 %}
+						<div class="foto">
+							<a href="/uploads/users/{{biblioevent.landing.image7}}" data-lightbox="imagegroup">
+								<img src="/uploads/users/{{biblioevent.landing.image7}}" class="img-responsive" alt="{{biblioevent.landing.image7title}}">
+							</a>
+							<p class="tac">{{biblioevent.landing.image7title}}</p>
+							<p class="tac">{% if biblioevent.landing.image7link %}<a href="{{biblioevent.landing.image7link}}">{{biblioevent.landing.image7author}}</a>{% else %}{{biblioevent.landing.image7author}}{% endif %}</p>
+						</div> 	
+					{% endif %}
+					{% if biblioevent.landing.image8 %}
+						<div class="foto">
+							<a href="/uploads/users/{{biblioevent.landing.image8}}" data-lightbox="imagegroup">
+								<img src="/uploads/users/{{biblioevent.landing.image8}}" class="img-responsive" alt="{{biblioevent.landing.image8title}}">
+							</a>
+							<p class="tac">{{biblioevent.landing.image8title}}</p>
+							<p class="tac">{% if biblioevent.landing.image8link %}<a href="{{biblioevent.landing.image8link}}">{{biblioevent.landing.image8author}}</a>{% else %}{{biblioevent.landing.image8author}}{% endif %}</p>
+						</div> 	
+					{% endif %}
+					{% if biblioevent.landing.image9 %}
+						<div class="foto">
+							<a href="/uploads/users/{{biblioevent.landing.image9}}" data-lightbox="imagegroup">
+								<img src="/uploads/users/{{biblioevent.landing.image9}}" class="img-responsive" alt="{{biblioevent.landing.image9title}}">
+							</a>
+							<p class="tac">{{biblioevent.landing.image9title}}</p>
+							<p class="tac">{% if biblioevent.landing.image9link %}<a href="{{biblioevent.landing.image9link}}">{{biblioevent.landing.image9author}}</a>{% else %}{{biblioevent.landing.image9author}}{% endif %}</p>
+						</div> 	
+					{% endif %}
+				</div>
+			{% endif %}
+		</div>
+
+		<div class="content-block">
+			<div class="contacts">
+			</div>
+			{% if biblioevent.places.no_address == 3 %}
+			<h2>Место <small>проведения события: онлайн</small></h2>
+			{% elseif biblioevent.places.no_address == 1 %}
+			{% else %}
+			<h2>Место <small>проведения события</small></h2>
+			<div class="contacts">
+{# 				<span class="agenda">20 ноя - 31 дек</span>
+				<span class="time"><small>В день открытия </small>c 19:00 по 23:00<small>,  далее ежедневно </small>c 12:00 по 22:00</span>#}
+				{% if biblioevent.places.address == '-' %} {% else %}
+				<span class="pointer">
+					<span class="mini">Адрес</span><br>
+					{% if biblioevent.places.link_gmap %}
+						{{ biblioevent.places.address }}<br>  
+						<a rel="nofollow" target="blank_" href="{{ biblioevent.places.link_gmap }}">Как добраться на google map</a>
+
+					{% else %}
+					{{ biblioevent.places.address }}
+					{% endif %}
+					</span><br>
+				</span><br>{% endif %}
+				{% if biblioevent.places.metro  == '-' %} 
+				{% elseif biblioevent.places.metro %}
+				<span class="pointer"><span class="mini">Метро</span><br>{{ biblioevent.places.metro }}</span><br>
+				{% endif %}
+				
+				<a class="point" href="/{{ biblioevent.places.cities.alias }}/place/{% if biblioevent.places.alias %}{{ biblioevent.places.alias }}{% else %}{{ biblioevent.places.id }}{% endif %}">
+					{% if biblioevent.places.foto %} <img src="/uploads/places/{{ biblioevent.places.foto }}"> {% endif %}
+					{{ biblioevent.places.name }}
+				</a>
+
+				<div id="map" class="map">
+					{% if biblioevent.places.info_event %}<p class="tac">{{ biblioevent.places.info_event|raw }}</p>{% endif %}
+
+					{% if biblioevent.places.shema %}<h4>Схема зала {{ biblioevent.places.name }}</h4>
+					<img src="/uploads/places/{{ biblioevent.places.shema }}" class="img-responsive">
+					{% endif %}
+					{% if biblioevent.places.shema %} <h4>Как добраться {{ biblioevent.places.name }}</h4>
+					<img src="/uploads/places/{{ biblioevent.places.map }}" class="img-responsive">
+					{% endif %}
+					{% if biblioevent.places.path %}<p class="tac">{{ biblioevent.places.path|raw }}</p>{% endif %}
+					{% if biblioevent.place_comment %}<p class="tac">{{ biblioevent.place_comment }}</p>{% endif %}
+					{% if biblioevent.places.description %}<p class="tac">{{ biblioevent.places.description|raw }}</p>{% endif %}
+				</div>
+			</div>
+			{% endif %}
+		</div>
+
+		<div class="content-block info-block">
+			<h2>Дополнительная <small>информация</small></h2>
+			<div class="dop-info">
+				{# <div class="info">
+					<span>Вид мероприятия</span>
+					<p>Выставка Диджитал-Исскуство</p>
+				</div>
+				<div class="info">
+					<span>Возрастное ограничение</span>
+					<p>6+</p>
+				</div> #}
+				<div class="info">
+					<span>Организатор (<a href="/crm/company/about?id={{ biblioevent.company.id }}">{{ biblioevent.company.id }}</a>)</span>
+					<p>{{ biblioevent.company.name }}</p>
+				</div>
+				{% if biblioevent.url %}
+					<div class="info">
+						<span>Официальный сайт</span>
+						<p>{{ biblioevent.url }}</p>
+					</div>
+				{% endif %}
+				<div class="info">
+					{% if  biblioevent.phone %}
+						<span>Телефон</span>
+						<p>{{ biblioevent.phone }}</p>
+					{% endif %}
+					{% if  biblioevent.phone2 %}
+						<span>Телефон для заказа столиков</span>
+						<p>{{ biblioevent.phone2 }}</p>
+					{% endif %}
+				</div>
+				<div class="tags-row">
+					{% for sec in biblioevent.sections %}
+						<a class="tag" href="/{{ biblioevent.cities.alias }}/{{ sec.url }}">{{ sec.name }}</a>
+					{% endfor %}
+				</div>
+			</div>
+			
+			<div class="row">
+				{% if biblioevent.insta %}<a class="soc" href="{{ biblioevent.insta }}"> <img src="/images/insta.png" alt=""></a>{% endif %}
+				{% if biblioevent.vk %}<a class="soc" href="{{ biblioevent.vk }}"> <img src="/images/vk.png" alt=""></a>{% endif %}
+				{% if biblioevent.fb %}<a class="soc" href="{{ biblioevent.fb }}"> <img src="/images/fb.png" alt=""></a>{% endif %}
+			</div>
+			
+			
+			
+
+
+<!-- code here -->
+
+
+			<div class="row">
+				<img src='{{qr}}'>
+				<br>{{qrurl}}
+			</div>
+		</div>
+		{% if biblioevent.counter_body %}{{ biblioevent.counter_body | raw }}{% endif %}
+		
+		<div class="clear"></div>
+		{# this.render('/site/block/_bottom.twig', {'ads' : ads??Null}) | raw #}
+	</div>
+
+
+	<div class="sidebar-block">
+		{{ this.render('/site/block/_right.twig', {'ads' : ads??Null}) | raw }}
+	</div>
+
+
+</div>
+
+
+
+{{ this.render('/site/block/_footer.twig') | raw }}
+
+
+<!-- biblioevent_id: {{biblioevent.id}}  / landing_id {{biblioevent.landing.id}}-->
+
+
+<script type="text/javascript" src="/js/lightbox.min.js"></script>
+<script type="text/javascript" src="/js/igoeventapi-2023.js"></script>
+
+<link rel="stylesheet" href="/css/lightbox.css" />
+<link rel="stylesheet" href="/css/igoeventapi.css">
+<link rel="stylesheet" href="/css/front.css">
+
+<style>
+.red_b .igo_btn, .red_b .igo_book_btn, .red_b .igo_rent_btn, .red_b .widget_button1, .red_b .widget_button2 {
+	background-color: #d2222a;
+	width: 250px;
+	border-radius: 30px;
+	font-family: 'Circe', sans-serif;
+	font-size: 21px;
+	padding: 10px;
+}
+.igo_btn span, .igo_book_btn span { display: block; margin-top: 5px; font-size: 12px; opacity: 0.75;}
+.btn.btn-primary { padding: 6px 12px; }
+header .search input[placeholder], [placeholder], *[placeholder] {color: #333 !important;}
+</style>

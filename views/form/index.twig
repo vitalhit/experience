@@ -1,0 +1,61 @@
+{{ use('/yii/widgets') }}
+
+<ul class="search_result"></ul>
+
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <div class="row">
+              
+                <div class="col-xs-12 col-lg-12">
+                    <h2>All posts</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-12">
+        
+        <a class="btn btn-success btn-sm" href="/crm/post/create"> добавить post <span class="glyphicon glyphicon-plus small"></span></a>
+        <br><br>
+        <table class="tb stacktable">
+            <tr>
+
+                <td>id</td>
+                <td>title</td>
+                <td>text</td>
+                <td>tag</td>
+                <td>attach</td>
+                <td>link_audio<br>
+                link_phtoto<br>link_video</td>
+                <!--<td>link_vk_cc</td><td>link_vk</td><td>link</td></td>link_fb</td>-->
+            </tr>
+            {% for one in all %}
+            <tr>
+                <td><a href="/crm/post/update?id={{ one.id}}">{{ one.id}}</a></td>
+                <td>{{ one.title}}</td>
+                <td>{{ one.text}}</td>
+                <td>{{ one.tag}}</td>
+                <td>  <textarea>{{ one.attach }}</textarea></td>
+                <td><textarea>{{ one.link_audio}}
+{{ one.link_photo}}
+{{ one.link_video}}
+{{one.link}}
+                </textarea></td>
+                
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+    {{link_pager_widget({
+        'pagination': pages
+    }) }}
+
+
+
+    <div class="popup end popup_d"></div>
+
+    <div class="overlay"></div>
+

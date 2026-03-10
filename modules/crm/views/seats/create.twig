@@ -1,0 +1,99 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{{ biblioevent.name}} / {{ event.date|date('d.m.Y H:i') }}<sup><a href="/crm/events/update?id={{event.id}}"><span class="glyphicon glyphicon-pencil"></a></sup></h2> </small>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3">
+		{{ this.render('/module/event_step.twig', {'biblioevent' : biblioevent, 'user' : user}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<div class="newblo">
+			{{ this.render('_form.php', {'model' : model, 'dates' : dates, 'seats' : seats}) | raw }}
+		</div>
+		<table class="tb seats">
+			<tbody>
+				<tr>
+					<th>Название</th>
+					<th class="tar">Секция</th>
+					<th class="tar">Ряд</th>
+					<th class="tar br">Места</th>
+					<th class="tar">Цена</th>
+					<th class="tar br">Доступно</th>
+					<!--<th colspan="2">Код</th>
+					<th class="tar br">Лимит</th>
+					<th>Статус</th> -->
+					<th >Промокод</th>
+					<!--<th>Инфо</th>-->
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+				{% for row in seats %}
+					<tr class="{% if row.seat.price >= 0 %} mini{% endif %} ">
+						<td>{{ row.seat.name }}<br><small style="color:#666;">{{ row.seat.info }}<br>
+						{{row.seat.id}}(<a href="https://igoevent.com/crm/tickets/create?event_id={{ event.id }}&seat_id={{row.seat.id}}">+</a>)</small><br>
+						{%if row.seat.date_start %}<small>start sale:{{row.seat.date_start}}</small><br>{% endif %}
+						{%if row.seat.date_stop %}<small>stop sale:{{row.seat.date_stop|date('d.m.Y H:i')}}</small><br> {% endif %}</td>
+
+						<td class="tar">{{ row.seat.sec }}</td>
+						<td class="tar">{{ row.seat.row }}</td>
+						<td class="tar br">{{ row.seat.nums }}</td>
+						<td class="tar">{{ row.seat.price }} р</td>
+						<td class="tar br">{{ row.instock }} / {{ row.seat.count }}</td>
+						<td class="br"><small>{%if row.seat.promocode%}{{ row.seat.promocode  }}<br>
+							<a href="/crm/seats/promocode?event_id={{event.id}}">шаблоны</a>{% else %}нет{%endif%}</small> 
+						</td>
+						<!--<td class="tar br">{{ row.seat.promolimit  }}</td>
+						<td>{{ row.seat.status }}</td> -->
+						<!--<td>{% if row.seat.afterpay == 1 %}Да{% else %}Нет{% endif %}</td>
+						<td>{{ row.seat.info }}</td>-->
+						<td><a href="/crm/seats/updateone?id={{ row.seat.id }}&biblioevent_id={{ biblioevent.id }}&event_id={{ row.seat.event_id }}"><span class="glyphicon glyphicon-flash"></span></a></td>
+						<td><td><a href="/crm/seats/update?id={{ row.seat.id }}&biblioevent_id={{ biblioevent.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+						<td><a href="/crm/seats/delete?id={{ row.seat.id }}&biblioevent_id={{ biblioevent.id }}" data-confirm="Уверены, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="col-xs-12 col-lg-9">
+
+		<!-- <div class="col-xs-12 col-lg-4 r_info">
+			<p>Название билета будет видеть гость, пишите кратко и понятно, например: Кресла 1 ряд, или балкон. Создайте столько типов билетов для вашей рассадки, сколько у вас ценовых категорий.</p>
+			<p>То есть вам нужно создать этот тип билета, нажать "создать" и вновь вернуться к этой странице.</p>
+		</div> -->
+
+		<div class="col-xs-12 mt20">
+			<div class="row mini">
+				<p>Места указывайте БЕЗ пробелов, через запяту или - <span class="example">Например: 1,3,5-10</span></p>
+				<p>Если указываете места, то Количество указывать НЕ надо!</p>
+				<p>Чтобы указать недоступное место поставьте ему стоимость -1 (минус 1)</p>
+				
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$('#seats-event_id').on('change', function() {
+			var event_id = this.value;
+			$.ajax({
+				type: 'get',
+				url: "/crm/seats/get-seats",
+				data: {'event_id': event_id},
+				response: 'text',
+				success: function(data){
+					$('.seats').html(data);
+				}
+			});	
+		});
+	});
+
+	$('.steps .type').addClass('active');
+	</script>

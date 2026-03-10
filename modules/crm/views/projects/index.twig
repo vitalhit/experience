@@ -1,0 +1,178 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>Проекты <span>{{ projects_count|e }}</span></h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		<div class="steps">
+			{{ this.render('/module/project_step.twig', {'project' : model}) | raw }}
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-9">
+
+		<table class="tb stacktable hidden-xs">
+			{% for row in projects %}
+				{% set all = 0 %}
+				{% set done = 0 %}
+				{% set work = 0 %}
+				{% set test = 0 %}
+				{% set progress = 0 %}
+				{% set progresswork = 0 %}
+				{% set progresstest = 0 %}
+
+				{% for task in row.tasks %}
+					{# {% if (task.status_id == '4' or task.status_id == '3') and (task.start|date('m') == now|date('m')) %} #}
+					{% if (task.status_id == '4' or task.status_id == '3') %}
+						{% set done = done + 1 %}
+					{% elseif task.status_id == '2' %}
+						{% set work = work + 1 %}
+					{% elseif task.status_id == '5' %}
+						{% set test = test + 1 %}
+					{% endif %}
+					{% set all = all + 1 %}
+				{% endfor %}
+
+				{% if done != 0 %}
+					{% set progress = done/all*100 %}
+				{% endif %}
+				
+				{% if work != 0 %}
+					{% set progresswork = work/all*100 %}
+				{% endif %}
+				
+				{% if test != 0 %}
+					{% set progresstest = test/all*100 %}
+				{% endif %}
+
+				{% if progress != 100 and row.status_id != 4 and row.status_id != 3 %}
+					<tr>
+						<td>{{ row.id }}</td>
+						<td><a href="/crm/tasks/my?projectid={{ row.id|e }}">{{ row.name }}</a></td>
+						<td class="tac">
+							<a href="/crm/tasks/my?projectid={{ row.id|e }}"><span class="glyphicon glyphicon-th-list"></span></a>
+						</td>
+						<td class="tac">
+							<a href="/crm/tasks/create?projectid={{ row.id }}" class="btn btn-success btn18 ml10">+</a>
+							<a href="{{ row.link_docs }}" class="btn btn-success btn18 ml10">d</a>
+						</td>
+						<td>
+							{% if all != 0 %}
+								<div class="progress">
+									<div class="progress-bar progress-bar-success" role="progressbar" style="width:{{progress}}%;"></div>
+									<div class="progress-bar progress-bar-warning" role="progressbar" style="width:{{progresswork}}%;"></div>
+									<div class="progress-bar progress-bar-test" role="progressbar" style="width:{{progresstest}}%;"></div>
+								</div>
+							{% endif %}
+						</td>
+						<!-- <td>{% if row.deadline %}{{ row.deadline|date('d.m H:i') }}{% else%} - {% endif %}</td> -->
+						<td>{{ row.client_id }}</td>
+						<td>{{ row.place.name }}</td>
+						<td class="tac">
+							<a href="/crm/persons/view?id={{ row.owners.person.id }}">
+								{% if row.owners.person.image %}
+									<img src="/uploads/users/{{ row.owners.person.image }}" class="w26 img-circle">
+								{% else %}
+									{{ row.owners.person.name }} {{ row.owners.person.second_name }}
+								{% endif %}
+							</a>
+						</td>
+						<td>
+							{% if row.type == 0 %}
+								Закрытый
+							{% elseif row.type == 1 %}
+								Открытый
+							{% else %}
+								-
+							{% endif %}
+						</td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+
+		<div class="mini_header mt20"><span>ЗАВЕРШЕННЫЕ</span></div>
+
+		<table class="tb stacktable hidden-xs">
+			{% for row in projects %}
+				{% set all = 0 %}
+				{% set done = 0 %}
+				{% set work = 0 %}
+				{% set test = 0 %}
+				{% set progress = 0 %}
+				{% set progresswork = 0 %}
+				{% set progresstest = 0 %}
+
+				{% for task in row.tasks %}
+					{% if task.status_id == '4' or task.status_id == '3' %}
+						{% set done = done + 1 %}
+					{% elseif task.status_id == '2' %}
+						{% set work = work + 1 %}
+					{% elseif task.status_id == '5' %}
+						{% set test = test + 1 %}
+					{% endif %}
+					{% set all = all + 1 %}
+				{% endfor %}
+
+				{% if done != 0 %}
+					{% set progress = done/all*100 %}
+				{% endif %}
+				
+				{% if work != 0 %}
+					{% set progresswork = work/all*100 %}
+				{% endif %}
+				
+				{% if test != 0 %}
+					{% set progresstest = test/all*100 %}
+				{% endif %}
+
+			{% if progress == 100 or row.status_id == 4 or row.status_id == 3 %}
+			<tr class="green">
+				<td>{{ row.id }}</td>
+				<td><a href="/crm/projects/update?id={{ row.id|e }}">{{ row.name }}</a></td>
+				<td class="tac"><a href="/crm/tasks/my?projectid={{ row.id|e }}"><span class="glyphicon glyphicon-th-list"></span></a>
+				</td>
+				<td>{% if link_docs %}<a href="{{ row.link_docs }}" class="btn btn-success btn18 ml10">d</a>{% endif%}</td>
+				<td>
+					{% if all != 0 %}
+						<div class="progress">
+							<div class="progress-bar progress-bar-success" role="progressbar" style="width:{{progress}}%;"></div>
+							<div class="progress-bar progress-bar-warning" role="progressbar" style="width:{{progresswork}}%;"></div>
+							<div class="progress-bar progress-bar-test" role="progressbar" style="width:{{progresstest}}%;"></div>
+						</div>
+					{% endif %}
+				</td>
+				<!-- <td>{% if row.deadline %}{{ row.deadline|date('d.m H:i') }}{% else%} - {% endif %}</td> -->
+				<td>{{ row.client_id }}</td>
+				<td>{{ row.palce_id }}</td>
+				<td>{{ row.status.name }}</td>
+				<td class="tac"><a href="/crm/persons/view?id={{ row.owners.person.id }}">
+					{% if row.owners.person.image %}<img src="/uploads/users/{{ row.owners.person.image }}" class="w26 img-circle">{% else %}{{ row.owners.person.name }} {{ row.owners.person.second_name }}{% endif %}
+				</a></td>
+				<td>{{ row.result }}</td>
+				<td>
+					{% if row.type == 0 %}
+						Закрытый
+					{% elseif row.type == 1 %}
+						Открытый
+					{% else %}
+					-
+					{% endif %}
+				</td>
+			</tr>
+			{% endif %}
+			{% endfor %}
+		</table>
+
+
+		<div class="row visible-xs">
+			{% for row in projects %}
+			<div class="tr_line">
+				<div class="col-xs-2">{{ row.id }}</div>
+				<div class="col-xs-10 fs16"><a href="/crm/projects/update?id={{ row.id|e }}">{{ row.name }}</a></div>
+			</div>
+			{% endfor %}
+		</div>
+
+	</div>
+</div>

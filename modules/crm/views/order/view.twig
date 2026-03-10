@@ -1,0 +1,73 @@
+<div class="row">
+    
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="steps">
+            {{ this.render('/module/step_order.twig', {'company' : company}) | raw }}
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-9">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12"> 
+
+                    <table class="tb stacktable">
+                         <tr>
+                            
+                            <td>date_create</td>
+                            <td>date_start</td>
+                            <td>date_end</td>
+                            <td>date_complete</td>
+                            <td>closed</td>
+                        </tr>
+
+                        <tr>
+                            <td><a href="/crm/order/update?id={{ model.id}}">{{ model.id}}</a></td>
+                            
+                            <td>{{ model.date_create}}</td>
+                            <td>{{ model.date_start}}</td>
+                            <td>{{ model.date_end}}</td>
+                            <td>{{ model.date_complete}}</td>
+                            <td>{{ model.closed}}</td>
+                            
+                        </tr>
+                </table>
+                </div>
+            </div>
+        </div>
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12"> 
+                    <b>{{model.title}}</b><br>
+                    <i>task:</i> {{ model.task}}<br><br>
+
+                    {% if model.info_client %}<i>info_client:</i> {{ model.info_client}}<br><br>{% endif %}
+                    {% if model.info_draft %}<i>info_draft:</i> {{ model.info_draft}}<br><br>{% endif %}
+                    <i>info:</i> {{ model.info}}<br><br>
+                        
+
+                </div>
+            </div>    
+        </div>
+       <!--  <div class="mini_header mt0"><span>ВИЗИТЫ <div class="badge">{{ client.visits|length }}</div></span></div>
+
+        <div class="newblo">
+            <table class="table stacktable">
+                <tr>
+                    <td>Начало</td>
+                    <td>Окончание</td>
+                    <td>Скидка</td>
+                    <td>Стоимость</td>
+                </tr>
+                {% for row in client.visits|reverse %}
+                    <tr>
+                        <td>{{ row.start|date('d.m в H:i') }}</td>
+                        <td>{{ row.end|date('d.m в H:i') }}</td>
+                        <td>{{ row.discount_money }}</td>
+                        <td>{{ row.money }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div> -->
+
+    </div>
+</div>

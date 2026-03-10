@@ -1,0 +1,108 @@
+<!-- deletethis -->
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<div class="col-xs-12 col-lg-8">
+				<h2><span> Билет №</span> {{model.id}}</h2>
+			</div>
+			<p class="col-xs-12 col-lg-4">
+				<a class="btn  btn-success pull-right" href="https://igoevent.com/crm/return/new?text=заказ {{model.order_id}}&price={{model.money}}&ticket_id={{model.id}}&creator=5&owner={{model.persons.id}}&status=0&event_id={{model.event_id}}">Возврат</a>
+				<a class="btn btn-danger pull-right mr10" href="/crm/tickets/delete?id={{model.id}}" data-confirm="Уверены, что хотите удалить?" data-method="post">Удалить</a> 
+				<a class="btn btn-primary pull-right mr10" href="https://crm.igoevent.com/admin/tickets/update?id={{model.id}}">Редактировать</a> 
+			</p>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-lg-4">
+		<div class="newblo">
+			<h3><a href="/crm/persons/view?id={{model.persons.id}}">{{model.name}} {{model.secondname}}</a> {{model.persons.id}}</h3>
+			<p>Почта: <b>{{model.email}}</b></p>
+			<p>Телефон: <b>{{model.phone}}</b></p>
+		</div>
+		<div class="newblo">
+			<p class="col-sm-12">Комментарий: <b>{{model.info}}</b></p>
+		</div>
+
+
+		<div class="newblo">
+			<p class="col-sm-12"><br>
+				<b>Сообщения:</b><br>
+				Здравствуйте: <a href="https://wa.me/{{ model.phone }}?text=Здравствуйте. {{ model.name }} {{ model.secondname }}. Пишу вам по поводу события{{ biblioevent.name }}. http://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if  biblioevent.alias %}{{ biblioevent.alias }}{% else %}{{ biblioevent.id }}{%endif%}?utm_source=whatsapp&utm_medium=igoevent&utm_campaign=massage">wap</a>, <a href="mailto:{{ model.persons.mail }}?subject={{ biblioevent.name }}&amp;body=Приветствую, {{ model.persons.second_name }} {{ model.persons.name }}.">mail</a><br>
+
+				 Возврат запущен: <a href="https://wa.me/{{ model.phone }}?text={{ model.name }} {{ model.secondname }}, Возврат денежных средств за ваш билет запущен. Деньги вернуться к вам на счет в течение 1-5 дней(у некоторых банков возврат может осуществляться 30 дней — это зависит от вашего банка). С уважением, Виталий Хитров.">wap</a>, 
+				<a href="mailto:{{ model.email }}?subject={{ biblioevent.name }}&amp;body={{ model.name }} {{ model.secondname }}, Возврат денежных средств за ваш билет запущен. Деньги вернуться к вам на счет в течение 1-5 дней(у некоторых банков возврат может осуществляться 30 дней — это зависит от вашего банка). С уважением, Виталий Хитров.">mail</a><br>
+			
+				Присвоены места:</b> <a href="https://wa.me/{{ model.phone }}?text=Вашим билетам присвоены места, информация обновилась в электронном билете. Билет распечатывать не нужно достаточно показать с телефона.">wap</a>, 
+
+				<a href="mailto:{{ model.mail }}?subject={{ biblioevent.name }}&amp;body= {{ model.secondname }},Вашим билетам присвоены места, информация обновилась в электронном билете. Билет распечатывать не нужно достаточно показать с телефона.">mail</a><br>
+
+				Подпись + P.S:</b> <a href="https://wa.me/{{ model.phone }}?text=С уважением, Виталий Хитров. igoevent.com Чтобы ссылки стали активными добавьте меня в контакты.">wap</a>, 
+
+				<a href="mailto:{{ model.mail }}?subject={{ biblioevent.name }}&amp;body=С уважением, Виталий Хитров. igoevent.com Чтобы ссылки стали активными добавьте меня в контакты.">mail</a>
+			</p>
+		</div>
+
+
+	</div>
+
+	<div class="col-xs-12 col-lg-4">
+		<div class="newblo {% if model.status == 5 and model.canceled != 1 %} gtop {% elseif model.status == 1 %} {% if model.summa == 0 %}gtop{% else %}ytop{% endif %} {% elseif model.status == 8 %} dtop {% elseif model.status == 3 %} ytop  {% elseif model.canceled == 1 %} rtop {% endif %}">
+			<h2 class="çolor">
+				{% if model.canceled == 1 %} Аннулирован!!! {% endif %}
+				{% if model.status == 5 %} Оплачен {% elseif model.status == 8 %} Отмена {% elseif model.status == 3 %} Не оплачен {% elseif model.status == 7 %} Возврат  {% elseif model.status == 1 %} 
+					{% if model.summa == 0 %}
+						Регистрация{% else %}Бронь
+					{% endif %}
+				{% endif %}
+				
+			</h2>
+			<p class="col-sm-4">Цена</p>
+			<p class="col-sm-4">Кол-во</p>
+			<p class="col-sm-4">Сумма</p>
+			<p class="col-sm-4">{{model.money}} руб.</p>
+			<p class="col-sm-4">{{model.count}} шт</p>
+			<p class="col-sm-4">{{model.money * model.count}} руб.</p>
+		</div>
+		<div class="newblo">
+			<p class="col-sm-12">Дата покупки: <b>{{ model.date|date('d.m.Y H:i') }}</b></p>
+		</div>
+		<div class="newblo">
+			<p class="col-sm-12">Ссылка <a target="_blank" href="/site/ticket?barcode={{model.barcode}}">на  билет</a>. Заказ:
+				<a href="https://yookassa.ru/my/payments?search={{model.order_id}}">{{model.order_id}}</a></p>
+			<p class="col-sm-12">Где куплен билет: <b style="word-break: break-word;">{{model.from_url}}</b></p>
+			<p class="col-sm-12">utm_source: <b>{{model.utm_source}}</b></p>
+			<p class="col-sm-12">utm_medium: <b>{{model.utm_medium}}</b></p>
+			<p class="col-sm-12">utm_campaign: <b>{{model.utm_campaign}}</b></p>
+			<p class="col-sm-12">utm_content: <b>{{model.utm_content}}</b></p>
+			<p class="col-sm-12">utm_term: <b>{{model.utm_term}}</b></p>
+		</div>
+		<div class="newblo">
+			<p class="col-sm-12">Служебная инфо: <b>{{model.admin}}</b></p>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-lg-4">
+		<div class="newblo">
+			<h3>Дополнительные поля</h3>
+			{% if model.field1 %}<p><small class="text-info">{{ model.events.field1 }}</small> <br>  {{ model.field1 }}</p>{% endif %}
+			
+			{% if model.field2 %}<p><small class="text-info">{{ model.events.field2 }}</small> <br>  {{ model.field2 }}</p>{% endif %}
+
+			{% if model.field3 %}<p><small class="text-info">{{ model.events.field3 }}</small> <br>  {{ model.field3 }}</p>{% endif %}
+
+			{% if model.field4 %}<p><small class="text-info">{{ model.events.field4 }}</small> <br>  {{ model.field4 }}</p>{% endif %}
+
+			{% if model.field5 %}<p><small class="text-info">{{ model.events.field5 }}</small> <br>  {{ model.field5 }}</p>{% endif %}
+
+			{% if model.field6 %}<p><small class="text-info">{{ model.events.field6 }}</small> <br>  {{ model.field6 }}</p>{% endif %}
+
+			{% if model.field7 %}<p><small class="text-info">{{ model.events.field7 }}</small> <br>  {{ model.field7 }}</p>{% endif %}
+
+			{% if model.field8 %}<p><small class="text-info">{{ model.events.field8 }}</small> <br>  {{ model.field8 }}</p>{% endif %}
+			{% if model.field9 %}<p><small class="text-info">{{ model.events.field9 }}</small> <br>  {{ model.field9 }}</p>{% endif %}
+			{% if model.field10 %}<p><small class="text-info">{{ model.events.field10 }}</small> <br>  {{ model.field10 }}</p>{% endif %}
+
+		</div>
+	</div>
+
+</div>

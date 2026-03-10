@@ -1,0 +1,180 @@
+<div class="row">
+	<!--     <div class="col-xs-12 col-sm-2 col-sm-offset-1"><h3 class="itog">{{ 0 + person.sum_visits }}<span>Визиты</span></h3></div>
+		<div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_tickets }}<span>Билеты</span></h3></div>
+		<div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_sells }}<span>Покупки</span></h3></div>
+		<div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_abonements }}<span>Абонем.</span></h3></div>
+		<div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_rents }}<span>Аренды</span></h3></div>
+	-->
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<button type="button" class="left_toggle"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+			<h2>Профиль</h2>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-3 left_blo">
+		{{ this.render('/module/profile_step.twig', {'person' : person, 'user_id' : user_id }) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-sm-9">
+		{% if ticks %}
+			<div class="mini_header mt0"><span>БИЛЕТЫ <div class="badge">{{ ticks|length }}</div></span></div>
+			<table class="tb hidden-xs">
+				<tr>
+					<th>#</th>
+					<th></th>
+					<th>Событие и Дата</th>
+					<th>Купил</th>
+					<th class="tar">шт</th>
+					<th class="tar">сумма</th>
+					<th></th>
+					<th></th>
+				</tr>
+				{% for tik in ticks %}
+					<tr class="js_slide {% if tik.order.status == 5 or tik.summa == 0 %} green {% elseif tik.order.status == 8 %} black {% elseif tik.order.status == 7 %} red {% else %} yellow {% endif %}">
+						<td>{{ tik.order.order_id }}</td>
+						<td><a target="_blank" href="{{ tik.order.city }}/event/{{ tik.order.event_id }}"><span class="glyphicon glyphicon-share"></span></a></td>
+						<td><b>{{ tik.order.name }} {{ tik.order.date|date('d.m в H:i') }}</b></td>
+						<td>{{ tik.order.order_date|date('d.m H:i') }}</td>
+						<td class="tar">{{ tik.count }}</td>
+						<td class="tar">{{ tik.summa }} р</td>
+						<td>
+							<p class="çolor">
+								{% if tik.order.status == 5 %} Опл. {% elseif tik.order.status == 8 %} Отмена {% elseif tik.order.status == 3 %} Не оплачен {% elseif tik.order.status == 1 %} 
+									{% if tik.summa == 0 %}
+										Рег.{% else %}Бронь
+									{% endif %}
+								{% endif %}
+							</p>
+						</td>
+						<td>
+							<div class="btn btn_grey">Показать</div>
+						</td>
+					</tr>
+					<tr class="js_up">
+						<td style="padding: 0; border: 0" colspan="9">
+							<table class="tb">
+								{% for row in tik.tickets %}
+									<tr>
+										<td></td>
+										<td><span>{{ row.id }}</span></td>
+										<td>{{ row.seats_name }}</td>
+										<td>{{ row.seats_sec }}</td>
+										<td>{{ row.seats_row }}</td>
+										<td>{{ row.seats_nums }}</td>
+										<td class="tar">{{ row.count }} шт</td>
+										<td class="tar">{{ row.summa }} р</td>
+										<td class="tar">{{ row.barcode }}</td>
+										<td>
+											{% if tik.order.status == 5 or tik.summa == 0 %}
+												<a class="btn btn-success db" target="_blank" href="/site/ticket?barcode={{ row.barcode }}">Билет</a>
+											{% else %}
+												<a class="btn btn-primary db" target="_blank" href="/site/pay?order_id={{ tik.order.order_id }}"> Оплатить</a>
+											{% endif %}
+
+										</td>
+									</tr>
+								{% endfor %}
+							</table>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+
+			<div class="tbmob visible-xs">
+				{% for tik in ticks|reverse %}
+					{% for row in tik.tickets %}
+						<div class="newblo{% if tik.order.status == 5 or tik.order.summa == 0 %} gtop {% elseif tik.order.status == 8 %} dtop {% elseif tik.order.status == 7 %} rtop {% else %} ytop {% endif %}">
+							<div class="col-xs-4"><span class="mini"># {{ row.id }}</span></div>
+							<div class="col-xs-4"><span class="mini">Куп {{ tik.order.date|date('d.m') }}</span></div>
+							<div class="col-xs-4"><span class="mini">Дата {{ tik.order.events.date|date('d.m') }}</span></div>
+							<div class="clear"></div>
+
+							<div class="col-xs-12">
+								<a target="_blank" href="/{{ tik.order.events.biblioevents.cities.alias }}/event/{{ tik.order.events.biblioevents.id }}">{{ tik.order.events.biblioevents.name }}</a>
+							</div>
+							<div class="clear"></div>
+
+							<div class="col-xs-12">
+								<!--<a href="/site/ticket?barcode={{ tik.order.barcode }}"><span class="glyphicon glyphicon-eye-open"></span></a> -->
+
+								{% if tik.order.status == 5 or tik.order.summa == 0 %}
+									<a class="btn btn-success db" target="_blank" href="/site/ticket?barcode={{ row.barcode }}">Билет</a>
+								{% else %}
+									<a class="btn btn-primary db" target="_blank" href="/site/pay?order_id={{ tik.order.order_id }}"> Оплатить</a>
+								{% endif %}
+								{{ row.seats.name }}
+							</div>
+							<div class="clear"></div>
+
+							<div class="col-xs-4"><b>{{ row.money }}</b>р</div>
+							<div class="col-xs-4">* <b>{{ row.count }}</b></div>
+							<div class="col-xs-4">= <b>{{ row.summa }}</b>р</div>
+						</div>
+					{% endfor %}
+				{% endfor %}
+			</div>
+		{% endif %}
+
+
+		{% if rents %}
+			<div class="mini_header mt20"><span>АРЕНДЫ <div class="badge">{{ rents|length }}</div></span></div>
+			<table class="tb stacktable">
+				<tr>
+					<td>№</td>
+					<td>Куплен</td>
+					<td>Название</td>
+					<td>Дата</td>
+					<td>Начало</td>
+					<td>Конец</td>
+					<td class="tar">Сумма</td>
+					<td class="tar">Статус</td>
+					<td class="tar"></td>
+				</tr>
+				{% for row in rents|reverse %}
+					<tr class="{% if row.status == 5  or row.summa == 0 %} green {% else %} yellow {% endif %}">
+						<td>{{ row.id }}</td>
+						<td>{{ row.create_at|date('d.m в H:i') }}</td>
+						<td>{{ row.rooms.name }}</td>
+						<td>{{ row.date|date('d.m') }}</td>
+						<td>{{ row.start|date('H:i') }}</td>
+						<td>{{ row.end|date('H:i') }}</td>
+						<td class="tar">{{ row.summa }} р</td>
+						<td class="tar">
+							{% if row.status == 5 %}
+								Оплачен
+							{% else %}
+								{% if row.summa == 0 %} Регистрация {% else %} Бронь {% endif %}
+							{% endif %}
+						</td>
+						<td>
+							{% if row.status == 5 or row.summa == 0 %}
+								<a href="/site/ticket?barcode={{ row.barcode }}"><span class="glyphicon glyphicon-eye-open"></span></a>
+							{% else %}
+								<a href="/site/pay?order_id={{ row.order_id }}"> <span class="glyphicon glyphicon-ruble"></span></a>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
+	</div>
+</div>
+
+
+
+<script>
+	$(document).ready(function(){
+		$('.js_up').slideUp();
+
+		$('.js_slide').click(function(){
+			$(this).next().slideToggle(200);
+		});
+	});
+</script>
+

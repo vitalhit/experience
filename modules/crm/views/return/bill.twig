@@ -1,0 +1,51 @@
+<div class="akt">
+
+	<h2>Счет на оплату  № {% if model.bill_name %} {{ model.bill_name }} {% elseif model.id %} С{{ model.id }}-Т{{ model.task_id }} {% endif %} от {{ model.date|date('d.m.Y') }} </h2>
+
+	
+
+	<table border="1">
+		<tr>
+			<td>Заказчик:</td>
+			<td><p>{{ contragent1.name }}, ИНН {{ contragent1.inn }}, р/с {{ contragent1.raschet }} в банке {{ contragent1.bank }}, БИК {{ contragent1.bik }}, к/с {{ contragent1.korr }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td>Исполнитель:</td>
+			<td><p>{{ contragent2.name }}, ИНН {{ contragent2.inn }}, р/с {{ contragent2.raschet }} в банке {{ contragent2.bank }}, БИК {{ contragent2.bik }}, к/с {{ contragent2.korr }}</p></td>	
+		</tr>
+	</table>
+	<p>&nbsp;</p>
+
+
+	<table border="1">
+		<tr>
+			<td>№</td>
+			<td> Наименование работ, услуг</td>
+			<td>Кол-во</td>
+			<td>Ед.</td>
+			<td>Цена</td>
+			<td>Сумма</td>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>{{ model.name }}</td>
+			<td>1</td>
+			<td>1</td>
+			<td>{{ model.summa }}</td>
+			<td>{{ model.summa }}</td>
+		</tr>
+		
+	</table>
+
+	
+	<p><b>Всего оказано услуг 1, на сумму {{ model.summa }} руб</b></p>
+	<p><b>{{ money.summa_p }}</b></p>
+
+<p>Внимание!<br>
+Оплата данного счета означает согласие с условиями поставки товара или оказанием услуги.</p>
+
+	
+</div>
+
+

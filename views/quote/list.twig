@@ -1,0 +1,27 @@
+<div class="row">
+	<div class="col-xs-12 col-md-6">
+		<h2 class="tac mt0">Цитаты ждут генерации</h2>
+	</div>
+	<div class="col-xs-12 col-md-6">
+		<a href="/quote/create" class="btn btn-success pull-right ml10">Добавить цитату</a>
+		<a href="/quote/generate" class="btn btn-primary pull-right">Генерировать</a>
+	</div>
+</div>
+<h2 class="tac">Цитаты со статусом: {{status}}</h2>
+<table class="table">
+	{% for row in q %}
+		<tr>
+			<td>{{row.id}}</td>
+			<td>{{row.autor}}</td>
+			<td>{{row.text}}</td>
+            <td><a href="/quote/update?id={{ row.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+            <td><a href="/quote/delete?id={{ row.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+		</tr>
+	{% endfor %}
+</table>
+
+
+
+
+
+<div class="clear"></div>

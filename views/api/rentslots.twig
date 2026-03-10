@@ -1,0 +1,14 @@
+<h4 class="tac">Выберите свободное время</h4>
+{% for slot in fin_slots %}
+	<div class="col-xs-{{col}}">
+		<div class="row">
+			<div class="rentslot {% if slot.status == 'busy' %} bgred {% endif %}" start="{{ slot.start|date('H:i') }}" end="{{ slot.end|date('H:i') }}">
+				{{ slot.start|date('H:i') }} - {{ slot.end|date('H:i') }}
+			</div>
+		</div>
+	</div>
+{% endfor %}
+<div class="clear"></div>
+<h2>Сумма: <div class="igo_summa" style="display: inline-block;">0</div></h2>
+
+<a class="igo_btn request ma w200">Забронировать!</a>

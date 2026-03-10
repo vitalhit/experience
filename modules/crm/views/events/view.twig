@@ -1,0 +1,317 @@
+<ul class="breadcrumb tac">
+	<li class="active"><a href="#persons" data-toggle="tab">Гости</a></li>
+	<li><a href="#about" data-toggle="tab">Описание</a></li>
+	<li><a href="#buy" data-toggle="tab">Купить</a></li>
+	<li><a href="#inst" data-toggle="tab">Инструкция</a></li>
+	<li><a href="/biblioevents/update?id={{ model.biblioevents.id }}"><div class="glyphicon glyphicon-pencil"></div>Событие</a></li>
+</ul>
+
+<h2>{{ model.biblioevents.name }} | {{ biblioevent.cities.name }}</h2>
+
+<div class="tab-content">
+	<div id="persons" class="tab-pane active">
+
+		<h2>Гости события</h2>
+
+		<table class="table stacktable">
+			<tr>
+				<td>#</td>
+				<td>Дата</td>
+				<td>Гость</td>
+				<td>Mail</td>
+				<td>Тел</td>
+				<td>Рассадка</td>
+				<td>Цена</td>
+				<td>Кол-во</td>
+				<td>Сумма</td>
+				<td>Статус</td>
+				<td>Пришел</td>
+				<td></td>
+				<td></td>
+			</tr>
+
+			{% for tik in tickets %}
+			<tr {% if tik.status >= 100 %} class="green" {% endif %}>
+				<td>{{ tik.id }}</td>
+				<td>{{ tik.date|date('d.m.Y H:i') }}</td>
+				<td><a target="_blank" href="/persons/view?id={{ tik.persons.id }}">{{ tik.persons.name }} {{ tik.persons.second_name }}</a></td>
+				<td>{{ tik.persons.mail }} </td>
+				<td>{{ tik.persons.phone }}</td>
+				<td>{{ tik.seats.name }}</td>
+				<td class="tar">{{ tik.money }} р</td>
+				<td class="tar">{{ tik.count }} шт</td>
+				<td class="tar">{{ tik.summa }} р</td>
+				<td>{% if tik.status >= 100 %} Оплачен {% else %} Бронь {% endif %}</td>
+				<td>{% if tik.status == 101 %} Пришел {% endif %}</td>
+				<td><a class="comein" tag="{{ tik.id }}"><span class="glyphicon glyphicon-ok-circle"></span></a></td>
+				<td><a target="_blank" href="/tickets/view?id={{ tik.id }}"><span class="glyphicon glyphicon-eye-open"></span></a></td>
+			</tr>
+			{% endfor %}
+
+		</table>
+	</div>
+
+
+	<div id="about" class="tab-pane">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-10">
+				<p>Дата: {{ model.date|date('d.m.Y H:i') }}</p>
+
+				{% if model.seatings.image %}
+				<p><img src="/uploads/{{model.seatings.image}}" class="img-responsive"></p>
+				{% endif %}
+
+				<p>Инфо: {{ model.comment }}</p>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-2">
+				<a class="btn btn-primary pull-right" href="/events/update?id={{ model.id }}">Редактировать</a>
+			</div>
+		</div>
+	</div>
+
+	<div id="buy" class="tab-pane">
+
+		<h2>Купить билет:</h2>
+
+		<form class="event_form" method="POST" action="/tickets/ticketyandexbuy">
+
+			{% for row in seats %}
+			<p class="w70p">{{ row.name }} <br><span>{{ row.info }}</span></p>
+			<p class="w15p">{{ row.price }} р</p>
+			<p class="w15p">
+				<input type="hidden" name="money[]" value="{{ row.price }}">
+				<input type="hidden" name="seat_id[]" value="{{ row.id }}">
+				<input class="form-control count" id="{{ row.id }}" type="text" name="seat[]" placeholder="{{ row.count }}" value="">
+			</p>
+			{% endfor %}
+
+
+			<input type="hidden" name="id" class="id" value="">
+			<input type="hidden" name="event_id" value="{{ model.id }}">
+			<input type="hidden" name="type" value="9">
+
+			<div class="clear"></div>
+
+			<div class="form-group">
+				<label>E-mail</label>
+				<input class="form-control mail" type="text" name="mail" value="">
+			</div>
+
+			<div class="form-group">
+				<label>Фамилия</label>
+				<input class="form-control secondname" type="text" name="second_name" value="">
+			</div>
+
+			<div class="form-group">
+				<label>Имя</label>
+				<input class="form-control name" type="text" name="name" value="">
+			</div>
+
+			<div class="form-group">
+				<label>Номер телефона</label>
+				<input class="form-control phone" type="text" name="phone" value="">
+			</div>
+
+			<div class="form-group">
+				<label>Комментарий</label>
+				<input class="form-control" type="text" name="info" value='TEST'>
+			</div>
+
+			<div class="form-group">
+				<label class="b-registration__accept">
+					<input type="checkbox" name="subscribe_digest" checked="checked">
+					<span>Я хочу получать информацию об интересных событиях</span>
+				</label>
+			</div>
+			<div class="form-group">
+				<label class="b-registration__accept">
+					<input type="checkbox" name="accepted_terms">
+					<span>Я подтверждаю свое согласие с условиями
+						<a href="/docs/useragreement.pdf" target="_blank">Пользовательского соглашения</a>
+						и
+						<a href="/oferta" target="_blank">Договором оказания услуг по организации мероприятия</a>
+						<span>*</span>
+					</span>
+				</label>
+
+			</div>
+
+			<button type="submit" class="btn btn-primary">Отправить</button>
+
+		</form>
+
+		<div class="user"></div>
+	</div>
+
+	<div id="inst" class="tab-pane">
+		<h2>Инструкция <br><span>по интеграции в другой сайт</span></h2>
+
+		<p>На страницу события вставьте: </p>
+		<textarea class="code">
+			<div class="crm_tikets" id="{{ model.event_id }}">&nbsp;</div>
+		</textarea> 
+
+		<p>Вставьте в самый низ шаблона вашего сайта: </p>
+
+		<textarea class="code h500">
+			<div class="mypopup">
+				<div class="endreg">
+					<div class="ttl">Закончить регистрацию?</div>
+					<p>После этого вернуть введенные вами данные будет невозможно.</p>
+					<a class="widget_button1 mypopup_goon">Нет, продолжить</a>
+					<a class="widget_button2 mypopup_close">Завершить</a>
+				</div>
+				<div class="my_form">
+					<p class="info">Чтобы зарегистрироваться на это событие, заполните анкету. Информация о Вас будет доступна только организаторам этого события, и больше никому.</p>
+					<!--div class="my_scheme"></div-->
+					<div class="mt10">
+						<p class="col-xs-6 col-sm-8">Тип билета</p>
+						<p class="col-xs-3 col-sm-2">Цена</p>
+						<p class="col-xs-3 col-sm-2">Кол-во</p>
+					</div>
+					<form id="event_form" method="POST" action="">
+						<input type="hidden" name="utm_source" >
+						<input type="hidden" name="utm_medium" >
+						<input type="hidden" name="utm_campaign" >
+						<input type="hidden" name="utm_content" >
+						<input type="hidden" name="utm_term" >
+						<input type="hidden" name="id" class="id" value="">         
+						<input type="hidden" name="type" value="9">
+						<input type="hidden" name="from_url" value="goodrepublic.ru">
+						<div class="my_tick"></div>
+						<div class="my_user">
+
+							<div class="form-group">
+								<label class="col-xs-12 col-sm-3">E-mail</label>
+								<div class="col-xs-12 col-sm-9"><input class="form-control my_mail" type="text" name="mail" value=""></div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-xs-12 col-sm-3">Фамилия</label>
+								<div class="col-xs-12 col-sm-9"><input class="form-control secondname" type="text" name="second_name" value=""></div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-xs-12 col-sm-3">Имя</label>
+								<div class="col-xs-12 col-sm-9"><input class="form-control name" type="text" name="name" value=""></div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-xs-12 col-sm-3">Номер телефона</label>
+								<div class="col-xs-12 col-sm-9"><input class="form-control phone" type="text" name="phone" value=""></div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-xs-12 col-sm-3">Комментарий</label>
+								<div class="col-xs-12 col-sm-9"><input class="form-control info" type="text" name="info" value=""></div>
+							</div>
+
+							<div class="form-group col-xs-12">
+								<label class="reg_accept">
+									<input type="checkbox" name="subscribe_digest" checked="checked">
+									<span>Я хочу получать информацию об интересных событиях</span>
+								</label>
+							</div>
+							<div class="col-xs-12">
+								<label class="reg_accept">
+									<input type="checkbox" name="accepted_terms" checked="checked">
+									<span>Я подтверждаю свое согласие с условиями
+										<a href="/docs/useragreement.pdf" target="_blank">Пользовательского соглашения</a>
+										и
+										<a href="/oferta" target="_blank">Договором оказания услуг по организации мероприятия</a>
+									</span>
+								</label>
+
+							</div>
+
+							<button type="submit" class="btn btn-primary center-block submit">Купить билеты</button>
+
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="my_overlay"></div>
+			<div class="loading"><div class="loadico"></div></div>
+			<script type="text/javascript" src="https://www.crm.goodrepublic.ru/web/js/crm_tickets.js"></script>
+			<link rel="stylesheet" href="https://www.crm.goodrepublic.ru/web/css/crm_tickets.css">
+		</textarea>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+	$(function(){
+		//Наличие билетов
+		$('.count').change("change keyup input click", function() {
+			var userticket = this.value;
+			var count = $(this);
+			var eventid = {{ model.id }};
+			if(this.value.length >= 1){
+				$.ajax({
+					type: 'get',
+					url: "/events/countseats",
+					data: {'seat': this.id, 'eventid': eventid},
+					response: 'text',
+					success: function(data){
+						var ticket = data - userticket;
+						if (ticket >= 0) {
+							$(count).parent().prev("span").html(ticket);
+							$(count).removeClass('red');
+							$(count).next('.minired').remove();
+						}
+						else
+						{
+							$(count).addClass('red');
+							$(count).next('.minired').remove();
+							$(count).parent().append('<span class="minired">' +data+' всего!</span>');
+						};
+					}
+				})
+			}
+		});
+
+		//Наличие юзера в системе
+		$('.mail').change("change keyup input click", function() {
+			var inputmail = this;
+			$.ajax({
+				type: 'get',
+				url: "/events/userisset",
+				data: {'email': this.value},
+				response: 'text',
+				success: function(data){
+					$('.user').html(data);
+					console.log(data);
+				}
+			})
+		});
+
+
+		// Меняем статус что гость пришел
+		$('.comein').on('click', function(){
+			var ticketid = $(this).attr('tag');
+			$.ajax({
+				type: 'get',
+				url: "/events/comein",
+				data: {'ticketid': ticketid},
+				response: 'text',
+				success: function(data){
+					$('.user').html(data);
+				}
+			})
+			console.log(ticketid);
+		});
+
+
+
+	});
+
+</script>
+
+

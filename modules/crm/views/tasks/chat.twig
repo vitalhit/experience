@@ -1,0 +1,16 @@
+<div class="ch">
+{% set side = 0 %}
+{% for item in chats %}
+	{% if side == item.user_id %}
+		<div class="text_round"><div class="delchat" tag="{{ item.id }}"><span class="glyphicon glyphicon-trash"></span></div><p>{{ item.text|raw }}</p></div>
+	{% else %}
+	</div><div class="ch">
+		<div class="man"> 
+			<img src="/uploads/users/{{ item.user.person.image }}" class="w26 img-circle fll">
+			<span>{{ item.user.person.name }}  {{ item.create|date('d.m в H:i') }}</span>
+		</div>
+		{% set side = item.user_id %}
+		<div class="text_round"><div class="delchat" tag="{{ item.id }}"><span class="glyphicon glyphicon-trash"></span></div><p>{{ item.text|raw }}</p></div>
+	{% endif %}
+{% endfor %}
+</div>

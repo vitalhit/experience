@@ -1,0 +1,66 @@
+{{ use('/yii/widgets') }}
+
+<ul class="search_result"></ul>
+
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <div class="row">
+              
+                <div class="col-xs-12 col-lg-12">
+                    <h2>All links</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-12">
+        
+        <a class="btn btn-success btn-sm" href="/crm/link/create"> добавить link <span class="glyphicon glyphicon-plus small"></span></a>
+        <br><br>
+        <table class="tb stacktable">
+            <tr>
+
+                <td>id</td>
+                <td>name</td>
+                <td>link</td>
+                <td>vk</td>
+                <td>fb</td>
+                <td>insta</td>
+                <td>tg</td>
+                <td>yt</td>
+                <td>tool_id</td>
+                <td>media_id</td>
+                <td>newsmaker_id</td>
+                <!--<td>link_vk_cc</td><td>link_vk</td><td>link</td></td>link_fb</td>-->
+            </tr>
+            {% for one in all %}
+            <tr>
+                <td>{{ one.id}}</td>
+                <td><a href="/crm/link/update?id={{ one.id}}">{{ one.name}}</a></td>
+                <td>{{ one.link}}</td>
+                <td>{{ one.vk}}</td>
+                <td>{{ one.fb}}</td>
+                <td>{{one.insta}}</td>
+                <td>{{one.tg}}</td>
+                <td>{{one.yt}}</td>
+                <td>{{one.tool_id}}</td>
+                <td>{{one.media_id}}</td>
+                <td>{{one.newsmaker_id}}</td>
+                
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+    {{link_pager_widget({
+        'pagination': pages
+    }) }}
+
+
+
+    <div class="popup end popup_d"></div>
+
+    <div class="overlay"></div>
+

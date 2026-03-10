@@ -1,0 +1,94 @@
+<form class="form" method="POST" action="/tickets/ticket?uid={{user.id}}">
+
+	<input type="hidden" value="{{end}}" name="end">
+	<input type="hidden" value="0" name="discount_money" id="discount_money">
+
+	<h2><span>#{{ user.id }}</span><a href="/persons/view?id={{ user.id }}">{{ user.second_name }} {{ user.name }} {{ user.middle_name }}</a></h2>
+
+	<div class="row ta-c mini">
+		<p class="col-xs-12 col-sm-4">{{ user.status }}</p>
+		<p class="col-xs-12 col-sm-4">{{ user.mail }}</p>
+		<p class="col-xs-12 col-sm-4">{{ user.phone }}</p>
+	</div>
+
+	<div class="line"></div>
+
+
+	<div class="row">
+		<div class="col-xs-12 col-lg-12">
+			<div class="col-xs-12 pt10">Событие</div>
+			<div class="col-xs-12 pt10">
+				<select class="form-control" name="event_id">
+					<option value="0">выбрать</option>
+					{% for event in events %}
+						<option value="{{ event.id }}">{{ event.date|date('d.m') }} {{ event.biblioevents.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+
+		<div class="col-xs-12 col-lg-12">
+			<div class="col-xs-12 col-md-4 col-md-offset-8 pt10">Стоимость</div>
+			<div class="col-xs-12 col-md-4 pt10">
+				<input type="text" value="" name="money" class="form-control money" placeholder="Цена">
+			</div>
+			<div class="col-xs-12 col-md-4 pt10">
+				<input type="text" value="" name="count" class="form-control count" placeholder="Кол-во">
+			</div>
+			<div class="col-xs-12 col-md-4">
+				<p class="big">
+					<span class="normal itogo">0</span> 
+					<span>p</span>
+				</p>
+			</div>
+		</div>
+
+
+		<div class="col-xs-12">
+			<div class="col-xs-12 pt10">Служебная информация:</div>
+			<div class="col-xs-12 pt10">
+				<input type="text" value="" name="info" class="form-control" placeholder="Ваш комментарий">
+			</div>
+		</div>
+
+
+	</div>
+
+	<div class="line"></div>
+
+
+	<div class="mt50"></div>
+
+
+	<div class="row">   
+		<div class="col-xs-12 col-sm-4"><input type="submit" name="type" class="btn btn-primary" value="Наличка" /></div>  
+		<div class="col-xs-12 col-sm-4"><input type="submit" name="type" class="btn btn-primary" value="БезНал" /></div>  
+		<div class="col-xs-12 col-sm-4"><input type="submit" name="type" class="btn btn-primary" value="GoodRepublic" /></div>  
+	</div>
+
+</form>
+
+
+
+<script type="text/javascript">
+
+	$(function(){
+
+		$('.discont').bind("change keyup", function() {
+			var discount = $("#money_in").val() / 100 * $(".discount_input").val();
+			var result = $("#money_in").val() - discount;
+
+			$("#fin_money").val(Math.round(result,0));
+			$(".fin_discount").html(Math.round(discount,0));
+			$("#discount_money").val(Math.round(discount,0));
+			$(".fin_money").html(Math.round(result,0));
+		});
+		
+		$('.money, .count').bind("change keyup", function() {
+			var itogo = $(".money").val() * $(".count").val();
+			$(".itogo").html(Math.round(itogo,0));
+		});
+
+	})
+
+</script>

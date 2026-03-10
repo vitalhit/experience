@@ -1,0 +1,79 @@
+<ul class="breadcrumb tac">
+	<li><a href="/events/past">Прошедшие</a></li>
+	<li><a href="/events/index">Сегодня</a></li>
+	<li class="active"><a href="/events/future">Будущие</a></li>
+</ul>
+
+<div class="row">
+	<div class="col-xs-12 col-md-4">
+		<h1>Будущие</h1>
+		{% if biblioeventid %}<p class="tal">Только для вашего события </p>{% endif %}
+	</div>
+
+	<div class="col-xs-12 col-md-1"><h3 class="itog">{{ 0 + summnal }}<span>нал</span></h3></div>
+	<div class="col-xs-12 col-md-1"><h3 class="itog">{{ 0 + summbez }}<span>безнал</span></h3></div>
+	<div class="col-xs-12 col-md-1"><h3 class="itog">{{ 0 + summbiletnik }}<span>билетник</span></h3></div>
+	<div class="col-xs-12 col-md-1"><h3 class="itog">{{ 0 + summgr }}<span>gr</span></h3></div>
+	<div class="col-xs-12 col-md-1"><h3 class="itog">{{ 0 + summnal + summbez + summbiletnik + summgr}}<span>итог</span></h3></div>
+
+	<div class="col-xs-12 col-md-3">
+		<a href="/events/create" class="btn btn-primary mt20 pull-right">+ Добавить дату</a>
+	</div>
+</div>
+
+
+
+<table class="table stacktable">
+	<tr>
+		<td>Дата</td>
+		<td>Время</td>
+		<td>Название</td>
+		<td>Категория</td>
+		<td>Место</td>
+		<td>Рассадка</td>
+		<td>Описание</td>
+		<td></td>
+		<td></td>
+	</tr>
+	{% for row in events %}
+		<tr>
+			<td>{{ row.date|date('d.m.Y') }}</td>
+			<td>{{ row.date|date('H:i') }}</td>
+			<td><a href="/events/view?id={{ row.id|e }}">{{ row.biblioevents.name|e }}</a></td>
+			<td>{{ row.biblioevents.categoryevents.category }}</td>
+			{% if row.seatings.id %}
+				<td>
+	                <a href="/places/view?id={{ row.seatings.places.id }}">
+	                    {% if row.seatings.places.logo %}
+	                        <img src="/uploads/{{ row.seatings.places.logo }}" class="plogo">
+	                    {% else %}
+	                        {{ row.seatings.places.name }}
+	                    {% endif %}
+	                </a>
+	            </td>
+				<td>{% if row.seatings.name %}
+					<a href="/seatings/update?id={{ row.seatings.id }}"><!-- {{ row.seatings.name }} -->Рассадка</a>{% endif %}
+				</td>
+			{% else %}
+				<td>
+	                <a href="/places/view?id={{ row.biblioevents.seatings.places.id }}">
+	                    {% if row.biblioevents.seatings.places.logo %}
+	                        <img src="/uploads/{{ row.biblioevents.seatings.places.logo }}" class="plogo">
+	                    {% else %}
+	                        {{ row.biblioevents.seatings.places.name }}
+	                    {% endif %}
+	                </a>
+	            </td>
+				<td>{% if row.biblioevents.seatings.name %}
+					<a href="/seatings/update?id={{ row.biblioevents.seatings.id }}"><!-- {{ row.biblioevents.seatings.name }} --> Рассадка</a>
+					{% endif %}
+				</td>	
+			{% endif %}
+			<td>{{ row.comment }}</td>
+			<td><a href="/events/update?id={{ row.id|e }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+			<td><a href="/events/delete?id={{ row.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+		</tr>
+	{% endfor %}
+</table>
+
+{% if biblioeventid %}<a href="/events/index" class="btn btn-primary">Смотреть все</a>{% endif %}

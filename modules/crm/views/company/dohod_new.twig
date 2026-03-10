@@ -1,0 +1,110 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>Доходы <br><span class="tac">Продажи билетов, без комиссии</span></h2>
+			<span class="script_time">{{time|round(3)}} sec</span>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/company_step.twig', {'company' : company}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-5">
+		<div class="newblo">
+			<table class="tb">
+				{% set sum = 0 %}
+				{% set mnths = ['','Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'] %}
+				{% for item in itog|reverse %}
+					<tr>
+						<td colspan="3"><h3 class="m0">{{ mnths[item.date|date("n")] }} {{ item.date|date('Y') }}</h3></td>
+					</tr>
+					{% set c = 0 %}{% set s = 0 %}
+					{% for dohod in item.dohod %}
+						{% if dohod.summa > 0 %}
+							<tr>
+								<td>{{ dohod.name }}</td>
+								<td class="tar">{{ dohod.count }}</td>
+								<td class="tar">{{ dohod.summa }}</td>
+							</tr>
+							{% set c = c + dohod.count %}{% set s = s + dohod.summa %}
+						{% endif %}
+					{% endfor %}
+					{% if s %}
+					<tr>
+						<td><b>Итог</b></td>
+						<td class="tar"><b>{{ c }}</b></td>
+						<td class="tar"><b>{{ s }}</b></td>
+					</tr>
+					{% endif %}
+					<tr><td colspan="3"></td></tr>
+					{% set sum = sum + s %}
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-4 ">
+	<div class="steps">
+		<div class="newblo">
+			<h2>История выплат</h2>
+			<table class="tb">
+				{% set paysum = 0 %}
+				{% for item in payments %}
+					<tr>
+						<td>{{ item.create_at|date('d.m.Y') }}<br><small></small> </td>
+						<td class="tar"><a title="{{ item.info }}">{{ item.summa|number_format(0, '.', ' ') }}</a></td>
+						<td>
+							{% if item.status == 1 %}
+								<span class="glyphicon glyphicon-hourglass c_yell"></span>
+							{% elseif item.status == 2 %}
+								<span class="glyphicon glyphicon-ok c_green"></span>
+							{% elseif item.status == 3 %} 
+								<span class="glyphicon glyphicon-ok c_green"><span class="glyphicon glyphicon-ok c_green"></span></span>
+								{% set paysum = paysum + item.summa %}
+							{% else %}
+								-
+							{% endif %}
+						</td>
+						<td><a href="https://igoevent.com/crm/events/finance?id={{ item.event_id }}">{{ item.event_id }}</a></td>
+					</tr>
+				{% endfor %}
+				<tr>
+					<td><b>Итог</b></td>
+					<td></td>
+					<td class="tar"><b>{% if paysum %}{{ paysum }} р{% endif %}</b></td>
+				</tr>
+			</table>
+		</div>
+		<div class="newblo">
+			<h2>Баланс</h2>
+			<h3 class="bignum">{{ (akt.money.t_sum - akt.money.vozn_all - akt.money.pere)|number_format(0, '.', ' ') }}</h3>
+			<p>
+				<span class="tal">продаж на</span><span class="tar flr"> {{ akt.money.t_sum|number_format(0, '.', ' ') }}</span><br>
+				<span class="tal">комиссия</span><span class="tar flr"> {{ akt.money.vozn|number_format(0, '.', ' ') }}</span><br>
+				<span class="tal">вовратов на</span><span class="tar flr"> {{ akt.money.t_back|number_format(0, '.', ' ') }}</span><br>
+				<span class="tal">комиссия за возвраты</span><span class="tar flr"> {{ akt.money.vozn_back|number_format(0, '.', ' ') }}</span><br>
+				<span class="tal">выплачено</span><span class="tar flr"> {{ akt.money.pere|number_format(0, '.', ' ') }}</span>
+			</p>
+		</div>
+		<div class="newblo">
+			<h2>Вывести средства</h2>
+			<p class="mini">До 10 000 рублей выводим раз в месяц, <br>от 10 000 — без ограничений.</p>
+			<form id="vuvod" action="/crm/company/vuvod" method="POST">
+				<input type="text" class="form-control mb10" name="summa" placeholder="Сумма вывода руб.">
+				<input type="text" class="form-control mb10" name="info" placeholder="Ваша пометка">
+				<input type="text" class="form-control mb10" name="event_id" placeholder="Event id">
+				<button type="submit" class="btn btn-info pull-right">Вывести</button>
+			</form>
+		</div>
+	</div>
+	</div>
+</div>
+
+<style>
+	.script_time {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		color: #bbb;
+		font-size: 10px;
+	}
+</style>

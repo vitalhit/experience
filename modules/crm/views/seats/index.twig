@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-8">
+        <h1>Типы билетов</h1>
+        {% if seatingid %}<p class="tal">Только для вашей рассадки </p>{% endif %}
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-2">
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-2">
+        <a class="btn btn-primary pull-right" href="/crm/seats/create">+ Создать тип билета</a>
+    </div>
+</div>
+
+<table class="table stacktable">
+    <tr>
+        <th>Событие</th>
+        <th>Дата</th>
+        <th>Название билета</th>
+        <th class="ta-c">Шт</th>
+        <th class="ta-r pr15">Стоимость</th>
+        <th class="ta-c">Код</th>
+        <th class="ta-r pr15">Лимит</th>
+        <th>Инфо</th>
+        <th colspan="2"></th>
+    </tr>
+    {% for row in seats %}
+        <tr>
+            <td><a href="/crm/biblioevents/update?id={{ row.events.biblioevents.id }}">{{ row.events.biblioevents.name }}</a></td>
+            <td><a href="/crm/events/view?id={{ row.events.id }}">{{ row.events.date|date('d.m.Y H:i') }}</a></td>
+            <td>{{ row.name }}</td>
+            <td class="ta-c">{{ row.count }}</td>
+            <td class="ta-r pr15">{{ row.price }} р</td>
+            <td class="ta-c">{{ row.promocode }}</td>
+            <td class="ta-r pr15">{{ row.promolimit }} р</td>
+            <td>{{ row.info }}</td>
+            <td><a href="/crm/seats/update?id={{ row.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+            <td><a href="/crm/seats/delete?id={{ row.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% if seatingid %}<a href="/crm/seats/index" class="btn btn-primary">Смотреть все</a>{% endif %}

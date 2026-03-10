@@ -1,0 +1,33 @@
+<div class="container title-section">
+	<div class="row">
+		<div class="col-xs-12">
+			<h1>Фестивали</h1>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="col-xs-12">
+		<div class="event-row">
+			<table width="100%">
+					<tr>
+						<th width="50%">Название</th>
+						<th class="text-left">Ссылки</th>
+					</tr>
+					{% for row in all %}
+					<tr>
+						<td align='left'><hr>
+							{{row.title}}	{% if row.title_en and row.title != row.title_en %}<small><i>{{ row.title_en }}</i></small>{% endif %} <br>
+							{{row.info}}		
+							</td><td>
+							{% if row.link_site %} <a href="https://{{row.link_site }}">сайт</a>
+						 	{% endif %} {% if row.link_vk %} | <a href="https://vk.com/{{row.link_vk }}">ВК</a> {% endif %} 
+							</td></tr>
+
+			</div>
+		{% endfor %}
+
+			</table>
+		</div>
+	</div>
+</div>

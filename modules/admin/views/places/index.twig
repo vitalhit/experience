@@ -1,0 +1,31 @@
+<h1>Места</h1>
+<div class="row" style="margin-bottom: 12px;">
+    <div class="col-xs-12 col-sm-6 col-md-6">        
+        <p>При добавление площадки рекомендуем используеть фотографии 1200px</p>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-2">
+        <span class="badge menu_badge_remember">&nbsp; &nbsp;</span> Избранное место
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+        <a class="btn btn-primary pull-left" href="/admin/places?closed=1">Закрытые места</a>
+        <a class="btn btn-primary pull-right" href="/admin/places/create">+ Создать место</a>
+    </div>
+</div>
+
+<div class="row">
+    {% for row in places %}
+        <div class="col-xs-12 col-md-6 col-lg-3 place" style="height: 290px;"> 
+            <div class="newblo n_company {% if row.favour %}ytop{% endif %}">
+                <p class="mini p_a_l">#{{ row.id }}</p>
+                <small class="h46 mb10"><a href="/admin/places/update?id={{ row.id }}">{{ row.name }}/{{ row.name_en }}</a></small>
+                <div class="thumb"><img src="/uploads/places/{{ row.foto }}" class="img-responsive"></div>
+                <div class="row">
+                    <p class="col-xs-12 tac">{{ row.cities.name }}</p>
+                    <p class="col-xs-12 tac"><a target="_blank" href="/{{ row.cities.alias }}/place/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">смотреть</a>
+                        {% if row.closed == 1 %}<span class="text-danger">Closed</span>{% elseif row.closed == 0 %} <span class="text-primary">Open </span> {% endif %}</p>
+                    {# <p class="col-xs-12 tac mini h23">{{ row.address }}</p> #}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,57 @@
+<div class="akt">
+
+	<h2>Счет на оплату  № {% if model.bill_name %} {{ model.bill_name }} {% elseif model.id %} С{{ model.id }}-Т{{ model.task_id }} {% endif %} от {{ model.date|date('d.m.Y') }} </h2>
+
+	
+
+	<table border="1">
+		<tr>
+			<td>Заказчик:</td>
+			<td><p>{{ contragent1.name }}, {% if contragent1.inn%}ИНН {{ contragent1.inn }},{%endif%} 
+			{% if contragent1.raschet%}, р/с {{ contragent1.raschet }} {% endif %} 
+			{% if contragent1.bank %}  в банке {{ contragent1.bank }}{% endif %}
+			{% if contragent1.bik %}, БИК {{ contragent1.bik }}{% endif %}
+			{% if contragent1.korr  %}, к/с {{ contragent1.korr }} {% endif %}
+			{% if contragent1.doc_number %} Паспорт. {{contragent1.doc_number}} Выдан: {{contragent1.doc_place }}  {{doc_date|date('d.m.Y') }}{% endif%}
+			</p>
+			</td>
+		</tr>
+		<tr>
+			<td>Исполнитель:</td>
+			<td><p>{{ contragent2.name }}, ИНН {{ contragent2.inn }}, р/с {{ contragent2.raschet }} в банке {{ contragent2.bank }}, БИК {{ contragent2.bik }}, к/с {{ contragent2.korr }}</p></td>	
+		</tr>
+	</table>
+	<p>&nbsp;</p>
+
+
+	<table border="1">
+		<tr>
+			<td>№</td>
+			<td> Наименование работ, услуг</td>
+			<td>Кол-во</td>
+			<td>Ед.</td>
+			<td>Цена</td>
+			<td>Сумма</td>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>{{ model.name }}</td>
+			<td>1</td>
+			<td>1</td>
+			<td>{{ model.summa }}{% if model.summa_k %}.{{ model.summa_k }} {%endif%}</td>
+			<td>{{ model.summa }}{% if model.summa_k %}.{{ model.summa_k }} {%endif%}</td>
+		</tr>
+		
+	</table>
+
+	
+	<p><b>Всего оказано услуг 1, на сумму {{ model.summa }} рублей {% if model.summa_k %}{{ model.summa_k }} копеек {%endif%}</b></p>
+	<p><b>{{ money.summa_p }}</b></p>
+
+<p>Внимание!<br>
+Оплата данного счета означает согласие с условиями поставки товара или оказанием услуги.</p>
+
+	
+</div>
+
+

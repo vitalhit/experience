@@ -1,0 +1,128 @@
+{% if page.seodesc %}
+	{{ this.registerMetaTag({name: 'keywords', content: page.seodesc}) | raw }}
+{% else %}
+	{% set seodesc = [biblioevent.name, ' ', biblioevent.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'keywords', content: seodesc}) | raw }}
+{% endif %}
+
+{% if page.seokey %}
+	{{ this.registerMetaTag({name: 'description', content: page.seokey}) | raw }}
+{% else %}
+	{% set seokey = [biblioevent.name, ' ', biblioevent.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'description', content: seokey}) | raw }}
+{% endif %}
+
+
+{% if page.ogtitle %}
+	{{ this.registerMetaTag({name: 'og:title', content: page.ogtitle}) | raw }}
+{% else %}
+	{% set ogtitle = [biblioevent.name, ' ', biblioevent.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'og:title', content: ogtitle}) | raw }}
+{% endif %}
+
+{% if page.ogdescription %}
+	{{ this.registerMetaTag({name: 'og:description', content: page.ogdescription}) | raw }}
+{% else %}
+	{% set ogdescription = [biblioevent.name, ' ', biblioevent.cities.name]|join %}
+	{{ this.registerMetaTag({name: 'og:description', content: ogdescription}) | raw }}
+{% endif %}
+
+{% if page.ogimage %}
+	{% set ogimage = ['/web/uploads/users/', page.ogimage ]|join %}
+{% elseif page.image %}
+	{% set ogimage = ['/web/uploads/users/', page.image ]|join %}
+{% else %}
+	{% set ogimage = ['/web/uploads/users/', biblioevent.image ]|join %}
+{% endif %}
+{{ this.registerMetaTag({name: 'og:image', content: ogimage}) | raw }}
+
+{% set ogurl = [biblioevent.cities.alias, '/event/', biblioevent.id]|join %}
+{{ this.registerMetaTag({name: 'og:url', content: ogurl}) | raw }}
+
+{{ this.registerMetaTag({name: 'og:type', content: 'website'}) | raw }}
+
+
+
+
+
+
+<div class="title-page" style="background: url('/web/uploads/users/{% if page.image %}{{ page.image }}{% else %} {% endif %}') 50% 50% no-repeat transparent;">
+	<div class="container">
+		<div class="breadcrumbs">
+			<a class="home-link" href="/"><img src="/images/logo-mini-white.svg"></a>
+			<a class="this-link">{{ page.name }}</a> 
+			{% if guest =='' %} <a href="/admin/page/update?id={{page.id}}">edit</a> {% endif %}
+		</div>
+
+		<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 title-block">
+			<h1>{{ page.name }}</h1>
+			<p>{{ page.anons }}</p>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="container">
+	<div class="section-block">
+		<div class="content">
+			{{ page.text | raw }}
+		</div>
+	</div>
+
+
+	<div class="sidebar-block">
+		<div class="user-go">
+			<h2>Вливайся<br><small>в </small>iGo<small>Event и</small></h2>
+			<div class="advantage">
+				<img src="/images/ico-heart-yellow.svg">
+				<p>ВЫБИРАЙ ЛУЧШЕЕ<br><span>и добавляй в избранное только то, что нравится </span></p>
+			</div>
+			<div class="advantage">
+				<img src="/images/ico-ringer-yellow.svg">
+				<p>БУДЬ В КУРСЕ<br>ВСЕХ СОБЫТИЙ<br><span>iGo всегда напомнит</span></p>
+			</div>
+			<div class="advantage">
+				<img src="/images/ico-messages-yellow.svg">
+				<p>ДЕЛИСЬ СВОИМ<br>ВПЕЧАТЛЕНИЕМ<br><span>твои комментарии всегда ценят на iGo</span></p>
+			</div>
+			{# <a class="btn btn-red" href="">Зарегистрироваться</a> #}
+		</div>
+	</div>
+</div>
+
+
+
+<footer class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-10 col-md-8">
+			<img class="logo-footer" src="/images/logo-mini.svg">
+			<p class="copyrite">© 2018-{{now|date("Y")}} iGoEvent.com — мы создаем события. Права на текстовые и другие материалы, размещенные на сайте, охраняются законом.
+				При цитировании обязательна прямая ссылка на iGoEvent.com.
+			</p>
+			<p class="copyrite"><a href="http://vitalhit.com/">vitalhit</a></p>
+			<ul class="footer-nav">
+				<li><a href="/page/about">О проекте</a></li>
+				<li><a href="/page/contacts">Контакты</a></li>
+				<li class="quest"><a href="/crm/company">Есть вопрос?</a></li>
+				<li class="years"><img src="/images/ico-18-plus.svg"></li>
+			</ul>
+			<noindex>
+				<script type="text/javascript">document.write("<a rel='nofollow' href='//www.liveinternet.ru/click' "+"target=_blank><img src='//counter.yadro.ru/hit?t26.1;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";h"+escape(document.title.substring(0,150))+";"+Math.random()+"' alt='' title='LiveInternet: показано число посетителей за"+" сегодня' "+"border='0' width='88' height='15'><\/a>");
+				</script>
+				<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88249632-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-88249632-1');
+</script>
+
+			</noindex>
+		</div>
+	</div>
+</footer>
+
+<link rel="stylesheet" href="/css/front.css">

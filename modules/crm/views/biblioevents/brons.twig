@@ -1,0 +1,187 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{{ biblioevent.name }}: Заявки и брони</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/event_step.twig', {'biblioevent' : biblioevent, 'user' : user}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<div class="newblo">
+			<div class="row">
+				<div class="col-xs-4 col-lg-6">
+					<div class="col-xs-12 col-lg-8 p0">
+						<h4 class="itog c_black tac">{{ ticket_nobron_sum|number_format(0, '.', ' ') }}<span>снятые брони</span> </h4>
+					</div>
+					<div class="col-xs-12 col-lg-4 p0">
+						<h4 class="itog c_black tac">{{ ticket_nobron_count }} <span>шт</span> </h4>
+					</div>
+				</div>
+				<div class="col-xs-4 col-lg-6 bl">
+					<div class="col-xs-12 col-lg-8 p0">
+						<h4 class="itog c_yell tac">{{ ticket_bron_sum|number_format(0, '.', ' ') }}<span>брони</span> </h4>
+					</div>
+					<div class="col-xs-12 col-lg-4 p0">
+						<h4 class="itog c_yell tac">{{ ticket_bron_count }} <span>шт</span> </h4>
+					</div>
+				</div>
+			</div>
+		</div>
+		<table class="tb hidden-xs">
+			<tr>
+				<th>Дата</th>
+				
+				<th>Гость</th>
+				<th>Информ</th>
+				<th>Билет</th>
+				<th class="tar">Цена</th>
+				<th></th>
+				<th>Сумма</th>
+				<th>Статус</th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
+				{% for tik in tickets %}
+				{% if tik.status == 1 %}
+					<tr class="grey">
+						<td>{{ tik.events.date|date('d.m H:i') }}<br>{{ tik.date|date('d.m H:i') }}<br>
+						{{ tik.order_id }}</td>
+						<td><span>{{ tik.persons.mail }} </span><br><a target="_blank" href="/crm/persons/view?id={{ tik.persons.id }}">{{ tik.persons.name }} {{ tik.persons.second_name }}</a></td>
+						<td><span style="color:red;" >{{ tik.admin }}</span><br>
+						<small style="color:green;">{{tik.promocode}}</small></td>
+						<td>{{ tik.seats.name }}</td>
+						<td class="tar">{{ tik.money }}</td>
+						<td class="tar">{{ tik.count }}</td>
+						<td class="tar">{{ tik.summa }}</td>
+						<td></td>
+						<td>{% if tik.send == 1 %}<span class="glyphicon glyphicon-envelope"></span>{% endif %}</td>
+						<td tag="{{ tik.status_come }}">{% if tik.status_come == 1 %}Пришел{% elseif tik.status_come == 2 %}Нет{% endif %}</td>
+						<td>{% if tik.seats.afterpay == 1 %}<a target="_blank" href="/site/pay?order_id={{ tik.order_id }}"><span class="glyphicon glyphicon-rub"></span></a>{% else %} - {% endif %}</td>
+						<td><a target="_blank" href="/crm/tickets/view?id={{ tik.id }}"><span class="glyphicon glyphicon-eye-open"></span></a></td>
+					</tr>
+				{% endif %}
+				{% endfor %}
+		</table>
+
+		<div class="tbmob visible-xs">
+			{% for tik in tickets %}
+			{% if tik.status == 1 %}
+				<div class="newblo grtop">
+					<div class="col-xs-4"><span class="mini"># {{ tik.id }}</span></div>
+					<div class="col-xs-4"><span class="mini">Куп {{ tik.date|date('d.m') }}</span></div>
+					<div class="col-xs-4"><span class="mini">Дата {{ tik.events.date|date('d.m') }}</span></div>
+					<div class="clear"></div>
+
+					<div class="col-xs-12"><span class="mini">{{ tik.persons.mail }} </span><br>
+						<a target="_blank" href="/crm/persons/view?id={{ tik.persons.id }}">{{ tik.persons.name }} {{ tik.persons.second_name }}</a>
+					</div>
+					<div class="clear"></div>
+					<div class="col-xs-6">
+						<span style="color:red;">{{ tik.admin }}</span><br>
+						<small style="color:green;">{{tik.promocode}}</small>
+					</div>
+					<div class="col-xs-6">{{ tik.seats.name }}</div>
+					<div class="clear"></div>
+
+					<div class="col-xs-4"><b>{{ tik.money }}</b>р</div>
+					<div class="col-xs-4">* <b>{{ tik.count }}</b></div>
+					<div class="col-xs-4">= <b>{{ tik.summa }}</b>р</div>
+					<div class="clear"></div>
+
+					<div class="col-xs-2 tac">{% if tik.send == 1 %}<span class="glyphicon glyphicon-envelope"></span>{% endif %}</div>
+					<div class="col-xs-4 tac"></div>
+					<div class="col-xs-3 tac">{% if tik.seats.afterpay == 1 %}<a target="_blank" href="/site/pay?order_id={{ tik.order_id }}"><span class="glyphicon glyphicon-rub"></span></a>{% else %} - {% endif %}</div>
+					<div class="col-xs-3 tac"><a target="_blank" href="/crm/tickets/view?id={{ tik.id }}"><span class="glyphicon glyphicon-eye-open"></span></a></div>
+				</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+
+
+			<h2>Снятые брони</h2>
+		<table class="tb hidden-xs">
+			<tr>
+				<th>Дата</th>
+				<th>Гость</th>
+				<th>Информация о&nbsp;заказе</th>
+				<th>Билет</th>
+				<th class="tar">Цена</th>
+				<th>Билет</th>
+				<th>Сумма</th>
+				<th>Статус</th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
+				{% for tik in tickets %}
+				{% if tik.status == 0 %}
+					<tr class="grey">
+						<td>{{ tik.events.date|date('d.m H:i') }}<br>{{ tik.date|date('d.m H:i') }}<br><small><a href="/site/pay?order_id={{ tik.order_id }}">{{ tik.order_id }}</a></small></td>
+						<td><span>{{ tik.persons.mail }} </span><br><a target="_blank" href="/crm/persons/view?id={{ tik.persons.id }}">{{ tik.persons.name }} {{ tik.persons.second_name }}</a><br>
+						<a href="tel:+{{ tik.persons.phone }}">{{ tik.persons.phone }}</a>(<a href="https://wa.me/{{ tik.persons.phone }}?text=Здравствуйте. {{ tik.persons.name }} {{ tik.persons.second_name }}. Пишу вам по поводу {{ biblioevent.name }}. http://igoevent.com/{{ biblioevent.cities.alias }}/event/{{ biblioevent.alias }}?utm_source=whatsapp&utm_medium=igoevent&utm_campaign=massage">wap</a>) </td>
+						<td>{{ tik.order_id }}<br><span style="color:red;">{{ tik.admin }}</span><br>
+						<small style="color:green;">{{tik.promocode}}</small> 
+						</td>
+						<td>{{ tik.seats.name }}</td>
+						<td class="tar">{{ tik.money }}</td>
+						<td class="tar">{{ tik.count }}</td>
+						<td class="tar">{{ tik.summa }}</td>
+						<td class="mini">{{ tik.utm_source }}<br>{{ tik.utm_medium }}<br>{{ tik.utm_campaign }}<br>{{ tik.utm_content }}<br>{{ tik.utm_term }}</td>
+						<td>{% if tik.send == 1 %}<span class="glyphicon glyphicon-envelope"></span>{% endif %}</td>
+						<td tag="{{ tik.status_come }}">{% if tik.status_come == 1 %}Пришел{% elseif tik.status_come == 2 %}Нет{% endif %}</td>
+						<td>{% if tik.seats.afterpay == 1 %}<a target="_blank" href="/site/pay?order_id={{ tik.order_id }}"><span class="glyphicon glyphicon-rub"></span></a>{% else %} - {% endif %}</td>
+						<td><a target="_blank" href="/crm/tickets/view?id={{ tik.id }}"><span class="glyphicon glyphicon-eye-open"></span></a></td>
+					</tr>
+				{% endif %}
+				{% endfor %}
+		</table>
+
+
+		<div class="tbmob visible-xs">
+			{% for tik in tickets %}
+			{% if tik.status == 0 %}
+				<div class="newblo grtop">
+					<div class="col-xs-4"><span class="mini"># {{ tik.id }}</span></div>
+					<div class="col-xs-4"><span class="mini">Куп {{ tik.date|date('d.m') }}</span></div>
+					<div class="col-xs-4"><span class="mini">Дата {{ tik.events.date|date('d.m') }}</span></div>
+					<div class="clear"></div>
+
+					<div class="col-xs-12"><span class="mini">{{ tik.persons.mail }} </span><br>
+						<a target="_blank" href="/crm/persons/view?id={{ tik.persons.id }}">{{ tik.persons.name }} {{ tik.persons.second_name }}</a>
+					</div>
+					<div class="clear"></div>
+					<div class="col-xs-6"><span style="color:red;">{{ tik.admin }}</span><br>
+						<small style="color:green;">{{tik.promocode}}</small></div>
+					<div class="col-xs-6">{{ tik.seats.name }}</div>
+					<div class="clear"></div>
+
+					<div class="col-xs-4"><b>{{ tik.money }}</b>р</div>
+					<div class="col-xs-4">* <b>{{ tik.count }}</b></div>
+					<div class="col-xs-4">= <b>{{ tik.summa }}</b>р</div>
+					<div class="clear"></div>
+
+					<div class="col-xs-2 tac">{% if tik.send == 1 %}<span class="glyphicon glyphicon-envelope"></span>{% endif %}</div>
+					<div class="col-xs-4 tac"></div>
+					<div class="col-xs-3 tac">{% if tik.seats.afterpay == 1 %}<a target="_blank" href="/site/pay?order_id={{ tik.order_id }}"><span class="glyphicon glyphicon-rub"></span></a>{% else %} - {% endif %}</div>
+					<div class="col-xs-3 tac"><a target="_blank" href="/crm/tickets/view?id={{ tik.id }}"><span class="glyphicon glyphicon-eye-open"></span></a></div>
+				</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.steps .guest').addClass('active');
+});
+</script>
+
+

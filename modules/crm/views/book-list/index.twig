@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <h2>Листы ожидания</h2>            
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        {{ this.render('/module/person_step.twig', {'company' : company}) | raw }}
+    </div>
+
+    <div class="col-xs-12 col-lg-9">
+
+        <table class="table stacktable">
+            {% for row in lists %}
+                <tr>
+                    <td>{{ row.list.id }}</td>
+                    <td>{{ row.list.name }}</a></td>
+                    <td><a href="/crm/companies/contacts?id={{ row.list.company.id }}">{{ row.list.company.brand }}</a></td>
+                    <td><a href="/crm/bookingapi/index?list_id={{ row.list.id }}"><span class="normal glyphicon glyphicon-user">{{ row.book }}</span></a></td>
+                    <td><a href="/crm/book-list/update?id={{ row.list.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                    <td><a href="/crm/book-list/delete?id={{ row.list.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</div>

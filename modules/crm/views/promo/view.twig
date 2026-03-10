@@ -1,0 +1,46 @@
+
+
+<div class="row">
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="stiky">
+            <div class="newblo">
+                {% if model.image %}
+                    <img src="/uploads/users/{{ model.image }}" class="img-responsive img-circle">
+                {% else %}
+                    <img src="/web/images/noimage.png" class="img-responsive img-circle">
+                {% endif %}
+                <h2 class="mt0"><a href="/crm/promo/">Промо</a></h2>
+                <a href="/crm/newsmakers/update?id={{newsmaker._id}}" class="btn btn-primary ma w120">контакт</a>
+                <h4>User_id: {{ user_id }}<br>Профиль id: {{ newsmaker.id }}</h4>
+                <p><b>Статус:</b> {{ newsmaker.status }}</p>
+                <p><b>Дата рождения:</b> {{ newsmaker.birthday|date('d.m.Y') }}</p>
+                <p><b>E-mail:</b> {{ newsmaker.mail }}</p>
+                <p><b>Телефон:</b> {{ newsmaker.phone }}</p>
+                <p><b>Пол:</b> {% if newsmaker.sex == 0 %} женщина {% else %} мужчина {% endif %} </p>
+                <p><b>Группы:</b> {{ newsmaker.groups }}</p>
+                <p><b>Откуда:</b> {{ newsmaker.froms.url }}</p>
+                <p><b>Получать письма:</b> {% if newsmaker.sendmail == 1 %} Да {% else %} Нет {% endif %} </p>
+                <p><b>Пожелания:</b> {{ newsmaker.vishes }}</p>
+            </div>
+            {% if model.info %}
+                <div class="newblo"><p>{{ newsmaker.info }}</p></div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-9">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-3">
+                    id: {{model.id}}<br>
+                    status: {{model.status}}<br>
+                 </div>
+                <div class="col-xs-6">{{ model.info }}</div>
+                <div class="col-xs-3"><a class="btn btn-primary" href="/crm/promo/update?id={{model.id}}">Редактировать <span class="glyphicon glyphicon-pencil"></span></a></div>
+                <div class="col-xs-3"></div>
+            </div>
+        </div>
+        
+       
+
+    </div>
+</div>

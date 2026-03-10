@@ -1,0 +1,379 @@
+{{ this.render('bar.php', {'barc' : barc, 'ticket' : ticket}) | raw }}
+
+<div class="container">
+
+    <button class="btn btn-primary" onclick="window.print();">Печатать</button>
+
+    <div class="row noprint">
+        <div class="col-xs-10 col-xs-offset-1">
+            <!--LiveInternet counter-->
+            <script type="text/javascript">
+document.write('<a  rel="nofollow" href= "//www.liveinternet.ru/click" '+
+'target="_blank"><img src="//counter.yadro.ru/hit?t26.1;r'+
+escape(document.referrer)+((typeof(screen)=='undefined')?'':
+';s'+screen.width+'*'+screen.height+'*'+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+';u'+escape(document.URL)+
+';h'+escape(document.title.substring(0,150))+';'+Math.random()+
+'" alt="" title="LiveInternet: показано число посетителей за'+
+' сегодня" '+
+'border="0" width="88" height="15"><\/a>')
+</script><!--/LiveInternet-->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88249632-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-88249632-1');
+</script>
+
+    
+            {% if ticket.template_id == 3 %}
+             <h4>Предварительная регистрация <a  rel="nofollow" href= "/{{event.cities.alias}}/event/{% if event.alias %}{{event.alias}}{%else%}{{event.id}}{%endif%}">на событие</a></h4>
+            <p class="noprint"><b>{{ event.name }}</b></p>
+            <p class="noprint"><span class="cred noprint">Внимание!</span> 
+            Предварительная регистрация не является билетом. Оплата участия осуществляется на месте проведения события. </p>
+            
+            {% elseif ticket.template_id == 7  %}
+
+             <h4>Регистрация <a  rel="nofollow" href= "/{{event.cities.alias}}/event/{% if event.alias %}{{event.alias}}{%else%}{{event.id}}{%endif%}">на событие</a></h4>
+            <p class="noprint"><b>{{ event.name }}</b></p>
+            
+            {% else %}
+            <h4>Электронный билет <a  rel="nofollow" href= "/{{event.cities.alias}}/event/{% if event.alias %}{{event.alias}}{%else%}{{event.id}}{%endif%}?utm_source=ticket&utm_medium=vitalhit&utm_campaign={{person.id}}">на событие</a></h4>
+            <p class="noprint"><b>{{ event.name }}</b></p>
+            <p class="noprint"><span class="cred noprint">Внимание!</span> Ссылка на эту страницу позволяет открыть электронный билет с любого компьютера! Не допускайте того, чтобы она попала к посторонним людям</p>
+            {% endif %}
+        </div>
+    </div> <!-- row noprint --> 
+
+    {% if ticket and ticket.canceled != 1 %}
+    
+        {% if ticket.status == 1 and ticket.summa > 0 %} 
+            
+            <h3 class='cred'>Ваш билет № {{ ticket.id }} ожидает оплаты </h3>
+            <p> вы можете завершить процедуру оплаты во вкладке <a  rel="nofollow" href= "https://igoevent.com/profile">Билеты</a></p>
+            <p>Если у вас возникли вопросы вы можете связаться с нами по<a href='https://wa.me/79254244207?text=Здравствуйте. Пишу вам по поводу события {{ event.name }}({{ event.id }}). Билет {{ ticket.id }}'>what's app</a><br>
+            почте: v@igoevent.com <br>
+            или сообщением вконтакте: <a  rel="nofollow" href= 'https://vk.com/im?sel=-136527321'>https://vk.com/im?sel=-136527321</a></p>
+        {% elseif ticket.status == 0 %}
+         <h3 class="cred">Вы не успели оплатить билет № {{ ticket.id }}. Вам нужно преобрасти билет заново.</h3>
+         <p>Если у вас возникли вопросы вы можете связаться с нами <a href='https://wa.me/79254244207?text=Здравствуйте. Пишу вам по поводу события {{ event.name }}({{ event.id }}). Билет {{ ticket.id }}'>what's app</a><br>
+            почте: v@igoevent.com <br>
+            или сообщением вконтакте: <a  rel="nofollow" href= 'https://vk.com/im?sel=-136527321'>https://vk.com/im?sel=-136527321</a></p>
+        {% elseif ticket.status == 7 %}
+         <h3 class="cred">Ваш билет  № {{ ticket.id }} не действителен, вам осуществили возврат денежных средств. </h3>
+         <p>Вам нужно преобрасти билет заново. Это возможно сделать по ссылке: <a  rel="nofollow" href= "https://igoevent.com/{{event.cities.alias}}/event/{% if event.alias %}{{event.alias}}{%else%}{{event.id}}{%endif%}?utm_source=ticket&utm_medium=vitalhit&utm_campaign={{person.id}}">{{event.name}}</a></p>
+         <p>Если у вас возникли вопросы вы можете связаться с нами <a href='https://wa.me/79254244207?text=Здравствуйте. Пишу вам по поводу события {{ event.name }}({{ event.id }}). Билет {{ ticket.id }}'>what's app</a><br>
+            почте: v@igoevent.com <br>
+            или сообщением вконтакте: <a  rel="nofollow" href= 'https://vk.com/im?sel=-136527321'>https://vk.com/im?sel=-136527321</a></p>
+        {% elseif ticket.template_id == 1 %}
+            <div  style="position:absolute; ">     
+                <img style="position:relative; z-index: 80;" src="https://igoevent.com/uploads/tickets/15kop-ticket-bg-gift-2021.jpg"
+                 align="center" width="97%" height="97%">
+                <div style="position:absolute; z-index: 100; top: 2%; right: 12%; background-color: white;" id="ticketBarcode"></div>
+            </div>
+        {% elseif ticket.template_id == 2 %}
+            <div  style="position:absolute; ">     
+                <img style="position:relative; z-index: 80;" src="https://igoevent.com/uploads/tickets/15kop-ticket-bg-gift-2-2021.jpg"
+                 align="center" width="97%" height="97%">
+                <div style="position:absolute; z-index: 100; top: 2%; right: 12%; background-color: white; " id="ticketBarcode"></div>
+            </div>
+        {% elseif ticket.template_id == 5 %}
+            <div  style="position:absolute; ">     
+                <img style="position:relative; z-index: 80;" src="https://igoevent.com/uploads/tickets/15kop-ticket-bg-gift-1-2022.jpg"
+                 align="center" width="97%" height="97%">
+                <div style="position:absolute; z-index: 100; top: 80%; right: 12%; background-color: white; " id="ticketBarcode"></div>
+            </div>
+        {% elseif ticket.template_id == 6 %}
+            <div  style="position:absolute; ">     
+                <img style="position:relative; z-index: 80;" src="https://igoevent.com/uploads/tickets/15kop-ticket-bg-gift-2-2022.jpg"
+                 align="center" width="97%" height="97%">
+                <div style="position:absolute; z-index: 100; top: 80%; right: 12%; background-color: white; " id="ticketBarcode"></div>
+            </div>
+        {% elseif ticket.template_id == 4 %}
+            <div  style="position:absolute; ">     
+                <img style="position:relative; z-index: 80;" src="https://igoevent.com/uploads/tickets/mamteatr-ticket-bg-2022.png"
+                 align="center" width="97%" height="97%">
+                <div style="position:absolute; z-index: 100; top: 90%; right: 12%; background-color: white; " id="ticketBarcode"></div>
+            </div>
+        {% elseif ticket.template_id == 3 %}
+        <div class="t_print row"> 
+            <div class="col-xs-12 col-lg-7">
+                <center><div id="ticketBarcode"></div></center>
+                <h2 class="mt0">{{ event.name }}</h2>
+
+                <table class="t_info">
+                    <tbody>
+                        {% if ticket.events.no_date  != 1 %} 
+                        <tr>
+                            <td class="tar"><span>дата</span></td>
+                            <td><p><b>
+                            {% if ticket.events.date_open %} 
+                            {{ ticket.events.date_open|date('d.m.Y в H:i') }} 
+                            {% else%}
+                            {{ ticket.events.date|date('d.m.Y в H:i') }}
+                            {% endif %}
+                            {% if ticket.events.date_end %} 
+                            — {{ ticket.events.date_end|date('d.m.Y в H:i') }} 
+                            {% endif %}
+                            </b></p></td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td class="tar"><span>номер регистрации</span></td>
+                            <td><p><b>{{ ticket.id }}</b></p></td>
+                        </tr>
+                        <tr>
+                            <td class="tar"><span>тип</span></td>
+                            <td><p>{{ ticket.seats.name }} {% if ticket.seat %}, место №{{ ticket.seat }} {% endif %}</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tar"><span>ФИО</span></td>
+                            <td><p>{{ person.second_name }} {{ person.name }} {{ person.middle_name }}</p></td>
+                        </tr>
+                        <!--
+                        <tr>
+                            <td class="tar"><span>оплата</span></td>
+                            <td><p>{% if ticket.status == 100 %} Оплачен {% elseif ticket.status == 11 %} Ожидает оплаты {% endif %} <b>{{ ticket.summa }} рублей.</b> </p></td>
+                        </tr> -->
+                        <tr>
+                            <td class="tar"><span>Дата регистрации:</span></td>
+                            <td><p>{{ ticket.date|date('d.m.Y в H:i') }}</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tar"><span>Информация о&nbsp;регистрации</span></td>
+                            <td><p>{{ ticket.seats.info }}</p>
+                                {% if event.places.info_ticket %} <p>{{event.places.info_ticket }}</p>{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tar"><span>Место</span></td>
+                            <td><p>
+                            {% if event.places.id != eventplace.id %}
+                                {{ eventplace.name}}
+                            {% else %}
+                                {% if ticket.events.place %}{{ ticket.events.place }}{% else %}{{ event.places.type }} {{ event.places.name }}{% endif %}
+                            {% endif%}
+                            </p></td>
+                        </tr>
+                        <tr>
+                            <td class="tar"><span>Адрес</span></td>
+                            <td><p>
+                            {% if event.places.id != eventplace.id %}
+                                {{ eventplace.address }}
+                            {% else %}
+                                {% if ticket.events.address %}{{ ticket.events.address }}{% else %}{{ event.places.address }}{% endif %}</p></td>
+                            {%endif%}
+                        </tr>
+                        {% if event.places.path %}{% if ticket.events.address %}<!-- ничего не выводим -->{% else %}
+                        <tr>
+                            <td colspan="2" class="tar"><span>Как добраться</span><br>
+                            <p>
+                            {{eventplace.path|raw}}
+                            </p></td>
+                        </tr>
+                        {% endif %}{% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-12 col-lg-5">        
+                <!--<center><img width="50%" src="{{ qr }}"></center>-->
+                {% if event.places.map %}
+                <img width="100%" src="https://igoevent.com/uploads/places/{{ event.places.map }}">
+                {% endif %}
+            </div>
+        
+            <div class="clear"> </div>
+
+            <div class="col-xs-12 col-lg-7 t_mini">
+                <p> Настоящая регистрация не является оплатой участия в мероприятии, а говорит о вашем намерении  прийти на мероприятие и подсказывает как легче добраться до мероприятия. Обязательно возьмите его с собой на мероприятие (в электронном и/или бумажном виде).</p>
+                <p> Не передавайте и не пересылайте свою электронную регистрацию третьим лицам! Электронная регистрация действителен для прохода на мероприятие 1 раз. В случае использования предварительной регистрации  третьим лицом ответственность за это несет покупатель.</p>
+                <p> Агент не несет ответственности за достоверность информации о мероприятии и соответствие мероприятия ожиданиям покупателя. Всю ответственность за анонсирование, организацию и проведение мероприятия, а также за возможный ущерб в случае изменения программы, переноса или отмены мероприятия, несет организатор мероприятия.</p>
+                <!--<p> Политика возврата электронных билетов определяется организатором мероприятия.
+                </p>-->
+                <p>ссылка на событие: <a  rel="nofollow" href= "https://igoevent.com/{{event.cities.alias}}/event/{% if event.alias %}{{event.alias}}{%else%}{{event.id}}{%endif%}?utm_source=ticket&utm_medium=vitalhit&utm_campaign={{person.id}}">igoevent.com/{{event.cities.alias}}/event/{% if event.alias %}{{event.alias}}{%else%}{{event.id}}{%endif%}?utm_source=ticket&utm_medium=vitalhit&utm_campaign={{person.id}}</a></p>
+            </div>
+            <div class="col-xs-12 col-lg-5">
+                <b>Билетный агент: iGoEvent.com</b><br>
+                ООО «ХОРОШИЙ ПРОЕКТ»<br>
+                ИНН: 7729682883<br>
+                КПП: 770801001<br>
+                ОГРН: 1117746393874<br>
+                Юр. адрес: ул. Мясницкая, 13, стр. 20<br>
+                <a href='https://wa.me/79254244207?text=Здравствуйте. Пишу вам по поводу события {{ event.name }}({{ event.id }}). Билет {{ ticket.id }}'>what's app</a><br>
+            </div>
+            <div class="clear"> </div>
+        </div> <!-- t_print row -->
+        {% else %}
+        <div class="t_print row"> 
+            <div class="col-xs-12 col-lg-7">
+                <center><div id="ticketBarcode"></div></center>
+                <h2 class="mt0">{{ ticket.seats.name }}. {{ event.name }}</h2>
+
+                <table class="t_info">
+                    <tbody>
+                        {% if ticket.events.no_date  != 1 %} 
+                        <tr>
+                            <td class="tar"><span>Дата</span></td>
+                            <td><p><b>{{ ticket.events.date|date('d.m.Y в H:i') }}</b></p></td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td class="tar"><span>Номер билета</span></td>
+                            <td><p><b>{{ ticket.id }}</b></p></td>
+                        </tr>
+                        <tr>
+                            <td class="tar"><span>Тип</span></td>
+                            <td><p>{{ ticket.seats.name }} {% if ticket.seat %}, место №{{ ticket.seat }} {% endif %}</p></td>
+                        </tr>
+                        {% if ticket.template_id != 8 %}
+                        <tr>
+                            <td class="tar"><span>Покупатель</span></td>
+                            <td><p>{{ person.second_name }} {{ person.name }} {{ person.middle_name }}</p></td>
+                        </tr>
+                        {% else %}
+
+                        {% endif %}
+                        {% if ticket.summa != 0 %}
+                        <tr>
+                            <td class="tar"><span>Оплата</span></td>
+                            <td><p>{% if ticket.status == 100 %} Оплачен {% elseif ticket.status == 11 %} Ожидает оплаты {% endif %} 
+                            <b>{{ ticket.summa }} рублей.</b> </p></td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td class="tar"><span>Дата покупки</span></td>
+                            <td><p>{{ ticket.date|date('d.m.Y в H:i') }}</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tar"><span>Информация о&nbsp;билете</span></td>
+                            <td><p>{{ ticket.seats.info }}<br>
+                            {%if ticket.seats.info_ticket %} {{ ticket.seats.info_ticket|raw}} {% endif %}
+                             </p>
+                            {% if event.places.info_ticket %} <p>{{event.places.info_ticket }}</p>{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tar"><span>Место</span></td>
+                            <td><p>
+                            {% if event.places.id != eventplace.id %}
+                                {{ eventplace.name}}
+                            {% else %}
+                                {% if ticket.events.place %}{{ ticket.events.place }}{% else %}{{ event.places.type }} {{ event.places.name }}{% endif %}
+                            {% endif%}
+                            </p></td>
+                        </tr>
+                        <tr>
+                            <td class="tar"><span>Адрес</span></td>
+                            <td><p>
+                            {% if event.places.id != eventplace.id %}
+                                {{ eventplace.address }}
+                            {% else %}
+                                {% if ticket.events.address %}{{ ticket.events.address }}{% else %}{{ event.places.address }}{% endif %}</p></td>
+                            {%endif%}
+                        </tr>
+                        {% if event.places.path %}{% if ticket.events.address %}<!-- ничего не выводим -->{% else %}
+                        <tr>
+                            <td colspan="2" class="tar"><span>Как добраться</span><br>
+                            <p>
+                            {{eventplace.path|raw}}
+                            </p>
+                        </td>
+                        </tr>
+                        {% endif %}{% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-12 col-lg-5">        
+                <!--<center><img width="50%" src="{{ qr }}"></center>-->
+                {% if event.places.map %}
+                <img width="100%" src="https://igoevent.com//uploads/places/{{ event.places.map }}">
+                {% endif %}
+            </div>
+        
+            <div class="clear"> </div>
+
+            <div class="col-xs-12 col-lg-7 t_mini">
+                 {% if ticket.template_id == 3  or  ticket.template_id == 7 %}
+
+
+                {% elseif ticket.template_id == 8  %}
+
+
+                <p> Настоящий электронный билет является подтверждением, что вы принимаете участиу в мероприятии. Обязательно возьмите его с собой на мероприятие (в электронном и/или бумажном виде).</p>
+                <p> Не передавайте и не пересылайте свой электронный билет третьим лицам! Электронный билет действителен для прохода на мероприятие 1 раз. В случае использования электронного билета третьим лицом ответственность за это несет покупатель.</p>
+                <p> Агент не несет ответственности за достоверность информации о мероприятии и соответствие мероприятия ожиданиям покупателя. Всю ответственность за анонсирование, организацию и проведение мероприятия, а также за возможный ущерб в случае изменения программы, переноса или отмены мероприятия, несет организатор мероприятия.</p>
+                <p> Политика возврата электронных билетов определяется организатором мероприятия.
+                </p>
+
+                {% else %}
+                <p> Настоящий электронный билет является подтверждением вашей оплаты участия в мероприятии. Обязательно возьмите его с собой на мероприятие (в электронном и/или бумажном виде).</p>
+                <p> Не передавайте и не пересылайте свой электронный билет третьим лицам! Электронный билет действителен для прохода на мероприятие 1 раз. В случае использования электронного билета третьим лицом ответственность за это несет покупатель.</p>
+                <p> Агент не несет ответственности за достоверность информации о мероприятии и соответствие мероприятия ожиданиям покупателя. Всю ответственность за анонсирование, организацию и проведение мероприятия, а также за возможный ущерб в случае изменения программы, переноса или отмены мероприятия, несет организатор мероприятия.</p>
+                <p> Политика возврата электронных билетов определяется организатором мероприятия.
+                </p>
+
+                {% endif %}
+
+                <p>Ссылка на событие:<a  rel="nofollow" href= "https://igoevent.com/{{event.cities.alias}}/event/{% if event.alias %}{{event.alias}}{%else%}{{event.id}}{%endif%}?utm_source=ticket&utm_medium=vitalhit&utm_campaign={{person.id}}">igoevent.com/{{event.cities.alias}}/event/{% if event.alias %}{{event.alias}}{%else%}{{event.id}}{%endif%}?utm_source=ticket&utm_medium=vitalhit&utm_campaign={{person.id}}</a></p>
+            </div>
+            
+            {% if ticket.template_id == 3  or  ticket.template_id == 7 %}
+
+            {% else %}
+            <div class="col-xs-12 col-lg-5">
+                <b>Билетный агент:  iGoEvent.com</b><br>
+                ООО «ХОРОШИЙ ПРОЕКТ»<br>
+                ИНН: 7729682883<br>
+                КПП: 770801001<br>
+                ОГРН: 1117746393874<br>
+                Юр. адрес: ул. Опалиховский пер., д. 6, кв. 3<br>
+                <a href='https://wa.me/79254244207?text=Здравствуйте. Пишу вам по поводу события {{ event.name }}({{ event.id }}). Билет {{ ticket.id }}'>what's app</a><br>
+            </div>
+
+            {% endif %}
+            <div class="clear"> </div>
+        </div> <!-- t_print row -->
+        {% endif %}
+    
+    {% endif %}
+
+
+  
+    {% if ticket.del == 1 %}
+        <h1>Билет удален</h1>
+        <p>Если у вас возникли вопросы, свяжитесь с нами.<br>
+            <a href="mailto:v@igoevent.com">v@igoevent.com</a><br>
+            <a href="https://vk.com/im?sel=-136527321">ВКонтакте</a><br>
+            <a href='https://wa.me/79254244207?text=Здравствуйте. Пишу вам по поводу события {{ event.name }}({{ event.id }}). Билет {{ ticket.id }}'>what's app</a>
+        </p>
+    {%endif %}
+
+    {% if ticket.canceled == 1 %}
+        <h1>Ваш билет анулирован</h1>
+        <p>Если у вас возникли вопросы, свяжитесь с нами.<br>
+            <a href="mailto:v@igoevent.com">v@igoevent.com</a><br>
+            <a href="https://vk.com/im?sel=-136527321">ВКонтакте</a><br>
+            <a href='https://wa.me/79254244207?text=Здравствуйте. Пишу вам по поводу события {{ event.name }}({{ event.id }}). Билет {{ ticket.id }}'>what's app</a>
+        </p>
+
+    {%endif %}
+
+</div><!-- container --> 
+
+<style type="text/css">
+    .container { padding-top: 10px !important;}
+    h1 { margin-top: 50px;}
+    button { float: right; padding: 5px 10px; }
+    #ticketBarcode div { font-size: 16px !important; }
+</style>
+
+
+<style type="text/css" media="print">
+    h1 { margin: 10px 0; font-size: 28px;}
+    h2 { margin: 20px 0; font-size: 21px;}
+    button, .noprint {display: none !important; }
+    #ticketBarcode div { font-size: 16px !important; }
+</style>

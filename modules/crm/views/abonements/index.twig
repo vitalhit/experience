@@ -1,0 +1,93 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<div class="row">
+				<div class="col-xs-12 col-lg-3">
+					<h2>Абонементы</h2>
+				</div>
+				<div class="col-xs-12 col-lg-7">
+					<div class="row">
+						<div class="col-xs-12 col-sm-3">
+							<h3 class="itog">{{ summnal|number_format(0, '.', ' ') }}<span>Наличка</span></h3>
+						</div>
+						<div class="col-xs-12 col-sm-3">
+							<h3 class="itog">{{ summbez|number_format(0, '.', ' ') }}<span>Безнал</span></h3>
+						</div>
+						<div class="col-xs-12 col-sm-3">
+							<h3 class="itog">{{ summpad|number_format(0, '.', ' ') }}<span>Билетник</span></h3>
+						</div>
+						<div class="col-xs-12 col-sm-3">
+							<h3 class="itog">{{ summgr|number_format(0, '.', ' ') }}<span>GoodRepublic</span></h3>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-md-2">
+					<a href="/crm/abonements/daycheck" class="btn btn-primary pull-right">Сверка абонементов</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/residence_step.twig', {'company' : company}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<div class="mini_header mt0"><span>АКТИВНЫЕ</span></div>
+
+		<table class="tb stacktable">
+			<tr>
+				<td>#</td>
+				<td>Гость</td>
+				<td>Начало</td>
+				<td>Окончание</td>
+				<td>Кол-во визитов</td>
+				<td>Остаток визитов</td>
+				<td>Стоимость</td>
+				<td>Информация</td>
+				<td></td>
+			</tr>
+			{% for row in abonements %}
+				<tr>
+					<td>{{ row.id }}</td>
+					<td><a href="/crm/persons/view?id={{ row.persons.id }}">{{ row.persons.second_name }} {{ row.persons.name }}</a></td>
+					<td>{{ row.start|date('d.m.Y') }}</td>
+					<td>{{ row.end|date('d.m.Y') }}</td>
+					<td>{{ row.countvis }}</td>
+					<td>{{ row.balance }}</td>
+					<td>{{ row.price }}</td>
+					<td>{{ row.info }}</td>
+					<td><a href="/crm/abonements/update?id={{ row.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+				</tr>
+			{% endfor %}
+		</table>
+
+		<div class="mini_header mt20"><span>ЗАКОНЧИЛИСЬ</span></div>
+
+		<table class="tb stacktable">
+			<tr>
+				<td>#</td>
+				<td>Гость</td>
+				<td>Начало</td>
+				<td>Окончание</td>
+				<td>Кол-во визитов</td>
+				<td>Остаток визитов</td>
+				<td>Стоимость</td>
+				<td>Информация</td>
+				<td></td>
+			</tr>
+			{% for row in abonementsold %}
+				<tr>
+					<td>{{ row.id }}</td>
+					<td><a href="/crm/persons/view?id={{ row.persons.id }}">{{ row.persons.second_name }} {{ row.persons.name }}</a></td>
+					<td>{{ row.start|date('d.m.Y') }}</td>
+					<td>{{ row.end|date('d.m.Y') }}</td>
+					<td>{{ row.countvis }}</td>
+					<td>{{ row.balance }}</td>
+					<td>{{ row.price }}</td>
+					<td>{{ row.info }}</td>
+					<td><a href="/crm/abonements/update?id={{ row.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>

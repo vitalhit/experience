@@ -1,0 +1,57 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{{ biblioevent.name }}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/event_step.twig', {'biblioevent' : biblioevent}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<table class="table dates">
+			<tbody>
+				<tr>
+					<th>Тема</th>
+					<th>Событие</th>
+					<th>Тип</th>
+					<th>Статус</th>
+					<th></th>
+					<th></th>
+				</tr>
+				{% for letter in letters %}
+					<tr class="{% if letter.status == 0 %} noactive {% endif %}">
+						<td>{{ letter.theme }}</td>
+						<td>{{ biblioevent.name}}</td>
+						<td>{% if letter.type == 1%}После регистрации{% else %} - {% endif %}</td>
+						<td>{% if letter.status == 1%}Активно{% else %} Скрыто {% endif %}</td>
+						<td><a href="/letters/create?id={{ letter.id }}&biblioeventid={{ biblioevent.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+						<td><a href="/letters/delete?id={{ letter.id }}&biblioeventid={{ biblioevent.id }}" data-confirm="Уверены, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{{ this.render('_form.php', {'model' : model, 'biblioevent' : biblioevent }) | raw }}
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+	// Даты
+	$(document).ready(function() {
+		$('#events-event_id').on('change', function() {
+			var biblioeventid = this.value;
+			$.ajax({
+				type: 'get',
+				url: "/events/get-dates",
+				data: {'biblioeventid': biblioeventid},
+				response: 'text',
+				success: function(data){
+					$('.dates').html(data);
+					$('.left_blo').css({minHeight: $('.wrap').height()});
+				}
+			}); 
+		});
+	});
+</script>

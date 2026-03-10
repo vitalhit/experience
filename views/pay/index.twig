@@ -1,0 +1,36 @@
+<h3>Проверьте правильность данных::</h3>
+
+<p>ID: {{user.id}}</p>
+<p>ФИО: {{user.name}} {{user.second_name}}</p>
+<p>Mail: {{user.mail}}</p>
+<p>Телефон: {{user.phone}}</p>
+<p>№ заказа: {{order_id}}</p>
+<p>Сумма: {{sum|number_format(2, '.', '')}}</p>
+<p>Комментарий: {{info}}</p>
+{% for ticket in tickets %}
+	<p>{"quantity": {{ticket.count}}, "price": {"amount": {{ticket.money|number_format(2, '.', '')}}},  "tax": 3,"text": "{{ticket.seats.name}}"}
+	{% if not loop.last %},{% endif %}
+	</p>
+{% endfor %}
+
+<form action="https://yoomoney.ru/eshop.xml" method="post">
+	<input name="shopId" value="157496" type="hidden"/>
+	<input name="scid" value="154733" type="hidden"/>
+	<input name="ym_merchant_receipt"
+		value='{"customerContact": "{% if user.mail %}{{user.mail}}{% else %}{{user.phone}}{% endif %}",
+			"taxSystem": 1,
+			"items":[
+			{% for ticket in tickets %}
+				{"quantity": {{ticket.count}}, "price": {"amount": {{ticket.money|number_format(2, '.', '')}}},  "tax": 3,"text": "{{ticket.seats.name}}"}
+				{% if not loop.last %},{% endif %}
+			{% endfor %}
+			]}'
+		type="hidden"/>
+	<input name="customerNumber" value="{{user.id}}" type="hidden"/>
+	<input name="paymentType" value="AC" type="hidden"/>
+	<input name="orderNumber" value="{{order_id}}" type="hidden"/>
+	<input name="sum" value="{{sum|number_format(2, '.', '')}}" type="hidden">
+	<input name="cps_phone" value="{{user.phone}}" type="hidden"/>
+	<input name="cps_email" value="{{user.mail}}" type="hidden"/>
+	<input type="submit" class="btn btn-primary" value="Оплатить"/>
+</form>

@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="stiky">
+
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-9">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12"> 
+                    <table class="tb stacktable">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>event_id</td>
+                            <td>+ ticket</td>
+                            <td>contest_id</td>
+                            <td>status</td>
+                            <td>link</td>
+                            <td>выполнить</td> 
+                        </tr>
+                        
+                       
+                            <td><span>{{ model.id }}</span></td>
+                            <td>
+                                <span class="{% if model.status == 1  %}text-success{% else %} text-danger{% endif %}">{{ model.date_end|date('Y-m-d') }}
+                                </span>
+                                
+                            </td>
+                            <td><span class=""><a href="crm/events/update?id={{ model.event_id }}">{{ model.event_id }}</a></span></td><td><span><a href="/crm/seats/create?event_id={{ model.event_id }}">+</a></span></td>
+                            <td><span><a href="/crm/contests/update?id={{ model.id }}">{{ model.id }}</a></span></td>
+                            <td><span>{{ model.status }}</span></td>
+                            <td><span><a href="{{ model.link }}">{{ model.link }}</a></span></td>
+                            </td>
+                            <td>{% if model.status == 0 %}<span class="text-danger glyphicon glyphicon-check"></span>{% elseif model.status == 1  %}<span class="text-success glyphicon glyphicon-check"></span>{% endif %}</td>
+                        </tr>
+                </table>
+                </div>
+                
+            </div>
+        </div>
+        
+       <!--  <div class="mini_header mt0"><span>ВИЗИТЫ <div class="badge">{{ client.visits|length }}</div></span></div>
+
+        <div class="newblo">
+            <table class="table stacktable">
+                <tr>
+                    <td>Начало</td>
+                    <td>Окончание</td>
+                    <td>Скидка</td>
+                    <td>Стоимость</td>
+                </tr>
+                {% for row in client.visits|reverse %}
+                    <tr>
+                        <td>{{ row.start|date('d.m в H:i') }}</td>
+                        <td>{{ row.end|date('d.m в H:i') }}</td>
+                        <td>{{ row.discount_money }}</td>
+                        <td>{{ row.money }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div> -->
+
+    </div>
+</div>

@@ -1,0 +1,194 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>Чек лист для представителя площадки: {{ biblioevent.name }}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/event_step.twig', {'biblioevent' : biblioevent}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<table class="tb dates">
+			<tbody>
+				<tr>
+					<th>Даты события</th>
+					<th>Осталось мест</th>
+					<th class="tac">Регистрации</th>
+					<th colspan="2" class="tac">Гости</th>
+					<th>Инфо</th>
+					<th colspan="7"></th>
+				</tr>
+				{% for row in dates %}
+					<tr class="{% if (row.date.status == 0) or (row.date.date|date('Y-m-d') < now|date('Y-m-d')) %} noactive black {% else %} green {% endif %}">
+						<td>{{ row.date.date|date('d.m H:i') }}</td>
+						<td>
+								{% if row.s_count == 0 %} <span class="cred normal">нет!</span> {% else %} {{ row.s_count - row.t_zayavka_c - row.t_back_c - row.t_pay_c}} / {{ row.s_count }} {% endif %}
+							</td>
+						<td class="tar bl">{{ row.t_reg_c_t }} ({{ row.t_reg_c }}) </td>
+						<td class="tar bl c_blue">{{ row.t_pay_c_t }}</td>
+						<td class="tar c_green">{{ 0 + row.t_pay_s }}<span>р</span></td>
+						<!-- <td>{{ row.date.info }}</td> -->
+						<td class="bl mini">{{row.date.info}}</td>
+						<td>
+							<span>{% if row.date.link_vk_id %}<a href="https://vk.com/event{{ row.date.link_vk_id }}">vk</a>,{% else %} <s>vk</s>,{% endif %}
+							{% if row.date.link_fb %}<a href="{{ row.date.link_fb }}">fb</a>,{% else %} <s>fb</s>,{% endif %}
+							{% if row.date.link_yt %}<a href="{{ row.date.link_yt }}">yt</a>,{% else %} <s>yt</s>,{% endif %}
+							{% if row.date.link_kg %}<a href="{{ row.date.link_kg }}">kg</a><br>{% else %} <s>kg</s><br>{% endif %}
+							
+							{% if row.date.link_insta %}<a href="{{ row.date.link_insta }}">insta</a>,{% else %} <s>insta</s>,{% endif %}
+							
+							</span>
+						</td>
+						
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="clear mt20"></div>
+		<div class="col-xs-12 col-lg-12">
+		
+		<h4>Ресурсы площадки</h4>
+		<div class="row">
+			<div class="col-xs-12 col-lg-6">
+				<b style="color: red;">Ссылки на события в эту дату:</b><br>
+				{% if model.link_vk_id %}<a href="https://vk.com/event{{ model.link_vk_id }}">vk.com/{{ model.link_vk }}</a>{% else %} <a href="https://vk.com/groups">создайте встречу ВК</a> {% endif %}<br>
+				{% if model.link_fb %}<a href="{{ model.link_fb }}">{{ model.link_fb }}</a>{% else %} <a href="https://www.facebook.com/events/create/?acontext=event_action_history">создайте встречу fb</a> {% endif %}<br>
+
+			<b style="color: red;">Уважаемый, представитель площадки, размести эти ссылки</b>: <br>
+			{% if biblioevent.places.link_insta %}{{biblioevent.places.link_insta }}{% else %} в instagram{% endif %}<br>
+			<a href="https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=insta&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=band&utm_term={{ model.id }}"> ссылку</a><br>
+			
+			
+			<a href="https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=partner&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=person&utm_term={{ model.id }}">на личной страницы вк</a><br>
+
+			<a href="https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=fb-user&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=person&utm_term={{ model.id }}">на личной страницы fb</a><br>
+			
+			<a href="https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=vk-message&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=person&utm_term={{ model.id }}">ссылка для сообщений в вк(message)</a>
+			<br>
+			<a href="https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=whatsapp&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=person&utm_term={{ model.id }}">whatsapp(message):</a>
+			<br>
+			<a href="https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=yt&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ model.id }}">youtube</a>
+			
+			</div><div class="col-xs-12 col-lg-6">
+			<b>Рекомендации</b><br>
+			Отправьте организатору <i>список людей</i>, которые стоит пригласить или связаться<br>
+			Попросите вашу <i>команду</i> разместить анонсы на своих личных страницах<br>
+			<i>Сделать репосты</i> в соц. сетях из встречи<br>
+			Отправить <i>ссылку для репоста из встречь</i> {% if model.link_vk_id %} <a href="https://vk.com/event{{model.link_vk_id}}">vk</a> {% endif %}
+			{% if model.link_fb %} <a href="{{model.link_fb}}">fb</a> {% endif %} всем музыкантам<br>
+			<i>Разослать друзьям</i> в городе приглашение <a href="https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=sms&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=person&utm_term={{ model.id }}">смс</a> и <a href="https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=whatsapp&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=person&utm_term={{ model.id }}">what's app</a><br>
+			
+		</div>
+		</div>
+		<hr>
+		
+
+		<h4>Розыгрыш ВК(<a href="https://vk.com/event{{model.link_vk_id}}">встречи</a>)</h4>
+		<div class="row">
+			<div class="col-xs-12 col-lg-3">
+				Текст розыгрыша
+				<textarea>
+Мы разыгрываем 5 билетов на {{ biblioevent.name }}
+
+Чтобы получить один из 5-ти билетов выполни правила: 
+{% if biblioevent.cities.id == 1 %}1. Подпишись на событие и [igoeventmsk|igoevent.com: Москва]{% elseif biblioevent.cities.id == 2 %} 1. Подпишись на событие и [igoeventspb|igoevent.com: Петербург]{% else %} 1. Подпишись на событие и [igoevent|igoevent.com]{% endif %}
+
+2. Сделай репост этой записи
+Итоги подведём во вторник ... при помощи Random_app.
+
+Если не веришь в удачу, билеты здесь:
+https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=contest&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=post&utm_term={{ biblioevent.id }}
+
+{% if biblioevent.link_vk_img %}https://vk.com/{{ biblioevent.img.vk }}{% endif %}
+
+{% if biblioevent.img.vk %}https://vk.com/{{ biblioevent.img.vk }}{% endif %}
+{{ biblioevent.link_vk_audio }}
+{% for row in mybands %}{{ row.band.link_vk_audio }}{% endfor %}
+			</textarea>
+			</div>
+			<div class="col-xs-12 col-lg-3">
+			Подведение итогов
+			<textarea>
+Итак, поздравляем победителей:
+
+Ссылки на розыгрыш: https://randstuff.ru/vkwin/jceo1v/
+
+Просим победителей написать в директ нашего паблика письмо вида: "концерт \ эл.почта" 
+Пример : {{ biblioevent.name }} \ mail@mail.ru 
+{% if biblioevent.cities.id == 1 %}https://vk.com/im?sel=-137542835{% elseif biblioevent.cities.id == 2 %} Ссылка на директ: https://vk.com/im?sel=-143192051{% else %} Ссылка на директ: https://vk.com/im?sel=-136527321{% endif %}
+
+Кто не победил - не расстраивайтесь, увидимся на концерте - такое событие нельзя пропускать! 🔥Билеты можно приобрести здесь https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=contest&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=results&utm_term={{ model.id }}</textarea>
+			</div>
+			<div  class="col-xs-12 col-lg-3">
+			{% for contest in contests %}
+
+				<a class="btn {% if contest.status == 0 and contest.date_end|date('Y-m-d') <= now|date('Y-m-d') %}btn-danger{% elseif contest.status == 0 and contest.date_end|date('Y-m-d') >= now|date('Y-m-d')%}btn-warning{% elseif contest.status == 1 %}btn-success{% endif %} btn-xs" href="/crm/contests/update?id={{ contest.id }}">{{ contest.date_end|date('Y-m-d') }}</a> <a href="{{ contest.link }}">-></a><br>
+
+			{% endfor %}
+			</div>
+			<div class="col-xs-12 col-lg-3"><br>
+				<a class="btn btn-success btn-sm" href="/crm/contests/create?event_id={{model.id}}"> добавить розыгрыш <span class="glyphicon glyphicon-plus small"></span></a>
+			</div>
+			<div class="clear"></div>
+			<div class="col-xs-12 col-lg-3">
+				Текст розыгрыша instagram
+				<textarea>
+Розыгрыш билетов на {{ biblioevent.name }}
+
+{{model.info}}
+Для участия в розыгреше: 
+• Подпишитесь на {{biblioevent.places.link_insta }} и 
+{% for row in mybands %}{{ row.band.link_insta }}{% endfor %}
+
+• Поставьте ❤ этому посту
+• В комментариях отметьте друга, который пойдет с вами на концерт
+⠀
+Во вторник мы рандомно выберем победителя среди всех выполнивших условия! Ваша страница должна быть открыта в день подведения итогов.
+⠀
+Удачи😉
+
+Когда: {{model.date|date('Y-m-d  H:i')}}
+Где: {{biblioevent.places.name}}, {{biblioevent.places.address}}
+
+Ссылка на фото: https://igoevent.com/web/uploads/users/{{biblioevent.image}}
+
+			</textarea>
+			</div>
+		</div>
+		
+		<h4>Email</h4>
+		<p>
+			Email-маркетинг(для почтовой рассылки):<br> https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=email&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content=link&utm_term={{ model.id }}	
+		</p>
+		
+			
+	</div>
+			
+		{# this.render('_form.php', {'model' : model, 'biblioevent' : biblioevent, 'biblioevents' : biblioevents}) | raw #}
+
+		
+
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+	// Даты
+	$(document).ready(function() {
+		$('#events-event_id').on('change', function() {
+			var biblioeventid = this.value;
+			$.ajax({
+				type: 'get',
+				url: "/crm/events/get-dates",
+				data: {'biblioeventid': biblioeventid},
+				response: 'text',
+				success: function(data){
+					$('.dates').html(data);
+					$('.left_blo').css({minHeight: $('.wrap').height()});
+				}
+			}); 
+		});
+	});
+</script>

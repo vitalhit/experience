@@ -1,0 +1,125 @@
+{{ use('/yii/widgets') }}
+
+<ul class="search_result"></ul>
+
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<div class="row">
+				<div class="col-xs-12 col-lg-3">
+					<form class="form-inline form_lite">
+						<input type="text" class="form-control who" name="referal" placeholder="Фамилия гостя" autocomplete="off">
+					</form>
+				</div>
+				<div class="col-xs-12 col-lg-9">
+					<h2>Все гости</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/person_step.twig', {'company' : company}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+
+		<table class="tb stacktable">
+			<tr>
+				<td></td>
+				<td></td>
+				<td>ФИО</td>
+				<td>Mail</td>
+				<td>Телефон</td>
+				<td>Группа</td>
+				<td>Статус</td>
+			</tr>
+			{% for person in persons %}
+				<tr>
+					<td><span>{{ person.id }}</span></td>
+					<td class="tac">
+						{% if person.image %}
+							<img src="/uploads/users/{{ person.image }}" class="w26 img-circle">
+						{% else %}
+							<img src="/web/images/noimage.png" class="w26 img-circle">
+						{% endif %}
+					</td>
+					<td><a href="/crm/persons/view?id={{ person.id }}">{{ person.second_name }} {{ person.name }} {{ person.middle_name }}</a> </td>
+					<td><a href="mailto:{{ person.mail }}?subject=Приглашаю вас на концерт&body=Здравствуйте,  {{ person.second_name }} {{ person.name }} .">{{ person.mail }}</a></td>
+
+
+					<td>{{ person.phone }}(<a target="_blank" href="https://wa.me/{{ person.phone }}?text=Здравствуйте, {{ person.name }} {{ person.middle_name }}. ">wap</a>)</td>
+					<td>{{ person.groups|slice(0, 10) }}</td>
+					<td>{{ person.status }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+	{{link_pager_widget({
+	'pagination': pages
+}) }}
+
+
+
+<div class="popup end popup_d"></div>
+
+<div class="overlay"></div>
+
+
+
+<script type="text/javascript">
+
+$(function(){
+
+
+	$(".byticket").click(function(){
+		console.log($(this).prev(".uid").val());
+		$.ajax({
+			type: 'get',
+				url: "/crm/persons/formticket", //Путь к обработчику
+				data: {'uid':$(this).prev(".uid").val()},
+				response: 'text',
+				success: function(data){
+					$(".end").html(data).fadeIn(); //Выводим полученые данные в списке
+				}
+			})
+		var myscrollpop = $(window).scrollTop();
+		$('.popup.end').animate({'top': myscrollpop + 100, 'opacity': 1}, 500);
+		$('.overlay').fadeIn();
+	})
+
+
+		//Живой поиск
+		$('.who').bind("change keyup input click", function() {
+			if(this.value.length >= 4){
+				$.ajax({
+					type: 'get',
+					url: "/crm/persons/personsfind", //Путь к обработчику
+					data: {'name':this.value},
+					response: 'text',
+					success: function(data){
+						$(".search_result").html(data).fadeIn(); //Выводим полученые данные в списке
+					}
+				})
+				$(".overlay").fadeIn();
+				$(".form_lite").css({'zIndex': 9000});
+
+			}
+		})
+
+		$(".search_result").hover(function(){
+			$(".who").blur(); //Убираем фокус с input
+		})
+
+		//При выборе результата поиска, прячем список и заносим выбранный результат в input
+		$(".search_result").on("click", "li", function(){
+			s_user = $(this).text();
+			//$(".who").val(s_user).attr('disabled', 'disabled'); //деактивируем input, если нужно
+			$(".search_result, .overlay").fadeperson();
+			$(".form_lite").css({'zIndex': 1000});
+
+		})
+		
+	})
+
+</script>

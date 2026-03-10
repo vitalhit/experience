@@ -1,0 +1,22 @@
+
+.form-control {margin-bottom: 5px;}
+.reg_accept {font-weight: normal; margin: 0;}
+.pop_close {
+    position: absolute;
+    z-index: 9000;
+    width: 30px;
+    height: 30px;
+    right: -35px;
+    top: -35px;
+    background: url('../images/close2.png') center no-repeat;
+    cursor: pointer;
+}
+
+
+@media (max-width:767px){
+	.mypopup { top: 0px; left: 0; margin-left: 0px; width: 100%;}
+	.my_grey b { text-align: center;}
+}
+
+
+

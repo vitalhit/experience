@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <h2>{{ company.name }}</h2>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="steps">
+        {{ this.render('/module/finance_step.twig', {'company' : company}) | raw }}
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-9">
+        <div class="row">
+            {% for contragent in contragents %}
+                <div class="col-xs-12 col-md-3">
+                    <div class="newblo small">
+                        <p class="mini">Контрагент #{{ contragent.id }}</p>
+                        <h3 class="h70">
+                        {% if contragent.status_fill <  0 %}
+                        <a class="btn btn-light btn-xs">Не заполнен</a> <a class="btn btn-success btn-xs" href="/crm/contragent/update?id={{contragent.id }}">edit</a> <br>
+                        <s> 
+                        <a href="/crm/contragent/view?id={{ contragent.id }}">{{ contragent.name }}</a></s><div class="clear"></div>
+                        </h3>
+                        {% elseif contragent.status_fill == 0 %}
+                        <a class="btn btn-warning btn-xs">Заполнить</a> <a class="btn btn-success btn-xs" href="/crm/contragent/update?id={{contragent.id }}">edit</a><br>
+                        <a href="/crm/contragent/view?id={{ contragent.id }}">{{ contragent.name }}</a></h3>
+                        {%else%}
+                        <a class="btn btn-success btn-xs">Заполнен</a> <a class="btn btn-success btn-xs" href="/crm/contragent/update?id={{contragent.id }}">edit</a> {% if event_id %} <a class="btn btn-success btn-xs" href="/crm/finance/create?event_id={{event_id}}&to_contragent=237&from_contragent={{contragent.id }}">+</a> {% endif %}<br>
+
+                        <a  href="/crm/contragent/view?id={{ contragent.id }}">{{ contragent.name }}</a></h3>
+                        
+                        {%endif%}
+                        <a href="/crm/finance/create?price=15000&date_payment=now&from_contragent={{contragent.id }}&to_contragent=237&biblioevent_id=158&state=3&status=1&name=Предоставление выставочного места на маркете «4 Сезона», Москва.">+fs/ХП</a> <a href="/crm/finance/create?price=5000&date_payment=now&from_contragent=237&to_contragent={{contragent.id }}&biblioevent_id=158&state=3&status=3&name=Возврат денежных средств. НДС не облагается.">-fs/ХП</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+$('.steps .agents').addClass('active');
+</script>

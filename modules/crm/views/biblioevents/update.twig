@@ -1,0 +1,42 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>Редактирование события: {{ model.name}} | {{ model.cities.name}}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/event_step.twig', {'biblioevent' : model, 'user' : user}) | raw }}
+	</div>
+	<div class="col-xs-12 col-lg-9">
+		<h3 class="tal"></h3>
+		<p>Эта информация отображается на странице события, билете и в разделах сайта igoevent.com</p>
+		{{ this.render('_form.php', {'model' : model, 'category' : category, 'ads' : ads}) | raw }}	
+	</div>
+</div>
+
+
+<script type="text/javascript">
+
+$(function(){
+	//Наличие алиаса
+	$('#biblioevents-alias').change("change keyup input click", function() {
+		$('#biblioevents-alias').next('span').remove();
+		$('#biblioevents-alias').parent('.form-group').removeClass('error has-feedback');
+		var biblioeventid = {{ model.id }};
+		var alias = this.value;
+		var city = $('#biblioevents-city').val();
+		$.ajax({
+			type: 'get',
+			url: "/crm/biblioevents/aliasisset",
+			data: {'alias': alias, 'city': city, 'biblioeventid': biblioeventid},
+			response: 'text',
+			success: function(data){
+				if (data) {
+					$('#biblioevents-alias').parent('.form-group').addClass('error has-feedback');
+					$('#biblioevents-alias').after('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+				}
+			}
+		});
+	});
+});
+</script>

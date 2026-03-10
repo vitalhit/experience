@@ -1,0 +1,97 @@
+{% if events %}
+	{% for event in events %}
+
+		{% if event.date_release is empty or event.date_release|date('Y-m-d H:i') < now|date('Y-m-d H:i') %}
+		
+
+			{% if event.link_buy %} 
+			<p class="tac">
+				<a href="{{ event.link_buy }}">{% if event.button %} {{event.button}}{%else%}Купить билет{% endif %}	
+					{% if event.buttontextdate %}
+						<span>{{ event.buttontextdate }}</span>
+					{% else %}
+						<span>{{ event.date|date('d.m.Y H:i') }}</span>
+					{% endif %}
+					{% if event.buttontext %}
+						<span>{{ event.buttontext }}</span>
+					{% endif %}
+				</a>
+			{% if event.underbutton %}
+			<span>{{ event.underbutton }}</span>
+			{%endif %}
+			</p>
+			{%else%}
+			<p class="tac">
+				<a id="{{ event.id }}" class="igo_btn">{{ event.button }}
+					{% if event.buttontextdate %}
+						<span>{{ event.buttontextdate }}</span>
+					{% else %}
+						<span>{{ event.date|date('d.m.Y H:i') }}</span>
+					{% endif %}
+					{% if event.buttontext %}
+						<span>{{ event.buttontext }}</span>
+					{% endif %}
+					
+				</a>
+				{% if event.underbutton %}
+				<span>{{ event.underbutton }}</span>
+				{%endif %}
+				{{ event.place }}
+				<br>
+				{{ event.address }}
+
+				
+				{% if event.link_gmap %} 
+					<a style="color: #ccc!important;" href="{{event.link_gmap}}">посмотреть на карте</a><br>
+					***<br>***<br>
+				{% endif %}
+			
+			</p>
+
+			<!-- {% if event.seats %} Есть билеты {% else %} Билетов больше нет {% endif %}  -->
+			
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+
+{% else %}
+	{% if list_id %}
+		{% if biblioevent.event_status == '-1' %}
+
+		{% elseif biblioevent.link_buy %}
+		<p class="tac"><a href="{{ biblioevent.link_buy }}" style=" 
+	font-weight: normal;
+    background-color: red;
+    text-decoration: none!important;
+    display: block;
+    width: 330px;
+    margin: auto;
+    border: 0!important;
+    color: #fff!important;
+    border-radius: 3px;
+    line-height: 1;
+    text-align: center;
+    text-shadow: none;
+    font-family: 'HelveticaNeue',HelveticaNeue,Arial,sans-serif;
+    font-size: 21px;
+    padding: 13px 10px;
+    background-image: none;
+    cursor: pointer;"> 
+		{% if biblioevent.button_text %}{{ biblioevent.button_text }}{%else%}Купить билет{% endif %}</a></p>
+		{% else %}
+		<p class="tac"><a class="igo_book_btn">Оставить заявку</a></p>
+		{%endif%}
+
+		
+	{% else %}
+		<p class="tac">Это событие прошло.</p>
+		<div class="igoevent_event">
+			<p class="tac"><a class="igo_book_btn">Оставить заявку</a></p>
+			<p class="tac">Мы сообщим когда билеты появятся в продаже.</p>	
+		</div>
+	{% endif %}
+{% endif %}
+
+{% for aevent in alienevents %}
+	{{ aevent.id }}: {{ aevent.event_id }} ; 
+{% endfor %}

@@ -1,0 +1,116 @@
+<div class="steps">
+	{% if not biblioevent.id %}
+		<div class="newblo">
+			<h2>Создать новое</h2>
+			<div class="step events">
+				<a href="/crm/biblioevents"><span class="glyphicon glyphicon-globe"></span> Все события</a>
+				<a href="/crm/biblioevents/create" class="btn btn-success btn-xs">+ событие</a>
+			</div>
+			<div class="step events">
+				<a href="/crm/events"><span class="glyphicon glyphicon-globe"></span> Даты </a>
+			</div>
+
+			<div class="step events">
+				<a href="/crm/biblioevents/alltickets"><span class="glyphicon glyphicon-globe"></span> Билеты</a>
+				<a href="/crm/biblioevents/alltickets?year=2017" class="btn btn-success btn-xs">2017</a>
+				<a href="/crm/biblioevents/alltickets?year=2018" class="btn btn-success btn-xs">2018</a>
+				<a href="/crm/biblioevents/alltickets?year=2019" class="btn btn-success btn-xs">2019</a>
+				<a href="/crm/biblioevents/alltickets?year=2020" class="btn btn-success btn-xs">2020</a>
+			</div>
+
+		</div>
+	{% endif %}
+
+	{% if biblioevent.id %}
+		<div class="newblo">
+			<h2>Быстрое добавление</h2>
+			<div class="step event">
+				<a href="/crm/biblioevents/update?id={{ biblioevent.id }}"><span class="glyphicon glyphicon-pencil"></span> Название, место, город</a>
+			</div>
+			<div class="step date">
+				<a href="/crm/events/events?biblioeventid={{ biblioevent.id }}"><span class="glyphicon glyphicon-calendar"></span> Даты</a>  <a class="btn btn-success btn-xs" href="/crm/events/create?biblioeventid={{ biblioevent.id }}"><span class="glyphicon glyphicon-plus"></span></a> /  <a href="/crm/events/events?biblioeventid={{ biblioevent.id }}&edate=2025-01-01">С 2025</a> 
+			</div>
+		</div>
+		<div class="newblo">
+			<h2>Редактировать</h2>
+			{% if biblioevent.cities.alias %}
+				<div class="step land">
+					{% if biblioevent.landing_id %}
+						<a  href="/crm/landing/update?id={{ biblioevent.landing_id }}&biblioevent_id={{ biblioevent.id }}"> <span class="glyphicon glyphicon-picture"></span> Текст, фото, видео</a><a class="btn btn-success btn-xs" href="/crm/landing/update?id={{ biblioevent.landing_id }}&biblioevent_id={{ biblioevent.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+					</div><div  class="step land">
+						<a target="_blank" href="/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source=partner&utm_medium={{user.utm_medium}}&utm_campaign=invite&utm_content=&utm_term="><span class="glyphicon glyphicon-share"></span> Открыть промо страницу</a>
+					{% else %}
+						<a target="_blank" href="/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}"><span class="glyphicon glyphicon-share"></span> Открыть промо страницу</a>
+					</div><div  class="step land">
+						<a class="btn btn-success btn-xs" href="/crm/landing/create?biblioevent_id={{ biblioevent.id }}">Текст, фото, видео</a><a class="btn btn-success btn-xs" href="/crm/landing/create?biblioevent_id={{ biblioevent.id }}"><span class="glyphicon glyphicon-pencil"></span></a> 
+					{% endif %}
+				</div>
+			{% else %}
+				<p class="tac mini">Заполните город!</p>
+			{% endif %}
+		</div>
+
+		
+
+	{# <div class="newblo">
+		<h2>Взаимодействие с гостями</h2>
+			<div class="step lett">
+				<a href="/crm/letters/create?biblioeventid={{ biblioevent.id }}"><span class="glyphicon glyphicon-send"></span> Письма</a>
+			</div>
+		</div> #}
+
+	{% endif %}
+	{% if biblioevent.id %}
+	<div class="newblo">
+		<h2>Заказы</h2>
+		<!--<div class="step alltickets">
+			<a href="/crm/biblioevents/alltickets"><span class="glyphicon glyphicon-user"></span> Все заказы</a>
+		</div> -->
+		{% if biblioevent.id %}
+			<div class="step tickets">
+				<a href="/crm/biblioevents/view?id={{ biblioevent.id }}"><span class="glyphicon glyphicon-user"></span> Заказы события</a>
+			</div>
+		{% endif %}
+		{% if biblioevent.id %}
+			<div class="step tickets">
+				<a href="/crm/biblioevents/brons?id={{ biblioevent.id }}"><span class="glyphicon glyphicon-user"></span> Заявки и брони</a>
+			</div>
+		{% endif %}
+	</div>
+	{% endif %}
+	
+	{% if biblioevent.id %}
+		<div class="newblo">
+			<h2>Продвижение</h2>
+			<div class="step alltickets">
+				<a href="/crm/biblioevents/secretcode?id={{ biblioevent.id }}"><span class="glyphicon glyphicon-arrow-right"></span> Секретное слово</a>
+				<a class="btn btn-success btn-xs" href="/crm/biblioevents/secretcodecreate?biblioevent_id={{ biblioevent.id }}"><span class="glyphicon glyphicon-plus"></span></a> 
+			</div>
+		</div>
+		<div class="newblo">
+			<h2>Для продвинутых пользователей</h2>
+			<div class="step alltickets">
+				<a href="/crm/biblioevents/formsettings?id={{ biblioevent.id }}"><span class="glyphicon glyphicon-arrow-right"></span> Настройка формы/редиректа</a>
+			</div>
+			{% if biblioevent.link_kg %}
+			<div class="step alltickets">
+				<a href="{{ biblioevent.link_kg }}"><span class="glyphicon glyphicon-arrow-right"></span> Ссылка на KudaGo.com</a>
+			</div>
+			{% endif %}
+			{% if biblioevent.link_vk_cc %}
+			<div class="step alltickets">
+				<a href="https://{{ biblioevent.link_vk_cc }}"><span class="glyphicon glyphicon-arrow-right"></span> Short url: {{ biblioevent.link_vk_cc }}</a>
+			</div>
+			{% endif %}
+			<div class="step inst">
+				<a href="/crm/biblioevents/instruction?id={{ biblioevent.id }}"><span class="glyphicon glyphicon-cog"></span> Разместить кнопку на сайте</a>
+			</div>
+			<div class="step barcode">
+				<a href="/crm/biblioevents/barcode?id={{ biblioevent.id }}"><span class="glyphicon glyphicon-barcode"></span> Штрихкоды</a>
+			</div>
+			<div class="step barcode">
+				<a href="/crm/biblioevents/button?id={{ biblioevent.id }}"><span class="glyphicon glyphicon-wrench"></span> Сторонняя кнопка</a>
+			</div>
+		</div>
+	{% endif %}
+</div>

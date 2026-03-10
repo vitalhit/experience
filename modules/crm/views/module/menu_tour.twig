@@ -1,0 +1,45 @@
+<div class="steps">
+	{% if not tour.id %}
+		<div class="newblo">
+			<h2>Туры</h2>
+			<div class="step events">
+				<a href="/crm/tour"><span class="glyphicon glyphicon-globe"></span> Все туры</a>
+				<a href="/crm/tour/create" class="btn btn-success btn-xs">+ тур</a>
+			</div>
+		</div>
+	{% endif %}
+
+	<div class="newblo">
+			<h2>Инструкция</h2>
+			<div class="step events">
+				<a href="https://igoevent.com/page/info-for-promo-tour"><span class="glyphicon glyphicon-globe"></span> Требование к материалу</a>
+				
+			</div>
+		</div>
+	
+
+	{% if tour.id %}
+		<div class="newblo">
+			<h2>Редактировать</h2>
+			<div class="step tour">
+				<a href="/crm/tour/update?id={{ tour.id }}"><span class="glyphicon glyphicon-pencil"></span> Название, описание</a>
+			</div>
+			<div class="step team">
+				<a href="/crm/tour/team?id={{ tour.id }}"><span class="glyphicon glyphicon-thumbs-up"></span> Команда</a>
+			</div>
+		</div>
+		<div class="newblo">
+			<h2>Продвижение</h2>
+			<div class="step land">
+				<a target="_blank" href="/tour/{% if tour.alias %}{{ tour.alias }}{% else%}{{ tour.id }}{% endif %}"><span class="glyphicon glyphicon-share"></span> Промо страница</a>
+				<!--
+				{% if tour.landing_id %}
+					<a target="_blank" href="/tour/{% if tour.alias %}{{ tour.alias }}{% else%}{{ tour.id }}{% endif %}"><span class="glyphicon glyphicon-share"></span> Промо страница</a><a class="btn btn-success btn-xs" href="/crm/landing/update?id={{ tour.landing_id }}&tour_id={{ tour.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+				{% else %}
+					<a target="_blank" href="/crm/landing/create?tour_id={{ tour.id }}"><span class="glyphicon glyphicon-share"></span> Создать промо страницу</a>
+				{% endif %}
+				-->
+			</div>
+		</div>
+	{% endif %}
+</div>

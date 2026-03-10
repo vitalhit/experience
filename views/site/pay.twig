@@ -1,0 +1,46 @@
+<div class="bill">
+	<h3 class="tac">Счет на оплату</h3>
+	<p class="tac">{{event.biblioevents.name}}</p>
+	<hr>
+
+	<p><b class="w90">ФИО:</b> {{user.name}} {{user.second_name}}</p>
+	<p><b class="w90">Mail:</b> {{user.mail}}</p>
+	<p><b class="w90">Телефон:</b> {{user.phone}}</p>
+	<hr>
+
+	{% for ticket in tickets %}
+		<p><b>{{ticket.seats.name}}:</b> <span class="flr">{{ticket.money|number_format(2, '.', '')}} р * {{ticket.count}} шт</span></p>
+	{% endfor %}
+	<hr>
+	<p><b>Сумма:</b> <span class="flr">{{sum|number_format(2, '.', '')}} р</span></p>
+	<hr>
+
+	{% if afterpay == 0 %}
+		<div class="tac fs24">Бронь просрочена</div>
+		<br>
+		<p class="tac cred">Создайте новый билет и оплатите его!</p>
+	{% else %}
+		<form action="https://yoomoney.ru/eshop.xml" method="post">
+			<input name="shopId" value="157496" type="hidden"/>
+			<input name="scid" value="154733" type="hidden"/>
+			<input name="ym_merchant_receipt"
+			value='{"customerContact": "{% if user.mail %}{{user.mail}}{% else %}{{user.phone}}{% endif %}",
+			"taxSystem": 1,
+			"items":[
+			{% for ticket in tickets %}
+				{"quantity": {{ticket.count}}, "price": {"amount": {{ticket.money|number_format(2, '.', '')}}},  "tax": 3,"text": "{{ticket.seats.name}}"}
+				{% if not loop.last %},{% endif %}
+				{% endfor %}
+				]}'
+				type="hidden"/>
+				<input name="customerNumber" value="{{user.id}}" type="hidden"/>
+				<input name="description" value="{{event.biblioevents.name}}" type="hidden"/>
+				<input name="paymentType" value="AC" type="hidden"/>
+				<input name="orderNumber" value="{{order_id}}" type="hidden"/>
+				<input name="sum" value="{{sum|number_format(2, '.', '')}}" type="hidden">
+				<input name="cps_phone" value="{{user.phone}}" type="hidden"/>
+				<input name="cps_email" value="{{user.mail}}" type="hidden"/>
+				<input type="submit" class="btn btn-primary ma db" value="Оплатить"/>
+			</form>
+		{% endif %}
+	</div>

@@ -1,0 +1,45 @@
+<div class="row">
+
+    <div class="col-xs-12 col-sm-12">
+        <h2>
+            {{ person.second_name }} {{ person.name }} {{ person.middle_name }}
+        </h2>
+    </div>
+
+<!--     <div class="col-xs-12 col-sm-2 col-sm-offset-1"><h3 class="itog">{{ 0 + person.sum_visits }}<span>Визиты</span></h3></div>
+    <div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_tickets }}<span>Билеты</span></h3></div>
+    <div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_sells }}<span>Покупки</span></h3></div>
+    <div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_abonements }}<span>Абонем.</span></h3></div>
+    <div class="col-xs-12 col-sm-2"><h3 class="itog">{{ 0 + person.sum_rents }}<span>Аренды</span></h3></div>
+-->
+</div>
+
+<div class="row">
+
+    <div class="col-xs-12 col-sm-12">
+        <h2>Визиты <span>{{ person.visits|length }} {{ visitword }}</span> </h2>
+
+        <table class="table stacktable">
+            <tr>
+                <td>Начало</td>
+                <td>Окончание</td>
+                <td class="tar">Скидка</td>
+                <td class="tar">Стоимость</td>
+            </tr>
+            {% for row in person.visits|reverse %}
+            <tr>
+                <td>{{ row.start|date('d.m в H:i') }}</td>
+                <td>{{ row.end|date('d.m в H:i') }}</td>
+                <td class="tar">{{ row.discount_money }} р</td>
+                <td class="tar">{{ row.money }} р</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+
+
+
+

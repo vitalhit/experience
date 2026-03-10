@@ -1,0 +1,132 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <h2>Возвраты</h2>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="steps">
+            {{ this.render('/module/return_step.twig', {'company' : company}) | raw }}
+            <div class="newblo">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-9 newblos">
+
+    
+
+
+        <div>
+            <div class="newblo btop">
+                <p><b>Заявки на возврат(status: 0)</b></p>
+                <table class="tb">
+                    <tr>
+                        <th>create</th>
+                        <th>done</th>
+                        <th>Стоимость</th>
+                        <th>text</th>
+                        <th>Событие</th>
+                        <th>ticket_id</th>
+                        <th>owner</th>
+                        <th>creator</th>
+                    </tr>
+                    {% for event in events %}
+                        {% for row in returns %}
+                            {% if event.id == row.event_id and row.status == 0 %}
+                                <tr>
+                                    <td><p>{{ row.date_create|date('d.m.y') }}</p></td>
+                                    <td><p>{{ row.date_done|date('d.m.y') }}</p></td>
+                                    <td><p>{{ row.price }} р.</p></td> 
+                                    <td><p><a href="/crm/return/update?id={{ row.id }}">{{ row.text|e }} ..</a></p></td>
+                                    <td><p><a href="https://igoevent.com/crm/events/barcode?id={{ row.event_id }}">{{ row.event_id }}</a></p></td>
+                                    <td><a href="/crm/tickets/view?id={{ row.ticket_id }}">{{ row.ticket_id }}</a></td>
+                                    <td><a href="/crm/persons/view?id={{ row.owner }}">{{ row.owner }}</a></td>
+                                    <td><a href="/crm/persons/view?id={{ row.creator }}">{{ row.creator }}</a></td>
+                                </tr>
+                            {% endif %}
+                            {% endfor %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <div class="newblo btop">
+                <p><b>В процессе (status: 1)</b></p>
+                <table class="tb">
+                    <tr>
+                        <th>create</th>
+                        <th>done</th>
+                        <th>Стоимость</th>
+                        <th>text</th>
+                        <th>Дата</th>
+                        <th>ticket_id</th>
+                        <th>owner</th>
+                        <th>creator</th>
+                    </tr>
+                    {% for event in events %}
+                        {% for row in returns %}
+                            {% if event.id == row.event_id and row.status == 1 %}
+                                <tr>
+                                    <td><p>{{ row.date_create|date('d.m.y') }}</p></td>
+                                    <td><p>{{ row.date_done|date('d.m.y') }}</p></td>
+                                    <td><p>{{ row.price }} р.</p></td> 
+                                    <td><p><a href="/crm/return/update?id={{ row.id }}">{{ row.text|e }}..</a></p></td>
+                                    <td><p><a href="https://igoevent.com/crm/events/barcode?id={{ row.event_id }}">{{ row.event_id }}</a></p></td>
+                                    <td><a href="/crm/tickets/view?id={{ row.ticket_id }}">{{ row.ticket_id }}</a></td>
+                                    <td><a href="/crm/persons/view?id={{ row.owner }}">{{ row.owner }}</a></td>
+                                    <td><a href="/crm/persons/view?id={{ row.creator }}">{{ row.creator }}</a></td>
+                                </tr>
+                            {% endif %}
+                            {% endfor %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div>
+            <div class="newblo btop">
+                <p><b>Возврат осуществлен(status: 3 )</b></p>
+                <table class="tb">
+                    <tr>
+                        <th>create</th>
+                        <th>done</th>
+                        <th>Стоимость</th>
+                        <th>text</th>
+                        <th>Событие</th>
+                        <th>ticket_id</th>
+                        <th>owner</th>
+                        <th>creator</th>
+                    </tr>
+                    {% for event in events %}
+                        {% for row in returns %}
+                            {% if event.id == row.event_id and row.status == 3 %}
+                                <tr>
+                                    <td><p>{{ row.date_create|date('d.m.y') }}</p></td>
+                                    <td><p>{{ row.date_done|date('d.m.y') }}</p></td>
+                                    <td><p>{{ row.price }} р.</p></td> 
+                                    <td><p><a href="/crm/return/update?id={{ row.id }}">{{ row.text|e }}..</a></p></td>
+                                    <td><p><a href="https://igoevent.com/crm/events/barcode?id={{ row.event_id }}">{{ row.event_id }}</a></p></td>
+                                    <td><a href="/crm/tickets/view?id={{ row.ticket_id }}">{{ row.ticket_id }}</a></td>
+                                    <td><a href="/crm/persons/view?id={{ row.owner }}">{{ row.owner }}</a></td>
+                                    <td><a href="/crm/persons/view?id={{ row.creator }}">{{ row.creator }}</a></td>
+                                </tr>
+                            {% endif %}
+                            {% endfor %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+
+        
+    </div>
+</div>
+
+<script>
+$('.js_slide').click(function () {
+    $(this).parent().find('table').slideToggle(200);
+    $(this).parent().next('.tbmob').slideToggle(200);
+});
+</script>

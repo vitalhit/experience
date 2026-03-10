@@ -1,0 +1,114 @@
+<div class="container title-section">
+	<div class="title-geo">
+		<h1>Все места на сайте<small class="geo-in-this"></small></h1>
+		<ul class="geo-in-row">
+			{% for row in cities %}
+				<li class="city {% if row.alias == city.alias %}active{% endif %}"><a href="/{{ row.alias }}">{{ row.name }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+
+<div class="container">
+	<div class="section-block">
+		<div class="event-row">
+			
+				{% for row in model %}
+
+						<div class="event">
+							<a class="img-event" href="/{{ row.cities.alias }}/place/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								{# <span class="comments">12</span><span class="like">410</span> #}
+								<img src="/web/uploads/users/{{ row.foto }}">
+							</a>
+							{# <span class="type-event">категория</span> #}
+							<a class="title-event" href="/{{ row.cities.alias }}/place/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								<h3>{{ row.name }}  <small>({{ row.id }})</small> </h3>
+							</a>
+							<span class="point">{{ row.address }}</span>
+							{# <span class="views">9214</span> #}
+						</div>
+
+				{% endfor %}
+
+
+		</div>
+
+
+		<div class="event-row">
+			{% if biblio_nodate %}
+				<h2>Нет даты</h2>
+				{% for row in biblio_nodate %}
+					{% if row.image %}
+						<div class="event">
+							<a class="img-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								{# <span class="comments">12</span><span class="like">410</span> #}
+								<img src="/web/uploads/users/{{ row.image }}">
+							</a>
+							{# <span class="type-event">категория</span> #}
+							<a class="title-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								<h3>{{ row.name }} {# <small>6+</small> #}</h3>
+							</a>
+							{# <span class="views">9214</span> #}
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+
+
+	<div class="sidebar-block">
+		<div class="user-go">
+			<h2>Вливайся<br><small>в </small>iGo<small>Event и</small></h2>
+			<div class="advantage">
+				<img src="/images/ico-heart-yellow.svg">
+				<p>ВЫБИРАЙ ЛУЧШЕЕ<br><span>и добавляй в избранное только то, что нравится </span></p>
+			</div>
+			<div class="advantage">
+				<img src="/images/ico-ringer-yellow.svg">
+				<p>БУДЬ В КУРСЕ<br>ВСЕХ СОБЫТИЙ<br><span>iGo всегда напомнит</span></p>
+			</div>
+			<div class="advantage">
+				<img src="/images/ico-messages-yellow.svg">
+				<p>ДЕЛИСЬ СВОИМ<br>ВПЕЧАТЛЕНИЕМ<br><span>твои комментарии всегда ценят на iGo</span></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<footer class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-10 col-md-8">
+			<img class="logo-footer" src="/images/logo-mini.svg">
+			<p class="copyrite">© 2018 iGoEvent.ru — сервис по продвижению событий. Права на текстовые и другие материалы, размещенные на сайте, охраняются законом.
+				При цитировании обязательна прямая ссылка на iGoEvent.ru.
+			</p>
+			<p class="copyrite"><a href="http://vitalhit.com/">vitalhit</a></p>
+			<ul class="footer-nav">
+				<li><a href="page/about">О проекте</a></li>
+				<li><a href="/page/contacts">Контакты</a></li>
+				<li><a href="https://igoevent.com/pdf/iGoEvent_useragreement.pdf">Пользовательское соглашение</a></li>
+				<li class="years"><img src="/images/ico-18-plus.svg"></li>
+			</ul>
+			<noindex>
+				<script type="text/javascript">document.write("<a rel='nofollow' href='//www.liveinternet.ru/click' "+"target=_blank><img src='//counter.yadro.ru/hit?t26.1;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";h"+escape(document.title.substring(0,150))+";"+Math.random()+"' alt='' title='LiveInternet: показано число посетителей за"+" сегодня' "+"border='0' width='88' height='15'><\/a>");
+				</script>
+				<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88249632-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-88249632-1');
+</script>
+
+			</noindex>
+		</div>
+	</div>
+</footer>
+
+<script type="text/javascript" src="/js/igoeventapi.js"></script>
+<link rel="stylesheet" href="/css/igoeventapi.css">
+<link href="/css/front.css" rel="stylesheet">

@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <h2>{{ room.name}}</h2>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        {{ this.render('/module/rent_step.twig', {'room' : room}) | raw }}
+    </div>
+    <div class="col-xs-12 col-lg-9">
+
+
+<div id="inst" class="tab-pane">
+    <h2>Инструкция <br><span>по интеграции формы аренды в другой сайт</span></h2>
+
+    <p>Вставьте в нужное место вашего сайта: </p>
+
+    <xmp class="code oh" style="background: #fff;"><script type="text/javascript" src="https://igoevent.com/web/js/igorentapi.js"></script>
+<script src="http://igoevent.com/web/js/pickmeup.js"></script>
+<link rel="stylesheet" href="http://igoevent.com/web/css/pickmeup.css">
+<link rel="stylesheet" href="http://igoevent.com/web/css/igoeventapi.css">
+<div class="igoevent_rent">
+    <a class="igo_rent_btn" tag="{{room.id}}">Забронировать</a>
+</div></xmp>
+</div>
+
+
+    </div>
+</div>  
+
+
+
+
+
+
+

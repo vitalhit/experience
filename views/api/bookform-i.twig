@@ -1,0 +1,63 @@
+<div class="endreg">
+	<div class="ttl">Закончить регистрацию?</div>
+	<p>После этого вернуть введенные вами данные будет невозможно.</p>
+	<a class="widget_button1 igo_popup_goon">Нет, продолжить</a>
+	<a class="widget_button2 igo_popup_close">Завершить</a>
+</div>
+
+<div class="igo_form">
+	<div class="igo_close"></div>
+	<!-- bookform-i.twig -->
+	<form id="igo_book_form" method="POST" action="">
+		<input type="hidden" name="from_url" class="from_url" value="">
+		<input type="hidden" name="id" class="id" value="">
+		<input type="hidden" name="company_id" class="company_id" value="{{ company_id }}">
+		<input type="hidden" name="biblioevent_id" type="hidden" class="biblioevent_id" value="{{ biblioevent.id }}">
+		<input type="hidden" name="list_id" class="list_id" value="{{list.id}}">
+		<input type="hidden" name="utm_source" value="">
+		<input type="hidden" name="utm_medium" value="">
+		<input type="hidden" name="utm_campaign" value="">
+		<input type="hidden" name="utm_content" value="">
+		<input type="hidden" name="utm_term" value="">
+
+		<div style="width: 50%; float: left; padding-right: 10px;">
+			<div class="form-group">
+				<input class="form-control name required" type="text" name="name" placeholder="Имя*" value="">
+			</div>
+			<div class="form-group">
+				<input class="form-control second_name required" type="text" name="second_name" placeholder="Фамилия*" value="">
+			</div>
+
+			<div class="form-group">
+				<input class="form-control igo_mail required" type="text" name="mail" placeholder="Email*" value="">
+			</div>
+			<div class="form-group">
+				<input class="form-control phone required" type="text" name="phone" placeholder="Телефон*" value="">
+			</div>
+			<div class="form-group">
+				<input class="form-control name required" type="text" name="instagram" placeholder="https//instagram.com/vitalhit" value="">
+			</div>
+			<div class="form-group">
+				<input class="form-control name required" type="text" name="type" placeholder="тип: игрушки или посуда или одежда" value="">
+			</div>
+		</div>
+
+		<div style="width: 50%; float: left; padding-left: 10px;">
+			<textarea style="height: 232px;" required class="form-control message" type="text" placeholder="Сообщение*" name="message"></textarea>
+		</div>
+
+		<div class="form-group col-xs-12">
+			<label class="reg_accept">
+				<input type="checkbox" name="subscribe" checked="checked">
+				<span>Я хочу получать информацию об интересных событиях</span>
+			</label>
+		</div>
+		<div class="form-group col-xs-12">
+			<label class="reg_accept">
+				<input type="checkbox" name="accepted_terms" onchange="document.getElementById('submit').disabled = !this.checked" checked="">
+				<span>Я согласен с условиями <a target="_blank" href="https://igoevent.com/pdf/iGoEvent_useragreement.pdf">Пользовательского соглашения</a> и <a href="https://igoevent.com/site/oferta/{{ biblioevent.id }}" target="_blank"> Договором оказания услуг </a> 
+				</span>
+			</label>
+		</div>
+		<button type="submit" id="submit" class="btn btn-primary center-block book_submit">Отправить заявку</button>
+	</form>

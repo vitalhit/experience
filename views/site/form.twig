@@ -1,0 +1,145 @@
+{% if event.id %}
+
+    <h1 class="tac mb10">{{ event.biblioevents.name }}</h1>
+    <h2 class="tac mt0">{{ event.date|date('d.m.Y H:i') }}</h2>
+
+    {% if event.seatings.image %}
+    <img src="/web/uploads/{{event.seatings.image}}" class="img-responsive center-block">
+    {% endif %}
+    <p class="w50p tac">{{ event.comment }}</p>
+
+    <div class="clear"></div>
+
+        <p class="tac">Чтобы зарегистрироваться на это событие, заполните анкету.<br>
+            Информация о Вас будет доступна только организаторам этого события, и больше никому.
+        </p>
+
+    <form class="event_form" method="POST" action="/site/ticketbuyapi">
+    {% if seats %}
+        <h2>Выберите билет:</h2>
+        {% for row in seats %}
+        <p class="w70p"><b>{{ row.name }}еуые</b> <br><span>{{ row.info }}</span></p>
+        <p class="w15p">{{ row.price }} р</p>
+        <p class="w15p">
+            <input type="hidden" name="money[]" value="{{ row.price }}">
+            <input type="hidden" name="seat_id[]" value="{{ row.id }}">
+            <input class="form-control count" id="{{ row.id }}" type="text" name="seat[]" placeholder="{{ row.count }}" value="">
+        </p>
+        {% endfor %}
+
+
+
+        <input type="hidden" name="id" class="id" value="">
+        <input type="hidden" name="event_id" value="{{ event.id }}">
+        <input type="hidden" name="type" value="9">
+
+        <div class="clear h50"></div>
+
+        <div class="form-group">
+            <label>E-mail</label>
+            <input class="form-control mail" type="text" name="mail" value="">
+        </div>
+
+        <div class="form-group">
+            <label>Фамилия</label>
+            <input class="form-control secondname" type="text" name="second_name" value="">
+        </div>
+
+        <div class="form-group">
+            <label>Имя</label>
+            <input class="form-control name" type="text" name="name" value="">
+        </div>
+
+        <div class="form-group">
+            <label>Номер телефона</label>
+            <input class="form-control phone" type="text" name="phone" value="">
+        </div>
+
+
+        <div class="form-group">
+            <label>Комментарий</label>
+            <input class="form-control" type="text" name="info" value="">
+        </div>
+
+
+        <div class="form-group">
+            <label class="b-registration__accept">
+                <input type="checkbox" name="subscribe_digest" checked="checked">
+                <span>Я хочу получать информацию об интересных событиях</span>
+            </label>
+        </div>
+        <div class="form-group">
+            <label class="b-registration__accept">
+                <input type="checkbox" name="accepted_terms">
+                <span>Я подтверждаю свое согласие с условиями
+                    <a href="/web/docs/useragreement.pdf" target="_blank">Пользовательского соглашения</a>
+                    и
+                    <a href="/oferta" target="_blank">Договором оказания услуг по организации мероприятия</a>
+                    <span>*</span>
+                </span>
+            </label>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">Отправить</button>
+        {% else %}
+            <h2>Нет ни одного билета!</h2>
+    {% endif %}
+    </form>
+
+    <div class="user"></div>
+{% else %}
+    <h1>Событие прошло!</h1>
+{% endif %}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        //Наличие билетов
+        $('.count').change("change keyup input click", function() {
+            var userticket = this.value;
+            var count = $(this);
+            var eventid = {{ event.id }};
+            if(this.value.length >= 1){
+                $.ajax({
+                    type: 'get',
+                    url: "/site/countseats",
+                    data: {'seat': this.id, 'eventid': eventid},
+                    response: 'text',
+                    success: function(data){
+                        var ticket = data - userticket;
+                        if (ticket >= 0) {
+                            $(count).parent().prev("span").html(ticket);
+                            $(count).removeClass('red');
+                            $(count).next('.minired').remove();
+                        }
+                        else
+                        {
+                            $(count).addClass('red');
+                            $(count).next('.minired').remove();
+                            $(count).parent().append('<span class="minired">' +data+' всего!</span>');
+                        };
+                    }
+                })
+            }
+        });
+
+        //Наличие юзера в системе
+        $('.mail').change("change keyup input click", function() {
+            var inputmail = this;
+            $.ajax({
+                type: 'get',
+                url: "/site/userisset",
+                data: {'email': this.value},
+                response: 'text',
+                success: function(data){
+                   $('.user').html(data);
+                   console.log(data);
+               }
+           })
+        });
+    });
+
+</script>
+
+

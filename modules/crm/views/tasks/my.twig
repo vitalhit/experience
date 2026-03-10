@@ -1,0 +1,174 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{% if project.id %}{{ project.name }}{% else %}Задачи из всех проектов{% endif %}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		<div class="steps">
+			{% if project.id %}
+			{{ this.render('/module/project_step.twig', {'project' : project}) | raw }}
+			{% else %}
+			<div class="newblo">
+				<h2>Выбери проект</h2>
+				{% for project in project %}
+				<div class="step">
+					<a href="/crm/tasks/my?projectid={{ project.id }}"><span class="glyphicon glyphicon-flag"></span> {{ project.name }}</a>
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+			<!-- <div class="newblo">
+
+				<form class="filtr">
+					<input type="hidden" name="projectid" value="{{ project.id }}">
+					<div class="form-group">
+						<select class="form-control" name="owner">
+							<option value="">Ответственный</option>
+							{% for owner in filtr_owners %}
+							<option value="{{ owner.id }}">{% if owner.person.name %}{{ owner.person.name }} {{ owner.person.second_name }}{% else %}~ {{ owner.username }}{% endif %}</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="form-group">
+						<select class="form-control" name="creator">
+							<option value="">Создатель</option>
+							{% for creator in filtr_creators %}
+							<option value="{{ creator.id }}">{% if creator.person.name %}{{ creator.person.name }} {{ creator.person.second_name }}{% else %}~ {{ creator.username }}{% endif %}</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="form-group">
+						<select class="form-control" name="status">
+							<option value="">Статус</option>
+							{% for status in filtr_statuses %}
+							<option value="{{ status.id }}">{{ status.name }}</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="form-group">
+						<select class="form-control" name="type">
+							<option value="">Тип</option>
+							{% for type in filtr_types %}
+							<option value="{{ type.id }}">{{ type.name }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<input type="submit" value="Фильтр" class="btn btn-primary pull-right">
+				</form>
+
+			</div> -->
+
+			<!-- <span class="glyphicon glyphicon-globe"> Встреча</span>
+			<span class="ml20 glyphicon glyphicon-th-list"> Задача</span>
+			<span class="ml20 glyphicon glyphicon-triangle-right"> Подзадача</span> -->
+
+
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-9">
+		<form class="filtr">
+			<input type="hidden" name="projectid" value="{{ project.id }}">
+			<div class="form-group col-xs-12 col-lg-3">
+				<select class="form-control" name="owner">
+					<option value="">Ответственный</option>
+					{% for owner in filtr_owners %}
+					<option value="{{ owner.id }}">{% if owner.person.name %}{{ owner.person.name }} {{ owner.person.second_name }}{% else %}~ {{ owner.username }}{% endif %}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="form-group col-xs-12 col-lg-3">
+				<select class="form-control" name="creator">
+					<option value="">Создатель</option>
+					{% for creator in filtr_creators %}
+					<option value="{{ creator.id }}">{% if creator.person.name %}{{ creator.person.name }} {{ creator.person.second_name }}{% else %}~ {{ creator.username }}{% endif %}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="form-group col-xs-12 col-lg-2">
+				<select class="form-control" name="status">
+					<option value="">Статус</option>
+					{% for status in filtr_statuses %}
+					<option value="{{ status.id }}">{{ status.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="form-group col-xs-12 col-lg-2">
+				<select class="form-control" name="type">
+					<option value="">Тип</option>
+					{% for type in filtr_types %}
+					<option value="{{ type.id }}">{{ type.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<input type="submit" value="Фильтр" class="btn btn-primary pull-right">
+		</form>
+
+		<table class="tb stacktable hidden-xs">
+			<tr>
+				<th></th>
+				<th>Начало</th>
+				<!-- <th>Окончание</th> -->
+				<!-- <th>Время</th> -->
+				<th>Название</th>
+				<th class="tac">Отвечает</th>
+				<th>Link</th> 
+				<th>Статус</th>
+				<th><a href="?{{url}}{% if get.priority == 'SORT_ASC' %}priority=SORT_DESC{% else %}priority=SORT_ASC{% endif %}">Прт</a></th>
+				{# <th>Качество</th> #}
+				<!-- <th>Результат</th> -->
+				<th>url</th>
+				<th></th>
+			</tr>
+			{% for row in tasks %}
+			<tr class="{%if row.status_id == 4%} green {% elseif row.status_id == 2%} yellow {% elseif row.status_id == 3%} red{% elseif row.status_id == 5%} blue{% endif%}">
+				<td><span class="cblue glyphicon {% if row.type_id == 1 %}glyphicon-th-list{% else%} glyphicon-globe{% endif %}"></span></td>
+				<td>{{ row.start|date('d.m H:i') }}</td>
+				<!-- <td>{% if row.end %}{{ row.end|date('d.m H:i') }}{% else%} - {% endif %}</td> -->
+				<!-- <td>{% if row.time %} {{ row.time|date('H:i') }}{% else%} - {% endif %}</td> -->
+				<td>
+					<a href="/crm/tasks/update?id={{ row.id|e }}">{% if row.parent_id %}<span class="glyphicon glyphicon-triangle-right din"></span>{% endif %} {{ row.name }}</a>
+				</td>
+				<td class="tac"><a href="/crm/persons/view?id={{ row.owners.person.id }}">
+					{% if row.owners.person.image %}<img src="/uploads/users/{{ row.owners.person.image }}" class="w26 img-circle">{% else %}{{ row.owners.person.name }} {{ row.owners.person.second_name }}{% endif %}
+				</a></td>
+				<td class="tac">
+				{% if row.owners.person.vk_id %}<a href="https://vk.com/im?sel={{ row.owners.person.vk_id }}">vk</a>{% endif %}
+				</td>
+				<!-- <td><a href="/crm/persons/view?id={{ row.person_id }}">{{ row.person_id }}</a></td> -->
+				<td>{{ row.status.name }}</td>
+				<td class="tac"><div class="priority priority{{ row.priority }}">{{ row.priority }}</div></td>
+				{# <td>{{ row.quality }}</td> #}
+				<!-- <td>{{ row.result }}</td> -->
+				<td>{% if row.url %}<a href="{{ row.url }}"><span class="glyphicon glyphicon-link"></span></a>{% endif%}</td>
+				<td><a href="/crm/tasks/delete?taskid={{ row.id }}&projectid={{ project.id }}" title="Удалить" aria-label="Удалить" data-confirm="Вы уверены, что хотите удалить этот элемент?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+			</tr>
+			{% endfor %}
+		</table>
+		{% if comps %}
+			<h3>У вас есть таски в этих компаниях:</h3>
+			{% for comp in comps %}
+				<a class="btn btn-info" href="/crm/company/about?id={{comp.id}}&gourl={{pageurl}}">{{comp.brand}}</a>
+			{% endfor %}
+		{% endif %}
+
+
+	</div>
+</div>
+
+
+<div class="row visible-xs">
+	{% for row in tasks %}
+	<div class="tr_line {%if row.status_id == 4%} green {% elseif row.status_id == 2%} yellow {% elseif row.status_id == 3%} red{% elseif row.status_id == 5%} blue{% endif%}">
+		<div class="col-xs-2">{{ row.start|date('d.m') }}<br>{{ row.start|date('H:i') }}</div>
+		<div class="col-xs-7"><a href="/crm/tasks/update?id={{ row.id|e }}">{{ row.name }}</a></div>
+		<div class="col-xs-3">{{ row.owners.username }}</div>
+	</div>
+	{% endfor %}
+</div>

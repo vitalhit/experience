@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="stiky">
+
+        {{ this.render('/module/eventdeal_step.twig', {'company' : company}) | raw }}
+    
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-9">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12"> 
+                    <table class="tb stacktable">
+                        <tr>
+                           <td></td>
+                            <td>event_id</td>
+                            <td>deal_id</td>
+                            <td>media_id</td>
+                            <td>info</td>
+                            <td>Newsmaker_id</td>
+                            <td>Profit</td>
+                            <td>Percent</td>
+                            <td>Status</td>
+                            <td>Date Craet</td>
+                            <td>Date Closed</td>
+                        </tr>
+                        <tr>
+                            <td><span><a href="/crm/eventdeal/update?id={{ model.id }}">{{ model.id }}</a></span></td>
+                            <td><span><a href="/crm/events/update?id={{ model.event_id }}">{{ model.event_id }}</a></span></td>
+                            <td><span><a href="https://igoevent.com/crm/eventdeal/?deal_id={{ model.deal_id }}">{{ model.deal_id }}</a></span></td>
+                            <td><span>{{ model.media_id }}</span></td>
+                            <td><span>{{ model.info }}</span></td>
+                            <td><span>{{ model.newsmaker_id }}</span></td>
+                            <td><span>{{ model.profit }}</span></td>
+                            <td><span>{{ model.percent }}</span></td>
+                            <td><span>{{ model.status }}</span></td>
+                            <td><span>{{ model.date_create }}</span></td>
+                            <td><span>{{ model.date_closed }}</span></td>
+                        </tr>
+                </table>
+                </div>
+                
+            </div>
+        </div>
+        
+    TEST
+
+    </div>
+</div>

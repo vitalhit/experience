@@ -1,0 +1,121 @@
+<div class="container title-section">
+	<div class="title-geo">
+		<h1>Я иду <small class="geo-in-this">в {{ city.name }}</small></h1>
+		<ul class="geo-in-row">
+			{% for row in cities %}
+				<li class="city {% if row.alias == city.alias %}active{% endif %}"><a href="/{{ row.alias }}">{{ row.name }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="section-block">
+		<div class="event-row">
+			{% if pl %}
+				<table width="100%">
+					<tr><th width="50%">Название/Адрес</th>
+						
+						<th class="text-center">Мест</th>
+						<th class="text-center">Сидя</th>
+						<!--<th>VIP</th>-->
+						<th class="text-center">soldout</th>
+						
+						<th class="text-center">Райдер/Фото/Ссылки</th>
+						
+					</tr>
+				{% for row in pl %}
+					{% if row.place.closed != 1 %}
+						<tr><td align='left'><hr>
+							<a href="/{{ city.alias }}/place/{% if row.place.alias %}{{ row.place.alias }}{% else %}{{ row.place.id }}{% endif %}">
+								{{ row.place.name }} 
+							</a> {% if row.place.name_en %}<small><i>{{ row.place.name_en }}</i></small>{% endif %} <br>
+						{{ row.place.address }}<br>
+						{% if row.place.info_for_eventer %}
+						<small>{{row.place.info_for_eventer }}</small>{%endif%}
+						{% if row.place.metro %}
+						<small>Метро: {{row.place.metro }}</small>{%endif%}
+						</td><td>	
+							{% if row.place.just_sitting %}
+							только сидя {% else %}
+							{% if row.place.standing and row.place.standing_max%}
+							{{row.place.standing}}-{{row.place.standing_max}}
+							{% else%}
+							{{row.place.standing}}
+							{%endif%}
+							{% endif %}
+
+						</td><td> 	{% if row.place.numseats and row.place.numseats_max %} 
+							{{row.place.numseats}}-{{row.place.numseats_max}}
+							{%else%}<span title='Сидя'>{{row.place.numseats}}</span>{%endif%}
+						<!-- </td><td>
+						{% if row.place.numseats_vip %} <span title="VIP места">{{row.place.numseats_vip}}</span> {%endif%}
+						-->
+						</td><td> {{row.place.soldout}}
+						</td><td>
+						{% if row.place.link_rider %} <a href="{{row.place.link_rider }}">Райдер</a> {% endif %} 
+						{% if row.place.link_photo %} / <a href="{{row.place.link_photo }}">Фото</a> {% endif %}<br>
+
+						
+						{% if row.place.site %} <a href="https://{{row.place.site }}">сайт</a>
+						 {% endif %} {% if row.place.link_vk %} | <a href="https://vk.com/{{row.place.link_vk }}">ВК</a> {% endif %} <td>
+						</td></tr>
+					{% endif %}
+				
+				{% endfor %}
+				</table>
+			{% else %}
+				<h1>В этом городе нет событий!</h1>
+			{% endif %}
+		</div>
+
+
+		<div class="event-row">
+			{% if biblio_nodate %}
+				<h2>Нет даты</h2>
+				{% for row in biblio_nodate %}
+					{% if row.image %}
+						<div class="event">
+							<a class="img-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								{# <span class="comments">12</span><span class="like">410</span> #}
+								<img src="/web/uploads/users/{{ row.image }}">
+							</a>
+							{# <span class="type-event">категория</span> #}
+							<a class="title-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+								<h3>{{ row.name }} {# <small>6+</small> #}</h3>
+							</a>
+							{# <span class="views">9214</span> #}
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+
+
+	<div class="sidebar-block">
+		<div class="user-go">
+			<h2>Вливайся<br><small>в </small>iGo<small>Event</small></h2>
+			<div class="advantage">
+				<img src="/images/ico-heart-yellow.svg">
+				<p>ВЫБИРАЙ ЛУЧШЕЕ<br><span>и добавляй в избранное только то, что нравится </span></p>
+			</div>
+			<div class="advantage">
+				<img src="/images/ico-ringer-yellow.svg">
+				<p>БУДЬ В КУРСЕ<br>ВСЕХ СОБЫТИЙ<br><span>iGoEvent всегда напомнит</span></p>
+			</div>
+			<div class="advantage">
+				<img src="/images/ico-messages-yellow.svg">
+				<p>ДЕЛИСЬ СВОИМ<br>ВПЕЧАТЛЕНИЕМ<br><span>твои комментарии всегда ценят на iGoEvent</span></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{{ this.render('_footer.twig')| raw }}
+
+<script type="text/javascript" src="/js/igoeventapi.js"></script>
+<link rel="stylesheet" href="/css/igoeventapi.css">
+<link href="/css/front.css" rel="stylesheet">

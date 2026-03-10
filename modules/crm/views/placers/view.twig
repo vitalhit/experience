@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="stiky">
+            <div class="newblo">
+                {% if model.image %}
+                    <img src="/uploads/users/{{ model.image }}" class="img-responsive img-circle">
+                {% else %}
+                    <img src="/web/images/noimage.png" class="img-responsive img-circle">
+                {% endif %}
+                <h2 class="mt0">{% if model.name %}{{ model.name }} {{ model.second_name }}{% endif %}</h2>
+                <a href="/crm/placers/update?id={{ model.id }}" class="btn btn-primary ma w120">Редактировать</a>
+                <h4>placer_id:  {{ model.id }}</h4>
+                <p><b>Статус:</b> {{ model.status }}</p>
+                <p><b>Дата рождения:</b> {{ model.birthday|date('d.m.Y') }}</p>
+                <p><b>E-mail:</b> {{ model.mail }}</p>
+                <p><b>Телефон:</b> {{ model.phone }}</p>
+                <p><b>Пол:</b> {% if model.sex == 0 %} женщина {% else %} мужчина {% endif %} </p>
+                <p><b>Группы:</b> {{ model.groups }}</p>
+                <p><b>Откуда:</b> {{ model.froms.url }}</p>
+                <p><b>Получать письма:</b> {% if model.sendmail == 1 %} Да {% else %} Нет {% endif %} </p>
+                <p><b>Пожелания:</b> {{ model.vishes }}</p>
+            </div>
+            {% if model.info %}
+                <div class="newblo"><p>{{ model.info }}</p></div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-9">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-3"><a href="/crm/placers/">Plasers</a><h3 class="itog"></h3></div>
+                <div class="col-xs-3"><h3 class="itog"></h3></div>
+                <div class="col-xs-3"><h3 class="itog"></h3></div>
+                <div class="col-xs-3"><h3 class="itog"></h3></div>
+            </div>
+        </div>
+        
+        {% if model.id %}
+            <div class="clear"></div>
+            <h3 class="tal">Места</h3>
+            {% for row in placeplacer %}
+                <div class="din btn btn-info">{{ row.place.name }}<a class="del_in_btn" href="/crm/placers/placedel?id={{ model.id }}&place={{ row.place_id }}">X</a></div>
+            {% endfor %}
+            <h3 class="tal">Выберите место</h3>
+            <div class="col-xs-12 col-lg-12">
+                
+                    
+                    {% for row in places %}
+                        <a class="btn btn-primary" href="/crm/placers/placeadd?placer={{ model.id }}&place={{ row.id }}">{{ row.name }}</a>
+                    {% endfor %}
+                
+            </div>
+        {% endif %}
+
+
+    </div>
+</div>

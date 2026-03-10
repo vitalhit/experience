@@ -1,0 +1,24 @@
+<div class="steps">
+	<div class="newblo">
+		<h2>Аренды</h2>
+
+		<div class="step allrooms">
+			<a href="/crm/rooms/"><span class="glyphicon glyphicon-home"></span> Все залы</a>
+			<a href="/crm/rooms/create" class="btn btn-success btn-xs">+ зал</a>
+		</div>
+		<div class="step rents">
+			<a href="/crm/rents"><span class="glyphicon glyphicon-calendar"></span> Аренда</a>
+		</div>
+		{% if room.id %}
+			<div class="step room">
+				<a href="/crm/rooms/update?id={{ room.id }}"><span class="glyphicon glyphicon-flag"></span> Редактировать</a>
+			</div>
+			{# <div class="step bron">
+				<a href="/crm/rooms/bron?id={{ room.id }}"><span class="glyphicon glyphicon-shopping-cart"></span> Бронировать</a>
+			</div> #}
+			<div class="step inst">
+				<a href="/crm/rooms/instruction?id={{ room.id }}"><span class="glyphicon glyphicon-cog"></span> Виждеты</a>
+			</div>
+		{% endif %}
+	</div>
+</div>

@@ -1,0 +1,311 @@
+<script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script type="text/javascript" src="https://www.amcharts.com/lib/3/serial.js"></script>
+
+
+<script type="text/javascript">
+	AmCharts.makeChart("chartdiv",
+	{
+		"type": "serial",
+		"categoryField": "date",
+		"dataDateFormat": "YYYY-MM-DD",
+		"colors": [
+		"#f00",
+		"#0f0",
+		"#00f",
+		"#0ff",
+		"#f0f",
+		"#000",
+		"#CD0D74",
+		"#CC0000",
+		"#00CC00",
+		"#0000CC",
+		"#DDDDDD",
+		"#999999",
+		"#333333",
+		"#990000"
+		],
+		"categoryAxis": {
+			"parseDates": true
+		},
+		"chartCursor": {
+			"enabled": true
+		},
+		"trendLines": [],
+		"graphs": [
+		{
+			"bullet": "round",
+			"id": "AmGraph-1",
+			"title": "Тариф",
+			"type": "smoothedLine",
+			"valueField": "column-1"
+		},
+		{
+			"bullet": "round",
+			"id": "AmGraph-2",
+			"title": "Билеты",
+			"type": "smoothedLine",
+			"valueField": "column-2"
+		},
+		{
+			"bullet": "round",
+			"id": "AmGraph-3",
+			"title": "Продажи",
+			"type": "smoothedLine",
+			"valueField": "column-3"
+		},
+		{
+			"bullet": "round",
+			"id": "AmGraph-4",
+			"title": "Абонементы",
+			"type": "smoothedLine",
+			"valueField": "column-4"
+		},
+		{
+			"bullet": "round",
+			"id": "AmGraph-5",
+			"title": "Аренда",
+			"type": "smoothedLine",
+			"valueField": "column-5"
+		},
+		{
+			"bullet": "round",
+			"id": "AmGraph-6",
+			"title": "Сумма",
+			"type": "smoothedLine",
+			"valueField": "column-6"
+		}
+		],
+		"guides": [],
+		"valueAxes": [
+		{
+			"id": "ValueAxis-1",
+			"title": "Рубли"
+		}
+		],
+		"allLabels": [],
+		"balloon": {},
+		"legend": {
+			"enabled": true,
+			"useGraphSettings": true
+		},
+		"titles": [
+		{
+			"id": "Title-1",
+			"size": 15,
+			"text": "Доходность"
+		}
+		],
+		"dataProvider": [		
+		{% for row in result | reverse %}
+		{
+			"date": "{{ row[0]|date('Y-m-d') }}",
+			"column-1": {{ row[1] }},
+			"column-2": {{ row[2] }},
+			"column-3": {{ row[3] }},
+			"column-4": {{ row[4] }},
+			"column-5": {{ row[5] }},
+			"column-6": {{ row[6] }}
+		},
+		{% endfor %}
+		]
+	}
+	);
+</script>
+
+</div>
+
+
+<div class="fixed">
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-md-3">
+			<h1>Статистика</h1>
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-9">
+			<a href="/statistics/mystat">Смены</a>
+			<a> | </a>
+			<a href="#days">Дни</a>
+			<a href="#graf">График</a>
+			<a href="#month">Месяцы</a>
+			<a href="#tarif">Тариф</a>
+			<a href="#tickets">Билеты</a>
+			<a href="#sells">Продажи</a>
+			<a href="#goods">Товары</a>
+		</div>
+	</div>
+</div>
+
+
+<div class="container">
+
+
+<a name="days"></a>
+
+<h2>Доход по дням (без GR)</h2>
+
+<table class="table stacktable">
+	<tr>
+		<td>Дата</td>
+		<td class="ta-r">Тариф</td>
+		<td class="ta-r">Билеты</td>
+		<td class="ta-r">Продажи</td>
+		<td class="ta-r">Абонемент</td>
+		<td class="ta-r">Аренда</td>
+		<td class="ta-r">Сумма</td>
+	</tr>
+	{% for row in result %}
+	<tr>
+		<td>{{ row[0]|date('d.m.Y') }}</td>
+		<td class="ta-r">{{ row[1]|number_format(0, '.', ' ') }}</td>
+		<td class="ta-r">{{ row[2]|number_format(0, '.', ' ') }}</td>
+		<td class="ta-r">{{ row[3]|number_format(0, '.', ' ') }}</td>
+		<td class="ta-r">{{ row[4]|number_format(0, '.', ' ') }}</td>
+		<td class="ta-r">{{ row[5]|number_format(0, '.', ' ') }}</td>
+		<td class="ta-r"><b>{{ row[6]|number_format(0, '.', ' ') }}</b></td>
+	</tr>
+	{% endfor %}
+</table>
+
+
+
+
+<a name="graf"></a>
+<div id="chartdiv" style="width: 100%; height: 400px; margin-top: 0px;" ></div>
+
+
+
+
+
+<a name="month"></a>
+<h2>Доход по месяцам (без GR)</h2>
+
+<table class="table stacktable">
+	<tr>
+		<td>Дата</td>
+		<td class="ta-r">Тариф</td>
+		<td class="ta-r">Билеты</td>
+		<td class="ta-r">Продажи</td>
+		<td class="ta-r">Абонементы</td>
+		<td class="ta-r">Аренда</td>
+		<td class="ta-r">Сумма</td>
+	</tr>
+	{% for rowmonth in resultmonth %}
+	<tr>
+		<td>{{ rowmonth[0] }}.{{ rowmonth[1] }}</td>
+		<td class="ta-r">{{ rowmonth[2]|number_format(0, '.', ' ') }}</td>
+		<td class="ta-r">{{ rowmonth[3]|number_format(0, '.', ' ') }}</td>
+		<td class="ta-r">{{ rowmonth[4]|number_format(0, '.', ' ') }}</td>
+		<td class="ta-r">{{ rowmonth[5]|number_format(0, '.', ' ') }}</td>
+		<td class="ta-r">{{ rowmonth[6]|number_format(0, '.', ' ') }}</td>
+		<td class="ta-r"><b>{{ rowmonth[7]|number_format(0, '.', ' ') }}</b></td>
+	</tr>
+	{% endfor %}
+</table>
+
+
+
+
+
+<a name="tarif"></a>
+<div class="row">
+	<div class="col-xs-12 col-sm-4">
+		<h2>Тариф</h2>
+
+		<table class="table stacktable">
+			<tr>
+				<td>Дата</td>
+				<td class="ta-r">Нал</td>
+				<td class="ta-r">Безнал</td>
+				<td class="ta-r">Билетник</td>
+				<td class="ta-r">GR</td>
+				<td class="ta-r">Итог</td>
+			</tr>
+			{% for row in visitsall %}
+			<tr>
+				<td>{{ row.start|date('d.m') }}</td>
+				<td class="ta-r">{{ row.type|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r">{{ row.user_id|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r">{{ row.event_id|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r">{{ row.discount_money|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r"><b>{{ row.money|number_format(0, '.', ' ') }}</b></td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+	<a name="tickets"></a>
+	<div class="col-xs-12 col-sm-4">
+		<h2>Билеты</h2>
+
+		<table class="table stacktable">
+			<tr>
+				<td>Дата</td>
+				<td class="ta-r">Нал</td>
+				<td class="ta-r">Безнал</td>
+				<td class="ta-r">Билетник</td>
+				<td class="ta-r">GR</td>
+				<td class="ta-r">Итог</td>
+			</tr>
+			{% for row in ticketsall %}
+			<tr>
+				<td>{{ row.date|date('d.m') }}</td>
+				<td class="ta-r">{{ row.type|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r">{{ row.user_id|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r">{{ row.event_id|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r">{{ row.id|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r"><b>{{ row.money|number_format(0, '.', ' ') }}</b></td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+
+	<a name="sells"></a>
+	<div class="col-xs-12 col-sm-4">
+		<h2>Продажи</h2>
+
+		<table class="table stacktable">
+			<tr>
+				<td>Дата</td>
+				<td class="ta-r">Нал</td>
+				<td class="ta-r">Безнал</td>
+				<td class="ta-r">Билетник</td>
+				<td class="ta-r">GR</td>
+				<td class="ta-r">Итог</td>
+			</tr>
+			{% for row in sellsall %}
+			<tr>
+				<td>{{ row.date|date('d.m') }}</td>
+				<td class="ta-r">{{ row.type|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r">{{ row.price|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r">{{ row.count|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r">{{ row.good_id|number_format(0, '.', ' ') }}</td>
+				<td class="ta-r"><b>{{ row.itogo|number_format(0, '.', ' ') }}</b></td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+
+
+
+
+
+
+
+<a name="goods"></a>
+<h2>Продажи товара (за все время)</h2>
+<table class="table stacktable">
+	<tr>
+		<td>Товар</td>
+		<td class="ta-r">Кол-во</td>
+		<td class="ta-r pr15">Сумма</td>
+	</tr>
+	{% for sell in sells %}
+	<tr>
+		<td>{{ sell.goods.name }}</td>
+		<td class="ta-r">{{ sell.count }}</td>
+		<td class="ta-r pr15">{{ sell.itogo }}</td>
+	</tr>
+	{% endfor %}
+</table>
+

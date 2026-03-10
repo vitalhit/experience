@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <h2>Смены</h2>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="steps">
+            {{ this.render('/module/smena_step.twig', {'company' : company}) | raw }}
+            <div class="newblo">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-9 newblos">
+
+    
+
+
+        <div>
+            <div class="newblo btop">
+                <p><b>Смены</b></p>
+                <table class="tb">
+                    <tr>
+                        <th>Дата</th>
+                        <th>id</th>
+                        <th>Смена</th>
+                        
+                        
+                    </tr>
+                    {% for row  in all %}
+                                <tr>
+                                    <td><p>{{  row.start|date('d.m.y') }}</p></td>
+                                    <td><p>{{ row.id }}</p></td>
+                                    <td><p><a href="/crm/smena/view?id={{row.id}}">{{ row.title }}</a> </p></td>
+                                    <td><a href="/crm/smena/update?id={{ row.id }}"><span class="glyphicon glyphicon-pencil"></span></a> </td>
+                                    
+                                    
+                                </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        
+
+
+        
+    </div>
+</div>

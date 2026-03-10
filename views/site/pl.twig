@@ -1,0 +1,247 @@
+{% if band.landing.seodesc %}
+	{{ this.registerMetaTag({name: 'keywords', content: band.landing.seodesc}) | raw }}
+{% else %}
+	{{ this.registerMetaTag({name: 'keywords', content: band.name}) | raw }}
+{% endif %}
+
+{% if band.landing.seokey %}
+	{{ this.registerMetaTag({name: 'description', content: band.landing.seokey}) | raw }}
+{% else %}
+	{{ this.registerMetaTag({name: 'description', content: band.name}) | raw }}
+{% endif %}
+
+
+{% if band.landing.ogtitle %}
+	{{ this.registerMetaTag({name: 'og:title', content: band.landing.ogtitle}) | raw }}
+{% else %}
+	{{ this.registerMetaTag({name: 'og:title', content: band.name}) | raw }}
+{% endif %}
+
+{% if band.landing.ogdescription %}
+	{{ this.registerMetaTag({name: 'og:description', content: band.landing.ogdescription}) | raw }}
+{% else %}
+	{{ this.registerMetaTag({name: 'og:description', content: band.name}) | raw }}
+{% endif %}
+
+{% if band.landing.ogimage %}
+	{% set ogimage = ['/web/uploads/users/', band.landing.ogimage ]|join %}
+{% elseif band.landing.image %}
+	{% set ogimage = ['/web/uploads/users/', band.landing.image ]|join %}
+{% else %}
+	{% set ogimage = ['/web/uploads/users/', band.image ]|join %}
+{% endif %}
+{{ this.registerMetaTag({name: 'og:image', content: ogimage}) | raw }}
+
+{% set ogurl = ['/band/', band.id]|join %}
+{{ this.registerMetaTag({name: 'og:url', content: ogurl}) | raw }}
+
+{{ this.registerMetaTag({name: 'og:type', content: 'website'}) | raw }}
+
+
+
+
+<div class="container-full title-page" style="background: url('/web/uploads/users/{{ band.image }}') 50% 50% no-repeat transparent;">
+	<div class="container">
+		<div class="breadcrumbs">
+			<a class="home-link" href="/"><img src="/images/logo-mini-white.svg"></a>
+		</div>
+{# 		<div class="statics">
+			<span class="years">6+</span>
+			<span class="views">921</span>
+		</div> #}
+
+
+		<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 title-block">
+			<h1>{% if band.landing.title %}{{ band.landing.title }}{% else %}{{ band.name }}{% endif %}</h1>
+			<p>{% if band.anons %}{{ band.anons }}{% else %}{{ band.description }}{% endif %}</p>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="section-block">
+		<div class="event-row">
+			{% if band.activeevents %}
+				<h1>Ближайшие события</h1>
+
+				{% for row in band.activeevents %}
+					{% if row.biblioevents.image %}
+						<div class="event">
+							<a class="img-event" href="/{{ row.biblioevents.cities.alias }}/event/{% if row.biblioevents.alias %}{{ row.biblioevents.alias }}{% else %}{{ row.biblioevents.id }}{% endif %}">
+								{# <span class="comments">12</span><span class="like">410</span> #}
+								<img src="/web/uploads/users/{{ row.biblioevents.image }}">
+							</a>
+							{# <span class="type-event">категория</span> #}
+							<a class="title-event" href="/{{ row.biblioevents.cities.alias }}/event/{% if row.biblioevents.alias %}{{ row.biblioevents.alias }}{% else %}{{ row.biblioevents.id }}{% endif %}">
+								<h3>{{ row.biblioevents.name }} {# <small>6+</small> #}</h3>
+							</a>
+							<span class="point">{{ row.date|date('d.m.Y ') }} в {{ row.date|date('H:i') }}</span> 
+							{% if row.link_vk %}<a style="float: right; margin-right: 20px;"class="soc" href="https://vk.com/{{ row.link_vk }}"> <img src="/images/vk.png" alt=""></a>{% endif %}
+							{% if row.link_fb %}<a style="float: right; margin-right: 20px;"class="soc" href="{{ row.link_fb }}"> <img src="/images/fb.png" alt=""></a>{% endif %}
+							{# <span class="views">9214</span> #}
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% else %}
+				<h3>У {% if band.name_genitive %}{{ band.name_genitive }}{% elseif  band.name_genitive is empty %} музыкальной группы {% endif %}  нет событий!</h3>
+			{% endif %}
+			<span class="clearfix"></span>
+			<div class='content'>
+				{{ band.info|raw }}
+
+
+
+				{% if band.link_yandex or band.link_apple or band.link_spotify %} <h3>Слушать музыку {{ band.name }}</h3>{% endif %}
+				{% if band.link_yandex %}<a href='{{ band.link_yandex }}'>Яндекс.Музыка</a><br>{% endif %}
+				{% if band.link_apple %}<a href='{{ band.link_apple }}'>Apple Music</a><br>{% endif %}
+				{% if band.link_spotify %}<a href='{{ band.link_spotify }}'>Spotify</a><br>{% endif %}
+
+
+				
+			</div>
+		</div>
+
+		<div class="clear"></div>
+
+		<div class="container">
+			<div class="row">
+				{% if band.link_yt or band.link_vk or band.link_fb or band.link_insta %} <h3 class='text-left'>Ссылки на социальные сети. Подписывайтесь!</h3>{% endif %}
+				<div class="clear"></div>
+				{% if band.link_yt %} 
+				<div style=" width: 20%; min-width: 40px; max-width: 80px; float: left; margin: 5px;">
+					<center><a href="{{ band.link_yt }}" title="youtube"><img width="80%" src="https://harplivemusic.ru/assets/images/icon-yt.png" alt="youtube"></a></center>
+				</div>
+				{% endif %}
+				{% if band.link_fb %}
+				<div style=" width: 20%; min-width: 40px; max-width: 80px; float: left; margin: 5px;">
+					<center><a href="{{ band.link_fb }}" title="facebook"><img width="80%" src="https://harplivemusic.ru/assets/images/icon-fb.png" alt="facebook"></a></center>
+				</div>
+				{% endif %}
+				{% if band.link_vk %}
+				<div style=" width: 20%; min-width: 40px; max-width: 80px; float: left; margin: 5px;">
+					<center><a href="{{ band.link_vk }}" title="Вконтакте"><img width="80%" src="https://harplivemusic.ru/assets/images/icon-vk.png" alt="Вконтакте"></a></center>
+				</div>
+				{% endif %}
+				{% if band.link_insta %}
+				<div style=" width: 20%; min-width: 40px; max-width: 80px; float: left; margin: 5px;">
+					<center><a href="{{ band.link_insta }}" title="instagram">
+						<img width="80%" src="https://harplivemusic.ru/assets/images/icon-instagram.png" alt="instagram"></a></center>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="content-block">
+			{% if band.video or band.video_map or band.video_car  %}
+			<h2>Ролики и видео с концертов</h2>
+				<div class="row video-row">
+					{% if band.video1 and band.video2 and band.video3 %}
+						<div class="col-xs-12 col-lg-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ band.video1 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div> 	
+						<div class="col-xs-12 col-lg-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ band.video2 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div> 	
+						<div class="col-xs-12 col-lg-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ band.video3 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div> 	
+
+					{% elseif band.video1 and band.video2 and (band.video3 is empty) %}
+						<div class="col-xs-12 col-lg-4 col-lg-offset-2">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ band.video1 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div> 	
+						<div class="col-xs-12 col-lg-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ band.video2 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay;  encrypted-media" allowfullscreen></iframe>
+						</div>
+
+
+					{% elseif band.video1 and (band.video2 is empty) and (band.video3 is empty) %}
+						<div class="col-xs-12 col-lg-4 col-lg-offset-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ band.video1 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div> 	
+					{% elseif (band.video1 is empty) and band.video2 and (band.video3 is empty) %}
+						<div class="col-xs-12 col-lg-4 col-lg-offset-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ band.video2 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div>
+					{% elseif (band.video1 is empty) and (band.video2 is empty) and band.video3 %}
+						<div class="col-xs-12 col-lg-4 col-lg-offset-4">
+							<iframe width="360" height="200" src="https://www.youtube.com/embed/{{ band.video3 }}?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+						</div>
+					{% endif %}
+				</div>
+			{% endif %}
+			<div class="text-left">
+
+				{% if band.biography %} <h3>Биография {{ band.name_ginitive }}</h3>
+				 <div>{{ band.biography | raw}}</div>
+			{% endif %}
+
+			{% if band.rider|raw %}
+				<h4 style="font-size: 2em!important; ">Райдер {{ band.name_ginitive }}</h4>
+				{{ band.rider|raw }}
+			{% endif %}	
+			</div>
+		</div>
+	</div><!-- end section bloc -->
+
+<!-- right block --> 
+	<div class="sidebar-block">
+		<div class="user-go">
+			<h2>Вливайся<br><small>в </small>iGo<small>Event и</small></h2>
+			<div class="advantage">
+				<img src="/images/ico-heart-yellow.svg">
+				<p>ВЫБИРАЙ ЛУЧШЕЕ<br><span>и добавляй в избранное только то, что нравится </span></p>
+			</div>
+			<div class="advantage">
+				<img src="/images/ico-ringer-yellow.svg">
+				<p>БУДЬ В КУРСЕ<br>ВСЕХ СОБЫТИЙ<br><span>iGo всегда напомнит</span></p>
+			</div>
+			<div class="advantage">
+				<img src="/images/ico-messages-yellow.svg">
+				<p>ДЕЛИСЬ СВОИМ<br>ВПЕЧАТЛЕНИЕМ<br><span>твои комментарии всегда ценят на iGo</span></p>
+			</div>
+		</div>
+	</div>
+<!-- end right block -->  
+	
+
+
+</div> <!-- end section-block -->
+
+
+
+<footer class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-10 col-md-8">
+			<img class="logo-footer" src="/images/logo-mini.svg">
+			<p class="copyrite">© 2018-{{now|date("Y")}} iGoEvent.com — мы создаем события. Права на текстовые и другие материалы, размещенные на сайте, охраняются законом.
+				При цитировании обязательна прямая ссылка на iGoEvent.com.
+			</p>
+			<p class="copyrite"> <a href="http://vitalhit.com/">vitalhit</a></p>
+			<ul class="footer-nav">
+				<li><a href="page/about">О проекте</a></li>
+				<li><a href="/page/contacts">Контакты</a></li>
+				<li><a href="https://igoevent.com/pdf/iGoEvent_useragreement.pdf">Пользовательское соглашение</a></li>
+				<li class="years"><img src="/images/ico-18-plus.svg"></li>
+			</ul>
+			<noindex>
+				<script type="text/javascript">document.write("<a rel='nofollow' href='//www.liveinternet.ru/click' "+"target=_blank><img src='//counter.yadro.ru/hit?t26.1;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";h"+escape(document.title.substring(0,150))+";"+Math.random()+"' alt='' title='LiveInternet: показано число посетителей за"+" сегодня' "+"border='0' width='88' height='15'><\/a>");
+				</script>
+				<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88249632-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-88249632-1');
+</script>
+
+			</noindex>
+		</div>
+	</div>
+</footer>
+
+<script type="text/javascript" src="/js/igoeventapi.js"></script>
+<link rel="stylesheet" href="/css/igoeventapi.css">
+<link href="/css/front.css" rel="stylesheet">

@@ -1,0 +1,88 @@
+<div class="row">
+	<table class="tb stacktable">
+		{% for row in name %}
+			<tr>
+				<td><p><span>{{ row.id }}</span></p></td>
+				<td class="tac">
+					<img src="{% if row.image %}/uploads/users/{{ row.image }}{% else %}/web/images/noimage.png{% endif %}" class="w26 img-circle">
+				</td>
+				<td><p><a target="_blank" href="/crm/persons/view?id={{ row.id }}">{{ row.second_name }}</a></p></td>
+				<td><p><a target="_blank" href="/crm/persons/view?id={{ row.id }}">{{ row.name }} {{ row.middle_name }}</a></p></td>
+				<td>{{ row.status }}</td>			
+			{# <td>
+				{% set abonementactive = 0 %}
+				{% for abon in row.abonements %}
+					{% if abon.status == 1 %}
+						{% set abonementactive = 1 %}
+					{% endif %}
+				{% endfor %}
+
+				{% if abonementactive == 1 %}
+					<form method="get" action="/crm/persons/visitabonement">
+						<input type="hidden" name="" value="/crm/persons/visitabonement">
+						<input type="hidden" name="uid" value="{{ row.id }}">
+						{% for abon in row.abonements %}
+							<button type="submit" class="btn btn-primary">Абонемент до {{abon.end|date('d.m.Y')}} ({{abon.balance}})</button>
+						{% endfor %}
+					</form>
+				{% else %}
+					<button type="" class="btn btn-empty">Абонемент</button>
+				{% endif %}
+			</td> #}
+
+			<td>
+				<form method="get" action="/crm/persons/visit">
+					<input type="hidden" name="" value="/crm/persons/visit">
+					<input type="hidden" name="uid" value="{{ row.id }}">
+					<button type="submit" class="btn btn-primary">Тариф</button>
+				</form>
+			</td>
+			<!-- <td>
+				<form>
+					<input type="hidden" name="uid" class="uid" value="{{ row.id }}">
+					<input type="button" class="byticket btn btn-primary" value="Билет">
+				</form>
+			</td>
+			<td>
+				<form>
+					<input type="hidden" name="uid" class="uid" value="{{ row.id }}">
+					<input type="button" class="sells btn btn-primary" value="Покупка">
+				</form>
+			</td> -->
+		</tr>
+	{% endfor %}
+</table>
+</div>
+<script type="text/javascript">
+$(".byticket").click(function(){
+	console.log($(this).prev(".uid").val());
+	$.ajax({
+		type: 'get',
+				url: "/crm/persons/formticket", //Путь к обработчику
+				data: {'uid':$(this).prev(".uid").val()},
+				response: 'text',
+				success: function(data){
+					$(".end").html(data).fadeIn(); //Выводим полученые данные в списке
+				}
+			})
+	var myscrollpop = $(window).scrollTop();
+	$('.popup.end').animate({'top': myscrollpop + 100, 'opacity': 1}, 500);
+	$('.overlay').fadeIn();
+})
+
+
+// $(".sells").click(function(){
+// 	$.ajax({
+// 		type: 'get',
+// 				url: "/crm/persons/formsell", //Путь к обработчику
+// 				data: {'uid':$(this).prev(".uid").val()},
+// 				response: 'text',
+// 				success: function(data){
+// 					$(".end").html(data).fadeIn(); //Выводим полученые данные в списке
+// 				}
+// 			})
+// 	var myscrollpop = $(window).scrollTop();
+// 	$('.popup.end').animate({'top': myscrollpop + 100, 'opacity': 1}, 500);
+// 	$('.overlay').fadeIn();
+// });
+</script>

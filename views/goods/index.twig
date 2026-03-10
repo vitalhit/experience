@@ -1,0 +1,49 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-3">
+		<h1>Товары</h1>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-4">
+		которые мы продаем гостям. <br>
+		И состав: что входит в каждый товар.
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-3">
+<!-- 		<a class="btn btn-primary pull-right" href="/ingredients/create">+ Добавить ингредиент</a>
+ -->	</div>
+	<div class="col-xs-12 col-sm-6 col-md-2">
+		<a class="btn btn-primary pull-right" href="/goods/create">+ Создать товар</a>
+	</div>
+</div>
+
+<table class="table stacktable">
+	<tr>
+		<td>Товар</td>
+		<td class="ta-r pr15">Стоимость</td>
+		<td>Описание товара</td>
+		<td>Состав</td>
+		<td colspan="3">Редактировать</td>
+	</tr>
+	{% for row in goods %}
+		<tr>
+			<td>{{ row.name }}<span> - {{ row.id }}</span></td>
+			<td class="ta-r pr15">{{ row.price }} р</td>
+			<td>{{ row.info }}</td>
+			<td>
+				<table class="intable">
+					
+					{% for ingredient in row.ingredients %}
+						<tr>
+							<td>{{ ingredient.items.name }}</td>
+							<td>{{ ingredient.count }}</td>
+							<td><a href="/ingredients/update?id={{ ingredient.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+							<td><a href="/ingredients/delete?id={{ ingredient.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post" ><span class="glyphicon glyphicon-trash"></span></a></td>
+						</tr>
+					{% endfor %}
+					
+				</table>
+			</td>
+			<td><a href="/ingredients/create?id={{ row.id|e }}"><span class="glyphicon glyphicon glyphicon-plus-sign"></span></a></td>
+			<td><a href="/goods/update?id={{ row.id|e }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+			<td><a href="/goods/delete?id={{ row.id|e }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+		</tr>
+	{% endfor %}
+</table>

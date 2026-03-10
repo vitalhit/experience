@@ -1,0 +1,41 @@
+<h3 class="tac">
+	Если {% if not companies %}у вас не создано ни одного кабинета или {% endif %}возникли вопросы, <br>то свяжитесь, пожалуйста, с вашим аккаунт-менеджером:
+</h3>
+<div class="row">
+	<div class="col-xs-6 col-lg-3 tac"><span>по почте</span><br> <b><a href="mailto:v@igoevent.com">v@igoevent.com</a></b></div>
+	<div class="col-xs-6 col-lg-3 tac"><span></span><br> <b><a href="https://wa.me/79254244207?text=Здравствуйте, пишу вам с igoevent.com">по whta's app</a></b></div>
+	<div class="col-xs-6 col-lg-3 tac"><span>ВКонтакте</span><br> <b><a href='https://vk.me/igoevent'>vk.me/igoevent</a></b></div>
+	
+	<!--<div class="col-xs-6 col-lg-3 tac"><span>Facebook</span><br> <b><a href='https://facebook.com/vitaliykhitrov'>facebook.com/vitaliykhitrov</a></b></div>
+	-->
+</div>
+
+<hr>
+<a class="btn btn-md btn-info" href="/crm/company/my?ord=id">Id</a>
+<a class="btn btn-md btn-info" href="/crm/company/my?ord=brand">Бренд</a>
+<a class="btn btn-md btn-info" href="/crm/company/my?ord=name">Юр.лицо</a>
+<div class="row newblos">
+	{% for company in companies %}
+		<div class="hidden-xs col-md-3">
+			<a href="/crm/company/about?id={{ company.id }}">
+				<div class="newblo n_company">
+					<p class="mini">Кабинет #{{ company.id }}</p>
+					<h3 class="h70 fs28">{{ company.brand }}</h3>
+					<span>{{ company.name }}</span>
+				</div>
+			</a>
+		</div>
+		<div class="visible-xs">
+			<a href="/crm/company/about?id={{ company.id }}">
+				<div class="newblo n_company">
+					{% if ord == 'name' %}
+						<h3><span>#{{ company.id }}</span>{{ company.name }}</h3>
+					{% else %}
+						<h3><span>#{{ company.id }}</span>{{ company.brand }}</h3>
+					{% endif %}
+				</div>
+			</a>
+		</div>
+	{% endfor %}
+</div>
+

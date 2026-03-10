@@ -1,0 +1,68 @@
+<form class="form" method="POST" action="/crm/smena/endsmena">
+
+	<h2>{{ user.username }}</h2>
+
+	<div class="ta-c mini">
+		<p>Завершаем смену #{{all_smena}}</p>
+		<p>
+			{% if last_smena.type == 1 %}
+				Ресепшн
+			{% elseif last_smena.type == 2 %}
+				Бар
+			{% elseif last_smena.type == 3 %}
+				Другое
+			{% else %}
+			-
+			{% endif %}
+		</p>
+	</div>
+
+	<div class="line"></div>
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-4">
+			<p class="big">
+				<span>c</span> {{ last_smena.start|date('H:i') }}
+			</p>
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<p class="big">
+				<span>по</span> {{ last_smena.end|date('H:i') }}
+			</p>
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<p class="big">
+				{{ last_smena.time }}
+			</p>
+		</div>
+	</div>
+
+<!-- 	<div class="line"></div>
+
+	<h2>Куплено в вашу смену</h2>
+	<div class="row">
+		<div class="col-xs-12 col-sm-4">
+			<p class="big">
+			</p>
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<p class="big">
+			</p>
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<p class="big">
+			</p>
+		</div>
+	</div> -->
+
+	<div class="line"></div>
+
+	<div class="mt50"></div>
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-4 col-sm-offset-4">
+			<input type="submit" name="type" class="btn btn-warning" value="Завершить">
+		</div>  
+	</div>
+
+</form>

@@ -1,0 +1,58 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{{ band.name }}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/band_step.twig', {'band' : band}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9 company">
+		<div class="row">
+			<div class="col-xs-12 col-md-3">
+				<div class="newblo round">
+					<p class="mini">&nbsp;</p>
+					<h3 class="h90"><a class="js_add"><span class="bignum">+</span> добавить</a></h3>
+				</div>
+			</div>
+			{% for person in band.artists %}
+			<div class="col-xs-12 col-md-3">
+				{% if person.image %}<a href="/crm/persons/view?id={{ person.id }}"><img src="/uploads/users/{{ person.image }}" class="img-responsive img-circle"></a>{% else %} <img src="/images/noimage.png" class="img-responsive img-circle"> {% endif %}
+				<h4>
+					{% if person.name %}<a href="/crm/persons/view?id={{ person.id }}">{{ person.name }} {{ person.second_name }}</a>{% else %} ФИО не задано {% endif %} <span class="mini"> #{{ person.id }}</span>{{ person.username }}
+					<a href="/crm/band/unlink?id={{ person.id }}&band_id={{ band.id }}" title="Unlink" aria-label="Unlink" data-confirm="Уверены, что хотите отвязать пользователя от этой компании?"><span class="glyphicon glyphicon-minus-sign"></span></a>
+				</h4>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+
+<div class="popup pop_add">
+	<h3>Добавить участника в бенд</h3>
+	<form method="post" action="/crm/band/add">
+		
+		<input type="hidden" id="band_id" name="band_id" value="{{ band.id }}">
+
+		<div class="form-group">
+			<label class="control-label" for="person_id">ID Персоны! (person_id)</label>
+			<input type="text" id="person_id" class="form-control" name="person_id">
+		</div>
+
+		<div class="form-group">
+			<button type="submit" class="btn btn-success pull-right">Добавить</button>
+		</div>
+	</form>
+</div>
+<div class="overlay"></div>
+
+<script type="text/javascript">
+	$('.js_add').click(function(){
+		var myscrollpop = $(window).scrollTop();
+		$('.pop_add').animate({'top': myscrollpop + 100, 'opacity': 1}, 500);
+		$('.overlay').fadeIn();
+	});
+	$('.steps .team').addClass('active');
+</script>

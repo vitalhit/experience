@@ -1,0 +1,91 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>Все даты</h2>
+			<!-- 	<div class="col-xs-12 col-md-1"><h3 class="itog">{{ 0 + summnal }}<span>нал</span></h3></div>
+			<div class="col-xs-12 col-md-1"><h3 class="itog">{{ 0 + summbez }}<span>безнал</span></h3></div>
+			<div class="col-xs-12 col-md-1"><h3 class="itog">{{ 0 + summbiletnik }}<span>билетник</span></h3></div>
+			<div class="col-xs-12 col-md-1"><h3 class="itog">{{ 0 + summgr }}<span>gr</span></h3></div>
+			<div class="col-xs-12 col-md-1"><h3 class="itog">{{ 0 + summnal + summbez + summbiletnik + summgr}}<span>итог</span></h3></div>-->
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		
+		{{ this.render('/module/event_step.twig', {'user' : user}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+
+		<table class="tb stacktable">
+			<tr>
+				<th>Дата</th> 	
+				<th>Картинка</th>
+				<th>Время</th>
+				<th>Событие</th>
+
+				<th>Сервисы</th>
+				<th></th>
+				<th></th>
+			</tr>
+			<tr><td colspan="6"><h3>Будующие</h3></td></tr>
+			{% for row in events %}
+				{% if row.date|date('ymd') >= time_now %} 
+				<tr>
+					<td><small>{{ row.date|date('d.m.Y') }}<br>
+						<a href="https://igoevent.com/crm/events/update?id={{ row.id }}">{{ row.id }}</a><br>
+						<a href="https://igoevent.com/crm/seats/create?event_id={{ row.id }}&biblioeventid={{ row.biblioevents.id }}">+seat</a></small></td>
+					<td>
+						{% if row.biblioevents.image %}
+								<img src="/uploads/users/{{ row.biblioevents.image }}" class="plogo">
+					{% endif %}
+					</td>
+					<td>{{ row.date|date('H:i') }}<br> {{ summbez }}</td>
+					
+					<td>{% if row.status == 0 %}<s>{% endif %} <a href="https://igoevent.com/crm/biblioevents/view?id={{ row.biblioevents.id }}&event_id={{ row.id }}"> {{ row.biblioevents.name|e }}</a> {{ row.biblioevents.cities.name }}{% if row.status == 0 %}(не активная дата)</s>{% endif %}<br>
+						<small><a class="btn btn-danger btn-xs" href="/crm/bookingapi">Все заявки</a> 
+							<a class="btn btn-warning btn-xs" href="/crm/biblioevents/brons?id={{row.biblioevents.id}}">Брони</a> 
+							<a class="btn btn-success btn-xs"  href="/crm/biblioevents/view?id={{row.biblioevents.id}}&event_id={{ row.id }}">Билеты</a>
+							<a class="btn btn-success btn-xs" href="crm/biblioevents/viewcsv?id={{row.biblioevents.id}}&event_id={{row.id}}">Выгрузка</a></small></td>
+
+					<td><a href="/crm/events/update?id={{ row.id|e }}"><span class="glyphicon glyphicon-pencil"></span></a>
+					</td>
+				</tr>
+				{% endif %} 
+			{% endfor %}
+			<tr><td class="warning" colspan="6"><h3>Прошедшие</h3></td></tr>
+			{% for row in events %}
+				{% if row.date|date('ymd') < time_now %} 
+				<tr>
+					<td><a style="color: #758D94;" href="https://igoevent.com/crm/events/update?id={{ row.id }}">{{ row.date|date('d.m.Y') }}</a></td>
+					<td>
+						{% if row.biblioevents.image %}
+								<img src="/uploads/users/{{ row.biblioevents.image }}" class="plogo">
+					{% endif %}
+					</td>
+					<td>{{ row.date|date('H:i') }}</td>
+					
+					<td>{% if row.status == 0 %}<s>{% endif %} <a href="https://igoevent.com/crm/biblioevents/view?id={{ row.biblioevents.id }}&event_id={{ row.id }}"> {{ row.biblioevents.name|e }}</a> {{ row.biblioevents.cities.name }} {% if row.status == 0 %}(не активная дата)</s>{% endif %}<br>
+					<small><a class="btn btn-danger btn-xs" href="/crm/bookingapi">Все заявки</a> 
+							<a class="btn btn-warning btn-xs" href="/crm/biblioevents/brons?id={{row.biblioevents.id}}">Брони</a> 
+							<a class="btn btn-success btn-xs"  href="/crm/biblioevents/view?id={{row.biblioevents.id}}&event_id={{ row.id }}">Билеты</a> </small>
+					</td>
+					<td>
+						<span>{% if row.link_vk %}<a href="https://vk.com/event{{ row.link_vk_id }}">vk</a>,{% else %} <s>vk</s>,{% endif %}
+							{% if row.link_fb %}<a href="{{ row.link_fb }}">fb</a>,{% else %} <s>fb</s>,{% endif %}
+							{% if row.link_yt %}<a href="{{ row.link_yt }}">yt</a>,{% else %} <s>yt</s>,{% endif %}
+							{% if row.link_kg %}<a href="{{ row.link_kg }}">kg</a><br>{% else %} <s>kg</s><br>{% endif %}
+							{% if row.link_insta %}<a href="https://instagram.com/{{ row.link_insta }}">insta</a>,{% else %} <s>insta</s>,{% endif %}
+						</span>
+					</td>
+					<!--<td>{{ row.biblioevents.categoryevents.category }}</td>-->
+					<td><a href="/crm/events/update?id={{ row.id|e }}"><span class="glyphicon glyphicon-pencil"></span></a>
+						</td>
+				</tr>
+				{% endif %} 
+			{% endfor %}
+		</table>
+
+		{% if biblioeventid %}<a href="/crm/events/index" class="btn btn-primary">Смотреть все</a>{% endif %}
+
+		</div>
+	</div>

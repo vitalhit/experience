@@ -1,0 +1,9 @@
+
+<textarea cols="6" rows="1">{% if model.link_vk %}[{{model.link_vk}}|{{ biblioevent.name }}]{% else %}{{ biblioevent.name }} {%endif%}
+
+{% if model.info %} {{ model.info }} {% else %} {{ biblioevent.info }}{%endif%}
+
+https://igoevent.com/{{ biblioevent.cities.alias }}/event/{% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}?utm_source={% if newsmaker.utm_source %}{{newsmaker.utm_source}}{% else %}media{% endif %}&utm_medium={{user.username}}&utm_campaign={% if biblioevent.alias %}{{ biblioevent.alias }}{% else%}{{ biblioevent.id }}{% endif %}&utm_content={% if newsmaker.utm_content %}{{newsmaker.utm_content}}{% else %}{{newsmaker.site}}{% endif %}&utm_term={{ model.id }}
+{% if biblioevent.link_vk_img %}{{biblioevent.link_vk_img}}{%endif%}{% if biblioevent.img.vk %} https://vk.com/{{ biblioevent.img.vk }}{% endif %} 
+{{ biblioevent.link_vk_audio }} 
+{% for row in mybands %}{{ row.band.link_vk_audio }}{% endfor %}</textarea><br>

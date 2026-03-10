@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="stiky">
+            <div class="newblo">
+                {% if musician.image %}
+                    <img src="/uploads/users/{{ musician.image }}" class="img-responsive img-circle">
+                {% else %}
+                    <img src="/images/noimage.png" class="img-responsive img-circle">
+                {% endif %}
+                <h2 class="mt0">{% if musician.name %}{{ musician.name }} {{ musician.second_name }}{% endif %}</h2>
+                <a href="/crm/musicians/update?id={{ musician.id }}" class="btn btn-primary ma w120">Редактировать</a>
+                <h4>User_id: {{ user_id }}<br>Профиль id: {{ musician.id }}</h4>
+                <p><b>Статус:</b> {{ musician.status }}</p>
+                <p><b>Дата рождения:</b> {{ musician.birthday|date('d.m.Y') }}</p>
+                <p><b>E-mail:</b> {{ musician.mail }}</p>
+                <p><b>Телефон:</b> {{ musician.phone }}</p>
+                <p><b>Пол:</b> {% if musician.sex == 0 %} женщина {% else %} мужчина {% endif %} </p>
+                <p><b>Группы:</b> {{ musician.groups }}</p>
+                <p><b>Откуда:</b> {{ musician.froms.url }}</p>
+                <p><b>Получать письма:</b> {% if musician.sendmail == 1 %} Да {% else %} Нет {% endif %} </p>
+                <p><b>Пожелания:</b> {{ musician.vishes }}</p>
+            </div>
+            {% if musician.info %}
+                <div class="newblo"><p>{{ musician.info }}</p></div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-9">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-3"><h3 class="itog"></h3></div>
+                <div class="col-xs-3"><h3 class="itog"></h3></div>
+                <div class="col-xs-3"><h3 class="itog"></h3></div>
+                <div class="col-xs-3"><h3 class="itog"></h3></div>
+            </div>
+        </div>
+        
+       <!--  <div class="mini_header mt0"><span>ВИЗИТЫ <div class="badge">{{ musician.visits|length }}</div></span></div>
+
+        <div class="newblo">
+            <table class="table stacktable">
+                <tr>
+                    <td>Начало</td>
+                    <td>Окончание</td>
+                    <td>Скидка</td>
+                    <td>Стоимость</td>
+                </tr>
+                {% for row in musician.visits|reverse %}
+                    <tr>
+                        <td>{{ row.start|date('d.m в H:i') }}</td>
+                        <td>{{ row.end|date('d.m в H:i') }}</td>
+                        <td>{{ row.discount_money }}</td>
+                        <td>{{ row.money }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div> -->
+
+    </div>
+</div>

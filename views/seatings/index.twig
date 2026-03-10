@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-8">
+        <h1>Рассадки</h1>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-2">
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-2">
+        <a class="btn btn-primary pull-right" href="/seatings/create">+ Создать рассадку</a>
+    </div>
+</div>
+
+<table class="table stacktable">
+    <tr>
+        <td>Рассадка</td>
+        <td>Площадка</td>
+        <td>Инфо</td>
+        <td colspan="2">Редактировать</td>
+    </tr>
+    {% for row in seatings %}
+        <tr>
+            <td><a href="/seats/create?seatingid={{ row.id }}">#{{ row.id }} {{ row.name }}</a></td>
+            <td>{{ row.places.name }}</td>
+            <td>{{ row.info }}</td>
+            <td><a href="/seatings/update?id={{ row.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+            <td><a href="/seatings/delete?id={{ row.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+        </tr>
+    {% endfor %}
+</table>

@@ -1,0 +1,479 @@
+<div class="endreg">
+    <div class="ttl">Закончить регистрацию?</div>
+    <p>После этого вернуть введенные вами данные будет невозможно.</p>
+    <a class="widget_button1 igo_popup_goon">Нет, продолжить</a>
+    <a class="widget_button2 igo_popup_close">Завершить</a>
+</div>
+
+<div class="igo_form" id="igo_form_promo">
+    <div class="igo_close"></div>
+    <p class="info">Пожалуйста, выберите места ваших билетов:<!-- form.twig --></p>
+    <p>{{event.formtext | raw}}</p>
+    
+
+    <!--div class="igo_scheme"></div-->
+    
+    {% if promo %}
+        <p class="tac">Введите промо код! </p>
+        <div class="row">
+            <div class="col-xs-8 col-lg-6 col-lg-offset-2"><input type="text" name="promocode" class="promocode form-control"></div>
+            <div class="col-xs-4"><div class="btn btn-primary m0">промо</div></div>
+        </div>
+    {% endif %}
+
+    <div class="mt10">
+        <p class="col-xs-6 col-sm-8"></p>
+        <p class="col-xs-3 col-sm-2">Цена</p>
+        <p class="col-xs-3 col-sm-2">Кол-во</p>
+    </div>
+
+    <form id="igo_form" method="POST" action="">
+        <div class="igo_tick">
+            <div class="promotickets"></div>
+           <!--
+           {% if seats %}   {% else %} <h3>Билетов больше нет, мы опопвестим вас, если билеты появятся.</h3>{% endif %} 
+            -->
+
+            {% for row in seats %}
+                {% if row.price == 0 %}
+                    {% set itemval = 1 %}
+                {% else %}
+                    {% set itemval = 0 %}
+                {% endif %}
+
+                
+                
+                {% if (row.date_stop > now|date('Y-m-d H:i') or row.date_stop is empty) and 
+                      (row.date_start < now|date('Y-m-d H:i') or row.date_start is empty)
+                      %} 
+
+                <div class="igo_grey">
+                        <div class="col-xs-12 col-sm-7"><b>{{ row.name }}</b><br>
+                        {% if row.info %}<small style=" position: absolute; left: 7px; top:20px;">{{row.info}}</small>{% endif %}
+                        </div>
+                        <div class="col-xs-6 col-sm-2 h46"><b>{{ row.price }}</b>&nbsp;р.</div>
+                        {% if row.type == 1 %} 
+                        <div class="input-group col-xs-6 col-sm-2 h46">
+                            <span class="input-group-addon btn-num btn-minus h46" data-type="minus" data-field="quant{{ loop.index }}">-</span>
+                            <div id="quant{{ loop.index }}" class="form-control tick_num h46" ticksum="{{ row.price }}" seatid="{{ row.id }}" min="0" max="10">0</div>
+                            <span class="input-group-addon btn-num btn-plus h46" data-type="plus" data-field="quant{{ loop.index }}">+</span>
+                        </div>
+                        {%else%} 
+                        <div class="input-group col-xs-6 col-sm-2 h46">
+                            <span class="input-group-addon btn-num btn-minus h46" data-type="minus" data-field="quant{{ loop.index }}">-</span>
+                            <div id="quant{{ loop.index }}" class="form-control tick_num h46" ticksum="{{ row.price }}" seatid="{{ row.id }}" min="0" max="10">1</div>
+                            <span class="input-group-addon btn-num btn-plus h46" data-type="plus" data-field="quant{{ loop.index }}">+</span>
+                        </div>
+                        {%endif%}
+                </div>
+                {% endif %}
+
+                {% if row.info %}
+                <!--<div class="igo_grey_info">
+                    <div>
+                        <small style=" position: absolute; margin: 0px 00px 0 0;">({{row.info}})</small>
+                    </div>
+                </div> -->
+                {% endif %}
+
+            {% endfor %}
+            <span class="counttik hidden"></span>
+        </div>
+
+        <center>           
+            {% for c in color %} 
+            
+            {% if c.p == 'busy' %}
+            {% elseif c.p < 0 %}
+            {% else %}<div class="seat sc{{ loop.index }}"></div> - {{c.p}}&nbsp;&nbsp;&nbsp;
+            {% endif %}
+
+            {% endfor %}
+        </center>  
+
+        <div id="igo_seats">
+
+            {% if event.biblioevents.places.scheme_width %}<div style='overflow: scroll;'>
+                <div style="width: {{event.biblioevents.places.scheme_width}}px!important;">
+            {% endif%}
+            {% for secs in s_sort %}
+                {% if  secs.css == "" %} 
+                <h2 class="mt20 mb0">{% if secs.sec %}{{ secs.sec }}{% else %}Сцена{% endif %}</h2>
+                {% for rows in secs.row %}
+                    {% if loop.index == 1 %}
+                        <div class="row tac zal_seat ">
+                            <div class="seat seat_num">&nbsp;</div>
+                            {% for key, row in rows %}
+                                <div class="seat seat_num">{{ key }}</div>
+                            {% endfor %}
+                            <div class="seat seat_num">&nbsp;</div>
+                        </div>
+                    {% endif %}
+                    <div class="row tac zal_seat"> 
+                        {% for key, r in rows %} 
+                            {% if loop.first %}<div class="seat seat_num"><a style="font-size:8px;" title="{{r.name}}. Стоимость {{r.price}} рублей. (seat_id: {{r.id}})">{{ r.row }}</a></div>{% endif %}
+                            {% for c in color %}
+                                {% if c.p == r.price %}
+                                    <div class="seat sc{{ loop.index }} sc-{{ r.row }}-{{ key }} {% if r.price == 'busy' %}sc_busy{% elseif r.price < 0 %}sc_none{% else %}js_s{% endif %}" seatsum="{{ r.price }}" seatid="{{ r.id }}" seat="{{ key }}">
+                                        {{ key }}
+                                        {% if r.price >= 0 %}
+                                            <span>{{ r.name }}: {{ r.price }}</span>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}           
+                            {% endfor %}                            
+                            {% if loop.last %}<div class="seat seat_num">{{r.row}}</div>{% endif %}
+                        {% endfor %}           
+                    </div>
+                {% endfor %}
+                {% else%}
+                <!-- места за столиками -->
+                 
+                <dif class="{{secs.css}}">
+                    <div>&nbsp;</div>
+                    {% for rows in secs.row %}
+                    <div class="row tac zal_seat 
+                                {% for key, r in rows %}{% if loop.first %} {{r.css}} {% endif %}{%endfor%}
+                                "> 
+                        {% for key, r in rows %}
+
+                            {% for c in color %}
+                                {% if c.p == r.price %}
+                                    <div class="numchair seat sc{{ loop.index }} sc-{{ r.row }}-{{ key }} {% if r.price == 'busy' %}sc_busy{% elseif r.price < 0 %}sc_none{% else %}js_s{% endif %}" seatsum="{{ r.price }}" seatid="{{ r.id }}" seat="{{ key }}">
+                                        <a title="{{ r.name }} #{{ key }}">{{ key }}</a>
+                                        
+                                    </div>
+                                {% endif %}
+                            {% endfor %}                            
+                            <!-- {% if loop.last %}<div class="seat seat_num">{{r.row}}</div>{% endif %}
+                            -->
+                        {% endfor %}           
+                    </div>
+                {% endfor %}
+                </dif>
+                <!-- столы закончились -->
+                {%endif%}
+
+            {% endfor %}
+                
+            {% if event.biblioevents.places.scheme_width %}
+                <br>
+                </div>
+            </div>
+            {%endif%}
+        </div> <!-- end igo_seats -->
+        
+        <h2>Сумма: <div class="all_summa" style="display: inline-block;">0</div></h2>
+
+        
+        <div id="igo_user">
+            <input type="hidden" name="utm_source" value="">
+            <input type="hidden" name="utm_medium" value="">
+            <input type="hidden" name="utm_campaign" value="">
+            <input type="hidden" name="utm_content" value="">
+            <input type="hidden" name="utm_term" value="">
+            <input type="hidden" name="id" class="id" value="">
+            <input type="hidden" name="company_id" class="company_id" value="{{ event.biblioevents.company_id }}">
+            <input type="hidden" name="type" value="9">
+            <input type="hidden" name="from_url">
+            <input type="hidden" name="event_id" id="event_id" value="{{ event.id }}">
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">E-mail</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control igo_mail required" type="text" name="mail" value=""></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">Фамилия</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control secondname required" type="text" name="second_name" value=""></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">Имя</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control name required" type="text" name="name" value=""></div>
+            </div>
+            {% if event.phone_ask != '-1' %} 
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">Телефон</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control phone required" type="number"  partern="[0-9]{9,}" placeholder="79254244207 - фомат: без  + - и скобок" name="phone" value=""></div>
+            </div>
+            {% else %}
+            <div class="form-group">                
+                <div class="col-xs-12 col-sm-9"><input class="form-control phone required" type="hidden"  partern="[0-9]{9,}" placeholder="79254244207 - фомат: без  + - и скобок" name="phone" value="0000000000"></div>
+            </div>
+            {% endif %}
+             
+            {% if event.secretcode_ask == -1 %} 
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">Комментарий</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control" type="text" name="info" value=""></div>
+            </div>
+            <div class="form-group hidden">
+                <label class="col-xs-12 col-sm-3">Секретное слово</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control secretcode" type="text" placeholder="" name="secretcode" value=""></div>
+            </div>
+            {% else %}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">Секретное слово</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control secretcode" type="text" placeholder="" name="secretcode" value=""></div>
+            </div>
+            <div class="form-group hidden" >
+                <label class="col-xs-12 col-sm-3">Комментарий</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control" type="text" name="info" value=""></div>
+            </div>
+            {% endif %}
+
+
+
+            {% if event.field1 %}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">{{ event.field1 }}</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field1" value=""></div>
+            </div>
+            {% endif %}
+
+            {% if event.field2 %}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">{{ event.field2 }}</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field2" value=""></div>
+            </div>
+            {% endif %}
+
+            {% if event.field3 %}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">{{ event.field3 }}</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field3" value=""></div>
+            </div>
+            {% endif %}
+
+            {% if event.field4 %}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">{{ event.field4 }}</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field4" value=""></div>
+            </div>
+            {% endif %}
+
+            {% if event.field5 %}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">{{ event.field5 }}</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field5" value=""></div>
+            </div>
+            {% endif %}
+
+            {% if event.field6 %}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">{{ event.field6 }}</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field6" value=""></div>
+            </div>
+            {% endif %}
+
+            {% if event.field7 %}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">{{ event.field7 }}</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field7" value=""></div>
+            </div>
+            {% endif %}
+
+            {% if event.field8 %}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">{{ event.field8 }}</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field8" value=""></div>
+            </div>
+            {% endif %}
+
+            {% if event.field9 %}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">{{ event.field9 }}</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field9" value=""></div>
+            </div>
+            {% endif %}
+
+            {% if event.field10 %}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3">{{ event.field10 }}</label>
+                <div class="col-xs-12 col-sm-9"><input class="form-control required" type="text" name="field10" value=""></div>
+            </div>
+            {% endif %}
+
+            <div class="form-group col-xs-12">
+                <label class="reg_accept">
+                    <input type="checkbox" name="subscribe" checked="checked">
+                    <span>Я хочу получать информацию об интересных событиях и товарах</span>
+                </label>
+            </div>
+            <div class="form-group col-xs-12">
+                <label class="reg_accept">
+                    <input type="checkbox" name="accepted_terms" onchange="document.getElementById('submit').disabled = !this.checked" checked checked="checked" disabled>
+                    <span>Я согласен с условиями <a target="_blank" href="https://igoevent.com/pdf/iGoEvent_useragreement.pdf">Пользовательского соглашения</a> и <a href="https://igoevent.com/site/oferta/{{ biblioevent.id }}" target="_blank"> Договором оказания услуг </a> 
+                    </span>
+                </label>
+            </div>
+            <button type="submit" id="submit_seat" class="btn btn-primary center-block submit_seat">{% if event.formbutton %}{{ event.formbutton }}{% else %}{{ event.button }}{%endif%}</button>
+        </div>
+    </form>
+    {% if event.biblioevents.places.shema and event.shema == 1 %}<p><img width="100%" src="/uploads/places/{{event.biblioevents.places.shema}}"></p>{%endif%}
+</div>
+
+
+<script>
+    $(document).ready(function(){
+
+        // Промо билеты
+        $(document).on('change', '.promocode', function() {
+            var promocode = this.value;
+            var event_id = $('#event_id').val();
+            console.log(promocode);
+            if(this.value.length >= 2){
+                $.ajax({
+                    type: 'get',
+                    url: "https://igoevent.com/api/promocode",
+                    data: {'promocode': promocode, 'event_id' : event_id},
+                    response: 'text',
+                    success: function(data){
+                        $(".igo_popup .promotickets").fadeOut(0);
+                        $(".igo_popup .promotickets").html(data).fadeIn(500);
+                    }
+                })
+            }
+        });
+
+
+
+
+
+
+        // Выбор места
+        var seat_summa = $('.all_summa').html();
+        $("body").on('click', ".js_s", function(){
+            if ($(this).hasClass('check')) {
+                $(this).removeClass('check');
+            } else {
+                $(this).addClass('check');
+            }
+            // Пересчет суммы
+            var all_summa = 0;
+            var counttik = 0;
+            $('.check').each(function() {
+                all_summa = all_summa + parseInt($(this).attr('seatsum'));
+            });
+            $('.tick_num').each(function() {
+                all_summa = all_summa + parseInt($(this).attr('ticksum') * $(this).html());
+                counttik = counttik + parseInt($(this).html());
+            });
+            $('.all_summa').html(all_summa);
+            $('.counttik').html(counttik);
+        });
+
+
+
+
+        // Отправляем форму
+        $(document).on('click', '.submit_seat', function() {
+            $("html, body").animate({scrollTop: '0px' },"slow");
+
+            var button = document.getElementById('submit_seat'); 
+            button.addEventListener( 'click', function() { fbq('track', 'AddToCart', { content_name: '{{event.biblioevents.alias}} {{event.id}}', content_category: '', content_ids: ['{{event.id}}'], content_type: 'event', value: 1, currency: 'USD' }); }, false 
+               ); 
+
+            var err = 0;
+            $(document).find("input.required").each(function() {
+                if(!$(this).val()){// если поле пустое
+                    $(this).css('border', 'red 1px solid');
+                    err = 1;
+                }else{
+                    $(this).css('border', '#ccc 1px solid');
+                    err = 0;
+                }
+            });
+
+            // Пересчет суммы
+            var all_summa = 0;
+            var counttik = 0;
+            $('.check').each(function() {
+                all_summa = all_summa + parseInt($(this).attr('seatsum'));
+            });
+            $('.tick_num').each(function() {
+                all_summa = all_summa + parseInt($(this).val());
+            });
+
+            $('.tick_num').each(function() {
+                if($(this).html() > 0){
+                    counttik = counttik + 1;        
+                }
+            });
+            $('.counttik').html(counttik);
+
+            // Массив Билетов без места
+            var tickets = null;
+            var tickets = {};
+            $('.tick_num').each(function() {
+                var seatid = $(this).attr('seatid');
+                var count = $(this).html()
+                var ticksum = parseInt($(this).attr('ticksum'));
+                tickets[seatid] = {'id': seatid, 'count': count, 'sum': ticksum};
+            });
+
+            // Массив Билетов С местами
+            var seats = null;
+            var seats = {};
+            var i = 0;
+            $('.check').each(function() {
+                var seatid = $(this).attr('seatid');
+                var seat = $(this).attr('seat');
+                var seatsum = parseInt($(this).attr('seatsum'));
+                i++;
+                seats[i] = {'id': seatid, 'seat': seat, 'sum': seatsum};
+            });
+
+            var data = null;
+            var data = {};
+            $('#igo_form_promo').find('input, textearea, select').each(function() { data[this.name] = $(this).val(); });
+
+            var order_tik = parseInt( $('.all_summa').html() ) + parseInt( $('.counttik').html() );
+            if ( order_tik > 0 ) { // если регистрация по местам по рядам, то нужно поменть > на >= 
+                if(err == 0) {
+                    $('.loading').fadeIn(500);
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://igoevent.com/api/ticketseat',
+                        dataType: 'json',
+                        data: {'data': data, 'seats': seats, 'tickets': tickets},
+                        success: function(data){
+                            $('.loading').fadeOut(500);
+                            $('.igo_popup').html('<div class="igo_close"></div>' + data);
+                        }
+                    })
+                }
+            } else {
+                alert('Выберите билеты!')
+            };
+            return false;
+        });
+
+
+
+
+        // Наличие такого юзера в системе по mail
+        $('body').on('change', '.igo_mail2', function() {
+            var mail = this.value;
+            $.ajax({
+                url: 'https://igoevent.com/site/userisapi?mail='+mail,
+                dataType: 'json',
+                success: function(data){
+                    if (data){
+                        $('.name').val(data.name);
+                        $('.secondname').val(data.second_name);
+                        $('.phone').val(data.phone);
+                        $('.id').val(data.id);
+                        $('.igo_privet').html('Добро пожаловать, '+data.name);
+                        $('.field-mail').hide(200);
+                        $('.field-name').hide(200);
+                        $('.field-second_name').hide(200);
+                        $('.field-phone').hide(200);
+                    }
+                }
+            })
+        });
+
+    });
+</script>

@@ -1,0 +1,55 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>Возвраты</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/company_step.twig', {'company' : company}) | raw }}
+	</div>
+
+
+	<div class="col-xs-12 col-lg-9">
+		<div class="newblo">
+			<p class="mini">— организатор вернет самостоятельно</p>
+			<p class="mini">— вернут через igoevent.com комиссия 5% удержится со счета организатора, вернуть 70%</p>
+			<p class="mini">— вернуть через igoevent.com комиссия удержится со счета гостя, вернуть 50%</p>
+			<table class="tb hidden-xs">
+				<tr>
+					<th>#</th>
+					<th>Дата</th>
+					<th>Купил</th>
+					<th colspan="3">Гость</th>
+					<th>Билет</th>
+					<th class="tar">Р.</th>
+					<th class="tar">Шт</th>
+					<th class="tar">Итог</th>
+					<th>Статус</th>
+					<th colspan="3">Вернуть</th>
+				</tr>
+				{% for tik in tickets %}
+					<tr class="{% if tik.status == 5 or tik.summa == 0 %} green {% elseif tik.status == 8 %} black {% elseif tik.status == 7 %} red {% else %} yellow {% endif %}">
+						<td><a target="_blank" href="/crm/tickets/view?id={{ tik.id }}">{{ tik.id }}</a></td>
+						<td>{{ tik.events.date|date('d.m H:i') }}</td>
+						<td>{{ tik.date|date('d.m H:i') }}</td>
+						<td><a target="_blank" href="/crm/persons/view?id={{ tik.persons.id }}">{{ tik.persons.second_name }}</a></td>
+						<td>{{ tik.persons.name }}</td>
+						<td>{{ tik.persons.middle_name }}</td>
+						<td>{{ tik.seats.name }}</td>
+						<td class="tar">{{ tik.money }}</td>
+						<td class="tar">{{ tik.count }}</td>
+						<td class="tar">{{ tik.summa }}</td>
+						<td>
+							<p class="çolor">
+								{% if tik.status == 5 %} Опл. {% elseif tik.status == 8 %} Отмена {% elseif tik.status == 3 %} Не оплачен {% elseif tik.status == 7 %}Возврат {% endif %}
+							</p>
+						</td>
+						<td><a class="btn btn-info pull-right js_back" tag="{{ row.biblioevent.id }}" id="{{ tik.id }}">Сам</a></td>
+						<td><a class="btn btn-info pull-right js_back" tag="{{ row.biblioevent.id }}" id="{{ tik.id }}">iGo</a></td>
+						<td><a class="btn btn-info pull-right js_back" tag="{{ row.biblioevent.id }}" id="{{ tik.id }}">iGo клиент</a></td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>

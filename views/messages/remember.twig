@@ -1,0 +1,24 @@
+<h1>Отправить напоминание</h1>
+
+<table class="table">
+<tr>
+	<th>Выставлен</th>
+	<th>Дата события и название</th>
+	<th>Гость</th>
+	<th>Цена</th>
+	<th>Шт</th>
+	<th>Сумма</th>
+	<th></th>
+</tr>
+{% for row in all %}
+<tr>
+	<td><a href="/admin/tickets/update?id={{ row.id }}"><span>{{ row.id }}</span> {{ row.date|date('d.m H:i') }}</a></td>
+	<td><a href="/events/view?id={{ row.events.id }}">{{ row.events.date|date('d.m') }}</a> {{ row.events.biblioevents.name }}</td>
+	<td><a href="/persons/view?id={{ row.persons.id }}">{{ row.persons.second_name }} {{ row.persons.name }}</a></td>
+	<td class="tac">{{ row.money|number_format(0, '.', ' ') }}</td>
+	<td class="tac">{{ row.count }} <span>шт</span></td>
+	<td class="tac">{{ row.money*row.count }}</td>
+	<td class="tar bl">{{ row.status }}</td>
+</tr>
+{% endfor %}
+</table>

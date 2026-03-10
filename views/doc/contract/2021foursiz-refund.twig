@@ -1,0 +1,54 @@
+<div class="akt">
+	<p style="text-align: center;"><b>Заявление 
+		<!-- № М{% if model.doc_number %}{{ model.doc_number }}{%else%} {{model.id}}{% endif %}  --> </b>
+	<table class="tb">
+		<tr>
+			<td><!--г. Санкт-Петербург --></td>
+			<td class="tar"><!-- {{ model.date_doc|date('d.m.Y') }}--></td>
+		</tr>
+	</table>
+
+<p>Я, {% if contragent2.name %}{{ contragent2.name }}{%else%}  ______________________________________________________________________________{%endif%}, прошу осуществить возврат денежных средств в размере {% if model.summa %}{{ model.summa }}{%else%} _________{%endif%}  рублей <!--(прописью: ______________________________________ рублей) 00 копеек-->, которые были оплаченны _____________(дата платежа) по причине {% if model.info_reason %} {{model.info_reason }} {% else %} ____________________________________________________________________________________________________
+____________________________________________________________________________________________________ {%endif%}.
+</p><p>
+Даты, в которуе планировал(а) участвовать в событие: 
+<Br><br>
+
+</p> 
+<p>Возврат осуществить на следующие реквизиты: <br><br>
+
+Банк получателя: {% if contragent2.bank %} {{contragent2.bank}} {%else%}______________________________________ {%endif%}<br>
+Бик: {% if contragent2.bik %} {{contragent2.bik}}{%else%}______________________________________ {%endif%}<br>
+Номер счета: {% if contragent2.raschet %} {{contragent2.raschet}} {%else%}______________________________________ {%endif%}<br>
+Корреспондентский счет: {% if contragent2.raschet %} {{contragent2.korr}} {%else%}______________________________________ {%endif%}<br>
+
+	 
+
+	
+
+	<table class="tb">
+		<tr>
+			<td width="50%">&nbsp;
+				<!-- <br><b>Заказчик:</b>
+				<br>{{ contragent1.name }}
+				<br>ИНН: {{ contragent1.inn }} 
+				<br>Почтовый адрес: {{ contragent1.jaddress }}
+				<br>Юридический адрес: {{ contragent1.faddress }}
+				<br>&nbsp;
+				<br>_________________ ({{ contragent1.man }}) -->
+			</td>
+			<td width="50%">
+				<br><b></b>
+				<br> {% if contragent2.name %}{{ contragent2.name }}{%else%} Фамилия И.О.: _________________{%endif%}
+				<!-- <br>ИНН: {{ contragent2.inn }} 
+				<br>Почтовый адрес: {{ contragent2.jaddress }}
+				<br>Юридический адрес: {{ contragent2.faddress }} -->
+				<br>&nbsp;
+				<br>Подпись: _________________ 
+			</td>
+		</tr>
+	</table>
+</p>	
+</div>
+
+

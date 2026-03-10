@@ -1,0 +1,65 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<button type="button" class="left_toggle"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+			<h2>{{ biblioevent.name }} </h2>
+			<!-- <span class="tal mt0">{{ biblioevent.categoryevents.category }} </span> -->
+		</div>
+	</div>
+	<p> 
+		Брони: {{ ticket_nopay_sum|number_format(0, '.', ' ') }} —  {{ ticket_nopay_count }} <span>шт</span><br>
+		Возвраты: {{ ticket_back_sum|number_format(0, '.', ' ') }} — {{ ticket_back_count }} <span>шт</span><br> 
+		Оплаты: {{ ticket_pay_sum|number_format(0, '.', ' ') }} — {{ ticket_pay_count }} <span>шт</span> 
+	</p>
+
+	
+		<table class="tb hidden-xs">
+			<tr>
+				<th>Номер</th>
+				<th>Дата</th>
+				<th>Фамилия Имя</th>
+				<!--<th>Почта<br>Телефон</th>	-->
+				<th>Название билета</th>
+				<th class="tar">Р.</th>
+
+				<th colspan="1">Оплата</th>
+			</tr>
+			{% for tik in tickets %}
+				<tr class="{% if tik.status == 5 or tik.summa == 0 %} green {% elseif tik.status == 8 %} black {% elseif tik.status == 7 %} red {% else %} yellow {% endif %}">
+					<td class="mini">{{ tik.id }}</td>
+					<td>{{ tik.date|date('d.m H:i') }}</td>
+					<td class="mini">
+						{{ tik.persons.second_name }} 
+						{{ tik.persons.name }}
+					<!--{{ tik.persons.middle_name }}--></td>
+					<!--{<td class="mini"><a href="mailto:{{ tik.persons.mail }}?subject={{ biblioevent.name }}&amp;body=Приветствую, {{ tik.persons.second_name }} {{ tik.persons.name }}.">
+					{ tik.persons.mail }}</a><br>
+					
+					<a href="tel:{{ tik.persons.phone }}">{{ tik.persons.phone }}</a>(<a href="https://wa.me/{{ tik.persons.phone }}?text=Здравствуйте. Пишу вам по поводу {{ biblioevent.name }}.">wap</a>)</td> -->
+					<td class="mini">{{ tik.seats.name }} {% if tik.seat %} №{{ tik.seat }} {% endif %} {% if tik.field2 %} <a href="{{ tik.field2 }} ">></a>{% endif %}
+					<br><span style="color:red;">{{ tik.info }}</span>
+					<!--<br><span style="color:green;">{{ tik.promocode }}</span> -->
+					</td>
+					
+					<td class="tar">{{ tik.money }}</td>
+
+					<td>
+						<p class="çolor">
+							{% if tik.status == 5 %} Опл.{% elseif tik.status == 7 %} Возврат {% elseif tik.status == 8 %} Отмена {% elseif tik.status == 3 %} Не оплачен {% elseif tik.status == 1 %} 
+								{% if tik.summa == 0 %}
+									Рег.{% else %}Бронь
+								{% endif %}
+							{% endif %}
+						</p>
+					</td>
+					
+					<td tag="{{ tik.status_come }}">{% if tik.status_come == 1 %}Да{% elseif tik.status_come == 2 %}Нет{% endif %}</td>
+					
+				</tr>
+			{% endfor %}
+		</table>
+
+</div>
+
+
+

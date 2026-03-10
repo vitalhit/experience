@@ -1,0 +1,8 @@
+{% for event in events %}
+	<p class="tac">
+		<a id="{{ event.id }}" class="igo_btn">{{ event.button }}<span>{{ event.date|date('d.m.Y H:i') }}</span></a>
+		{{ event.place }}
+		<br>
+		{{ event.address }}
+	</p>
+{% endfor %}

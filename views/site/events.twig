@@ -1,0 +1,12 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-3">
+		<h1>События</h1>
+	</div>
+</div>
+
+{% for row in biblioevents %}
+	<div class="col-xs-12">
+		<h2 class="tal"><a href="/site/date?id={{ row.id }}">{{ row.name }}</a><span>{{ row.id }}</span></h2>
+		<p>{{ row.categoryevents.category }}</p>
+	</div>
+{% endfor %}

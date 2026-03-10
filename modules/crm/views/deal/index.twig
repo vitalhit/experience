@@ -1,0 +1,93 @@
+{{ use('/yii/widgets') }}
+
+
+
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12 col-lg-9">
+                    {% if deal %}
+                    Сделка {{deal}}: <p id="demo">{% for deal in deals %} {% if deal == deal.id %}{{deal.profit }}+{%endif%}{% endfor %}</p>
+
+
+
+                    {% else %}
+                    <h2>Все сделлки(Deals)</h2>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        {{ this.render('/module/deal_step.twig', {'company' : company}) | raw }}
+    </div>
+
+    <div class="col-xs-12 col-lg-9">
+
+        <table class="tb stacktable">
+            <tr>
+                <td></td>
+                <td>event_id</td>
+                <td>deal_id</td>
+                <td>media_id</td>
+                <td>Biblioevent<br>Date</td>
+                <td>Info</td>
+                <td>Status</td>
+                <td>Date Craet</td>
+                <td>Date Closed</td>
+
+                <td>Percent</td>
+                <td>Profit<br>
+                <span style="color: red;">{{sum_deals}}</span></td>                
+            </tr>
+            {% if deal %}
+                {% for deal in deals %}
+                      {% if deal == deal.id %}
+            <tr>
+                <td><span><a href="/crm/deal/update?id={{ deal.id }}">{{ deal.id }}</a></span></td>
+                <td><span><a href="/crm/events/update?id=event_id">event_id</a>
+
+
+                </span></td>
+                <td><span><a href="https://igoevent.com/crm/deal/?deal_id={{ deal.id }}">{{ deal.id }}</a></span></td>
+                <td><span>{% if deal.media_id == 2 and deal.event.biblioevents.link_kg %} <a href="{{ deal.event.biblioevents.link_kg }}">KudaGo({{ deal.media_id }})</a> {% else %}{{ deal.media_id }} {%endif%}<br><a href="/crm/newsmakers/view?id={{ deal.newsmaker_id }}">newsmaker:{{ deal.newsmaker_id }}</a></span></td>
+                <td><span><a href="https://igoevent.com/crm/biblioevents/view?id={{ deal.event.biblioevents.id }}&event_id=event_id">{{ deal.event.biblioevents.name }} ({{ deal.event.biblioevents.id }}) </a><br>{{ deal.event.date|date('y.m.d H:i') }}</span></td>
+                <td><span>{{ deal.info }}</span></td>
+                <td><span>{{ deal.status }}</span></td>
+                <td><span>{{ deal.date_create }}</span></td>
+                <td><span>{{ deal.date_closed }}</span></td>
+                <td><span>{{ deal.percent }}%</span></td>
+                <td><span>{{ deal.profit }}</span></td>
+                
+            </tr>
+                     {% endif %}
+                {% endfor %}
+            {% else %}
+                {% for deal in deals %}
+              <tr>
+                <td><span><a href="/crm/deal/update?id={{ deal.id }}">{{ deal.id }}</a></span></td>
+                <td><span><a href="/crm/events/update?id=event_id">event_id</a>
+
+
+                </span></td>
+                <td><span><a href="https://igoevent.com/crm/deal/?deal_id={{ deal.id }}">{{ deal.id }}</a></span></td>
+                <td><span>{% if deal.media_id == 2 and deal.event.biblioevents.link_kg %} <a href="{{ deal.event.biblioevents.link_kg }}">KudaGo({{ deal.media_id }})</a> {% else %}{{ deal.media_id }} {%endif%}<br><a href="/crm/newsmakers/view?id={{ deal.newsmaker_id }}">newsmaker:{{ deal.newsmaker_id }}</a></span></td>
+                <td><span><a href="https://igoevent.com/crm/biblioevents/view?id={{ deal.event.biblioevents.id }}&event_id=event_id">{{ deal.event.biblioevents.name }} ({{ deal.event.biblioevents.id }}) </a><br>{{ deal.event.date|date('y.m.d H:i') }}</span></td>
+                <td><span>{{ deal.info }}</span></td>
+                
+                
+                <td><span>{{ deal.status }}</span></td>
+                <td><span>{{ deal.date_create }}</span></td>
+                <td><span>{{ deal.date_closed }}</span></td>
+                <td><span>{{ deal.percent }}%</span></td>
+                <td><span>{{ deal.profit }}</span></td>
+            </tr>
+                {% endfor %}
+            {% endif %}
+            
+        </table>
+    </div>
+</div>
+
+    

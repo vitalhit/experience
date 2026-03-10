@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <h1>Места</h1>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+        <span class="badge menu_badge_remember">&nbsp; &nbsp;</span> Избранное место
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-2">
+    </div>
+</div>
+
+<div class="row">
+    {% for row in places %}
+        <div class="col-xs-12 col-md-6 col-lg-3 place">
+            <div class="newblo n_company {% if row.favour %}ytop{% endif %}">
+                <p class="mini p_a_l">#{{ row.id }}</p>
+                {% if row.landing_id %}
+                    <h3 class="h46 mb10"><a href="https://igoevent.com/crm/landing/update?id={{ row.landing_id }}">{{ row.name }}</a></h3>
+                {% else %}
+                    <h3 class="h46 mb10"><a href="https://igoevent.com/crm/landing/create?place_id={{ row.id }}">{{ row.name }}</a></h3>
+                {% endif %}
+                <div class="thumb"><img src="/uploads/users/{{ row.foto }}" class="img-responsive"></div>
+                <div class="row">
+                    <p class="col-xs-12 tac">{{ row.cities.name }}</p>
+                    <p class="col-xs-12 tac"><a target="_blank" href="/{{ row.cities.alias }}/place/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">смотреть</a></p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

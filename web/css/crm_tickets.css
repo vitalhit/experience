@@ -1,0 +1,138 @@
+.mypopup {
+	display: none;
+	position: absolute;
+	top: 0px;
+	left: 50%;
+	padding: 20px;
+	margin-left: -300px;
+	width: 600px;
+	min-height: 300px;
+	background: #fff;
+	z-index: 9000;
+}
+
+.mypopup .btn_close {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 20px;
+	height: 20px;
+    color: black;
+    font-size: 19px;
+    font-family: Arial;
+    cursor: pointer;
+}
+
+
+.mypopup h1, .mypopup h2, .mypopup h3, .mypopup h4 { text-align: center;}
+.mypopup h4 { font-size: 18px;}
+
+.mypopup .info {
+	background-color: rgba(137, 137, 137, 0.1);
+	font-size: 14px;
+	color: rgb(51, 51, 51);
+	line-height: 1.286;
+	border-bottom: 2px solid rgba(137, 137, 137, 0.2);
+	padding: 11px 15px 13px;
+}
+.my_button,
+.widget_button1,
+.widget_button2 {
+	font-weight: normal;
+	background-color: #0970c0;
+	text-decoration: none!important;
+	display: inline-block;
+	min-width: 300px;
+	border: 0!important;
+	color: #fff!important;
+	border-radius: 3px;
+	line-height: 1;
+	font-family: "HelveticaNeue",HelveticaNeue,Arial,sans-serif;
+	font-size: 18px;
+	padding: 13px 17px;
+	background-image: none;
+	cursor: pointer;
+}
+.widget_button1,
+.widget_button2 {font-size: 14px;margin-bottom: 20px;}
+.my_button:hover {background-color: #0960b0;}
+.endreg {display: none; position: absolute; top: 20px; left: 0px; width: 100%; text-align: center;}
+.endreg .ttl {font-size: 24px;}
+
+.widget_button2 {background-color: #ccc;}
+.my_overlay {
+	display: none;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.85;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 8000;
+}
+.mt10 {margin-top: 10px;}
+.my_grey p {background: #f1f1f1; height: 54px; padding: 10px 15px; margin-bottom: 1px;}
+.my_grey:nth-child(even) p {background: #e1e1e1; height: 54px; padding: 10px 15px; margin-bottom: 1px;}
+
+.crm_tikets p { margin-bottom: 30px; }
+
+.my_tick {
+    display: block;
+    margin: auto;
+    overflow: hidden;
+    float: none;
+    clear: both;
+}
+
+.my_user {
+	display: block;
+	padding-top: 30px;
+	margin: 0 -15px;
+}
+.my_user label { font-size: 12px; text-align: right; }
+
+.form-control {margin-bottom: 5px;}
+.reg_accept {font-weight: normal; margin: 0;}
+.pop_close {
+    position: absolute;
+    z-index: 9000;
+    width: 30px;
+    height: 30px;
+    right: -35px;
+    top: -35px;
+    background: url('../images/close2.png') center no-repeat;
+    cursor: pointer;
+}
+
+.loading {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(6,27,43,0.8);
+    z-index: 9998;
+}
+.loadico {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    margin: -100px 0 0 -100px;
+    background: url('../images/loading.gif') center center no-repeat;
+    background-size: cover;
+    z-index: 9999;
+}
+
+
+
+@media (max-width:767px){
+	.mypopup { top: 0px; left: 0; margin-left: 0px; width: 100%;}
+	.my_grey b { text-align: center;}
+}
+
+
+

@@ -1,0 +1,101 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{{ company.name }}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/company_step.twig', {'company' : company}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9 company">
+		<div class="newblo btop {% if company.dogovorstatus == 1 %} gtop {% endif %}">
+			{% if company.dogovorstatus == 1 %}
+				<span class="glyphicon glyphicon-ok bigok"></span>
+			{% elseif company.dogovorstatus == 0 %}
+				<span class="glyphicon glyphicon-hourglass c_yell bigok"></span>
+			{% elseif company.dogovorstatus == 2 %}
+				<span class="glyphicon glyphicon-ban-circle c_red bigok"></span>
+			{% endif %}
+
+			<div class="col-xs-12 col-lg-8">
+				<h2>Договор {{ company.dogovor }}</h2>
+			</div>
+			<div class="col-xs-12 col-lg-4">
+				{% if company.dogovorstatus == 1 %}
+					<h5>Подтвержден</h5>
+					<p>{{ company.date }}</p>
+				{% else %}
+					<h5>Не заключен</h5>
+					<p>{{ company.date }}</p>
+				{% endif %}
+			</div>
+		</div>
+		<div class="newblo">
+			<h2>Реквизиты</h2>
+			<p>Если у вас возникли вопросы или вы хотите изменить информацию пишите на почту v@igoevent.com</p>
+			<hr>
+			<div class="row">
+				<div class="col-xs-12 col-lg-6">
+					<h5>Ваши имя и фамилия</h5>
+					<p>{{ company.person.name }} {{ company.person.second_name }}</p>
+
+					<h5>Ваш e-mail</h5>
+					<p>{{ company.person.mail }}</p>
+
+					<h5>Контактный телефон</h5>
+					<p>{{ company.person.phone }}</p>
+
+					<h5>ФИО подписывающего лица</h5>
+					<p>{{ company.man }}</p>
+
+					<h5>Должность подписывающего лица</h5>
+					<p>{{ company.position }}</p>
+					
+					<h5>Название компании</h5>
+					<p>{{ company.name }}</p>
+
+					<h5>Бренд</h5>
+					<p>{{ company.brand }}</p>
+
+					<h5>ИНН</h5>
+					<p>{{ company.inn }}</p>
+
+					<h5>КПП</h5>
+					<p>{{ company.kpp }}</p>
+
+					<h5>ОГРН или ОГРНИП</h5>
+					<p>{{ company.ogrn }}</p>
+				</div>
+				<div class="col-xs-12 col-lg-6">
+					<h5>Юридический адрес</h5>
+					<p>{{ company.jaddress }}</p>
+
+					<h5>Почтовый адрес</h5>
+					<p>{{ company.faddress }}</p>
+
+					<h5>Информация об НДС</h5>
+					<p>{{ company.nds }}</p>
+
+					<h5>Наименование банка</h5>
+					<p>{{ company.bank }}</p>
+
+					<h5>БИК</h5>
+					<p>{{ company.bik }}</p>
+
+					<h5>Корреспондентский счет</h5>
+					<p>{{ company.korr }}</p>
+
+					<h5>Расчетный счет</h5>
+					<p>{{ company.raschet }}</p>
+				</div>
+			</div>
+			<hr>
+			<a href="/crm/company/update" class="btn btn-info ma w200">Изменить</a>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$('.steps .conts').addClass('active');
+</script>

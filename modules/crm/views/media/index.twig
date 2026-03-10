@@ -1,0 +1,54 @@
+{{ use('/yii/widgets') }}
+
+
+
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12 col-lg-9">
+                    <h2>Все медиа</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        {# this.render('/module/media_step.twig', {'company' : company}) | raw #}
+    </div>
+
+    <div class="col-xs-12 col-lg-9">
+
+        <table class="tb stacktable">
+            <tr>
+                <td></td>
+               <!--<td></td>-->
+                <td>Город</td><td>Web</td>
+                <td>Serv Info</td>
+                <td>Телефон</td>
+                <td>Инфо</td>
+                <td>Группа</td>
+                <!--<td>Статус</td>-->
+                <td>vk.com</td>
+            </tr>
+            {% for media in medias %}
+            <tr>
+                <td><span><a href="/crm/media/update?id={{ media.id }}">{{ media.id }}</a></span></td>
+                <td><span>{{ media.city_id }}</span></td>
+                <td><a href="https://{{ media.web }}"> {{ media.title }}</a> </td>
+                <td><span>{{ medias.serv_info }}</span></td>
+
+                <td><span>{% if media.link_vk %}<a href="https://vk.com/{{ media.link_vk }}">vk</a>{%else%}<s>vk</s>{% endif %} 
+                {% if media.link_fb %}<a href="{{ media.link_fb }}">vk</a>{%else%}<s>fb</s>{% endif %} 
+                {% if media.link_insta %}<a href="{{ media.link_insta }}">insta</a>{%else%}<s>insta</s>{% endif %} 
+                </span></td>
+                <td><span>{{ media.info }}</span></td>
+                <td>{{ media.groups|slice(0, 10) }}</td>
+                <!--<td>{{ media.status }}</td>-->
+                <td><span><a href='https://vk.com/im?sel={{ media.vk_id }}'>{{ media.vk_id }}</a></span></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+    

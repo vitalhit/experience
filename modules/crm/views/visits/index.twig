@@ -1,0 +1,55 @@
+{{ use('/yii/widgets') }}
+
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>Визиты <span>{{ vis_count|e }}</span></h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/residence_step.twig', {'company' : company}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<table class="tb stacktable">
+			<tr>
+				<td>Дата</td>
+				<td>id</td>
+				<td>Кто</td>
+				<td>Событие</td>
+				<td>Начало</td>
+				<td>Окончание</td>
+				<td>Стоимость</td>
+				<td>Оплата</td>
+			</tr>
+			{% for row in vis %}
+				<tr>
+					<td>{{ row.start|date('d.m.Y') }}</td>
+					<td><a href="/crm/visits/update?id={{ row.id|e }}">{{ row.id|e }}</a></td>
+					<td><a href="/crm/persons/view?id={{ row.persons.id|e }}">{{ row.persons.second_name|e }} {{ row.persons.name|e }} {{ row.persons.middle_name|e }}</a></td>
+					<td>{{ row.events.biblioevents.name }}</td>
+					<td>{{ row.start|date('H:i') }}</td>
+					<td>{{ row.end|date('H:i') }}</td>
+					<td class="ta-r">{{ row.money|number_format(0, '.', ' ') }} <span>руб</span></td>
+					<td>
+						{% if row.type == 1 %}
+							Наличка
+						{% elseif row.type == 2 %}
+							БезНал
+						{% elseif row.type == 3 %}
+							TimePad
+						{% elseif row.type == 4 %}
+							GoodRepublik
+						{% elseif row.type == 5 %}
+							Абонемент
+						{% else %}
+							-
+						{% endif %}
+					</td>
+
+				</tr>
+			{% endfor %}
+		</table>
+		{{link_pager_widget({'pagination': pages}) }}
+</div>
+</div>

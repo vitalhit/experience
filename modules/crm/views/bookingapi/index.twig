@@ -1,0 +1,215 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12 col-lg-3">
+                    <form method="get">
+                        <select name="list_id" class="form-control" onchange="this.form.submit()">
+                            <option value="">Заявки из всех листов</option>
+                            {% for row in lists %}
+                            <option value="{{ row.id }}" {% if row.id == list_id %}selected{% endif %}>{{ row.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+                <div class="col-xs-12 col-lg-3">
+                    <a href="/crm/bookingapi/instruction?list_id={{list_id}}">Инструкция!</a>
+                </div>
+                <div class="col-xs-12 col-lg-3">
+                    <h2>Заявки</h2>            
+                </div>
+            </div>       
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-3 left_blo">
+        {{ this.render('/module/person_step.twig', {'company' : company}) | raw }}
+    </div>
+
+    <div class="col-xs-12 col-lg-9">
+
+        <form class="filtr">
+            <div class="row">
+                <input type="hidden" name="projectid" value="{{ project.id }}">
+                <div class="form-group col-xs-12 col-lg-2">
+                    <select class="form-control" name="owner">
+                        <option value="">Отвечает</option>
+                        {% for own in owners %}
+                        <option value="{{ own.id }}"{% if own.id == owner %}selected{% endif %}>{% if own.person.name %}{{ own.person.name }} {{ own.person.second_name }}{% else %}{{ own.username }} (id {{ own.id }}){% endif %}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group col-xs-12 col-lg-3">
+                    <select name="list_id" class="form-control">
+                        <option value="">Все листы</option>
+                        {% for row in lists %}
+                        <option value="{{ row.id }}" {% if row.id == list_id %}selected{% endif %}>{{ row.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group col-xs-12 col-lg-3">
+                    <select class="form-control" name="event_id">
+                        <option value="">Событие</option>
+                        {% for row in biblioevents %}
+                        <option value="{{ row.id }}"{% if row.id == event_id %}selected{% endif %}>{{ row.name }} | {{ row.id }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-xs-12 col-lg-2">
+                    <select class="form-control" name="event_id">
+                        <option value="">Даты</option>
+                        {% for row in events %}
+                        <option value="{{ row.id }}"{% if row.id == event_id %}selected{% endif %}>{{ row.date }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group col-xs-12 col-lg-2">
+                    <select class="form-control" name="status">
+                        <option value="">Статус</option>
+                        {% for row in statuses %}
+                        <option value="{{ row.id }}" {% if row.id == status %}selected{% endif %}>{{ row.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group col-xs-12 col-lg-2">
+                    <input type="submit" value="Фильтр" class="btn btn-primary pull-right">
+                </div>
+            </div>
+        </form>
+
+        <div class="clearfix mt20"></div>
+
+
+        <table class="tb stacktable">
+            <tr>
+                <td>id, Фио, Телефон</td>
+                <td>Комментарий</td>
+                <td>Отвечает, результат</td>
+            </tr>
+            {% for row in bookings %}
+            <tr class="{%if row.status_id == 4%} green {% elseif row.status_id == 2 or row.status_id == 6 %} yellow {% elseif row.status_id == 3 or row.status_id == 11 %} red{% elseif row.status_id == 1%} blue{% endif%}">
+                <td><span>{{ row.id }} — {{ row.time|date('d.m.y H:i') }}</span><br>
+                    {{ row.status.name }}<br>
+                    <a href="/crm/bookingapi/update?id={{ row.id|e }}">{{ row.name }} {{ row.second_name }}</a><br>
+
+
+                    <!--<a href="mailto:{{ row.mail }}?subject=Ответ на заявку&body=Здравствуйте, {{ row.name }}. Вы оставляли заявку на событие 
+Стала известна новая дата ждем вас на событие. Ждем вас на событие!)
+">-->
+<a href="mailto:{{ row.mail }}?subject=Приглашение на астроночь&body=Приветствую, {{ row.name }} {{ row.second_name }}.">
+{{ row.mail }}</a><br><a href="tel:+{{ row.phone }}">{{ row.phone }}</a>(<a href="https://wa.me/{{ row.phone }}?text=Здравствуйте. {{ row.name }} {{ row.second_name }}. Вы оставляли заявку на событие {{row.from_url}}">wap</a> | <a href="https://t.me/+{{ row.phone }}?text=Здравствуйте. {{ row.name }} {{ row.second_name }}. Вы оставляли заявку на событие {{row.from_url}}">telegram</a>)</a><br>
+                {% if row.link_insta %}insta: <a href="https://instagram.com/{{ row.link_insta }}">{{ row.link_insta }}</a><br> {% endif %}
+                {% if row.link_vk %}vk: <a href="https://vk.com/{{ row.link_vk }}">{{ row.link_vk }}</a><br> {% endif %}
+                {% if row.link_tg %}tg: <a href="https://t.me/{{ row.link_tg }}">{{ row.link_tg }}</a><br> {% endif %}
+                 <a class="btn btn-xs btn-danger" title="Отменить" href="/crm/bookingapi/update?id={{ row.id|e }}&go_status=3">Cencel</a>
+                 <a class="btn btn-xs btn-danger" title="Отменить" href="/crm/bookingapi/update?id={{ row.id|e }}&go_status=3&result=Заявка закрыта автоматически">Close</a>
+                    <a title="В работу" class="btn btn-xs btn-warning" href="/crm/bookingapi/update?id={{ row.id|e }}&go_status=2">Go</a>
+                    <a class="btn btn-xs btn-success" title="Выполнено" href="/crm/bookingapi/update?id={{ row.id|e }}&go_status=4">Done</a>
+                    <a class="btn btn-xs btn-danger" title="Выполнено" href="/crm/bookingapi/update?id={{ row.id|e }}&go_status=11">Spam</a><br>
+                    {% if row.biblioevent_id %} biblioevent_id: {{row.biblioevent_id}}<br>{%endif%}
+                    {% if row.event_id %} <div style="color:blue;">Дата:  {{row.event.date|date('d.m.y')}} ({{row.event_id}})</div>{%endif%}
+                     {% if row.list_id %} list_id: {{row.list_id}}<br>{% else%}нет листа ожидания{%endif%}
+                    
+                </td>
+                <td> {{ row.message }}<br><div style="text-overflow: nowrap; width: 300px; overflow: hidden; white-space: nowrap; background: #fc0;"><a href="{{ row.from_url }}" >{{ row.from_url }}</a></div>
+                     {% if row.vishes %}<br> {{ row.vishes }} {% endif %}
+                     {{ row.info }}
+                     
+                </td>
+                <td>{% if row.owners.person.image %}<img src="/uploads/users/{{ row.owners.person.image }}" class="w26 img-circle">{% else %}{{ row.owners.person.name }}<br>{% endif %}
+                {{ row.result }}</td>
+                <!--
+                    <td>{{ row.from_url }}</td>
+                    <td>{{ row.utm_source }}<br>{{ row.utm_medium }}<br>{{ row.utm_campaign }}<br>{{ row.utm_content }}<br>{{ row.  utm_term }}</td> -->
+            </tr>
+            <tr class="{%if row.status_id == 4%} green {% elseif row.status_id == 2 or row.status_id == 6 %} yellow {% elseif row.status_id == 3 or row.status_id == 11 %} red{% elseif row.status_id == 1%} blue{% endif%}"><td colspan="8">
+            <div class=row>
+
+                <div class="col-xs-12 col-md-12">
+                    {% if row.link_photo %} <a href="{{row.link_photo}}">Ссылка на диск с фотографиями</a> {%else%}Ссылку на диск не заполнили{% endif %}
+                </div>
+                <div class="col-xs-12 col-md-12">
+                    {% if row.image %}https://{{row.domain}}/uploads/booking/{{row.image}}<br>{% endif %}
+                    {% if row.image1 %}https://{{row.domain}}/uploads/booking/{{row.image1}}<br>{% endif %}
+                    {% if row.image2 %}https://{{row.domain}}/uploads/booking/{{row.image2}}<br>{% endif %}
+                    {% if row.image3 %}https://{{row.domain}}/uploads/booking/{{row.image3}}<br>{% endif %}
+                    {% if row.image4 %}https://{{row.domain}}/uploads/booking/{{row.image4}}<br>{% endif %}
+                    {% if row.image5 %}https://{{row.domain}}/uploads/booking/{{row.image5}}<br>{% endif %}
+                    {% if row.image6 %}https://{{row.domain}}/uploads/booking/{{row.image6}}<br>{% endif %}
+                    {% if row.image7 %}https://{{row.domain}}/uploads/booking/{{row.image7}}<br>{% endif %}
+                    {% if row.image8 %}https://{{row.domain}}/uploads/booking/{{row.image8}}<br>{% endif %}
+                    {% if row.image9 %}https://{{row.domain}}/uploads/booking/{{row.image9}}<br>{% endif %}
+                <hr>
+                </div>
+
+
+                {% if row.image %}
+                <div class="col-xs-12 col-md-2">
+                    <a href="https://{{row.domain}}/uploads/booking/{{ row.image }}"><img width="100%" src='https://{{row.domain}}/uploads/booking/{{ row.image }}'></a>
+                </div>
+                {% endif %}
+                
+                {% if row.image1 %}
+                <div class="col-xs-12 col-md-2">
+                    <a href="https://{{row.domain}}/uploads/booking/{{ row.image1 }}"><img width="100%" src='https://{{row.domain}}/uploads/booking/{{ row.image1 }}'></a>
+                </div>
+                {% endif %}
+                
+                {% if row.image2%}
+                <div class="col-xs-12 col-md-2">
+                    <a href="https://{{row.domain}}/uploads/booking/{{ row.image2 }}"><img width="100%" src='https://{{row.domain}}/uploads/booking/{{ row.image2 }}'></a>
+                </div>
+                {% endif %}
+                
+                {% if row.image3%}
+                <div class="col-xs-12 col-md-1">
+                    <a href="https://{{row.domain}}/uploads/booking/{{ row.image3 }}"><img width="100%" src='https://{{row.domain}}/uploads/booking/{{ row.image3 }}'></a>
+                </div>
+                {% endif %}
+                
+                {% if row.image4%}
+                <div class="col-xs-12 col-md-1">
+                    <a href="https://{{row.domain}}/uploads/booking/{{ row.image4 }}"><img width="100%" src='https://{{row.domain}}/uploads/booking/{{ row.image4 }}'></a>
+                </div>
+                {% endif %}
+                
+                {% if row.image5%}
+                <div class="col-xs-12 col-md-1">
+                    <a href="https://{{row.domain}}/uploads/booking/{{ row.image5 }}"><img width="100%" src='https://{{row.domain}}/uploads/booking/{{ row.image5 }}'></a>
+                </div>
+                {% endif %}
+                
+                {% if row.image6%}
+                <div class="col-xs-12 col-md-1">
+                    <a href="https://{{row.domain}}/uploads/booking/{{ row.image6 }}"><img width="100%" src='https://{{row.domain}}/uploads/booking/{{ row.image6 }}'></a>
+                </div>
+                {% endif %}
+                
+                {% if row.image7%}
+                <div class="col-xs-12 col-md-1">
+                    <a href="https://{{row.domain}}/uploads/booking/{{ row.image7 }}"><img width="100%" src='https://{{row.domain}}/uploads/booking/{{ row.image7 }}'></a>
+                </div>
+                {% endif %}
+                
+                {% if row.image8%}
+                <div class="col-xs-12 col-md-1">
+                    <a href="https://{{row.domain}}/uploads/booking/{{ row.image8 }}"><img width="100%" src='https://{{row.domain}}/uploads/booking/{{ row.image8 }}'></a>
+                </div>
+                {% endif %}
+                {% if row.image9%}
+                <div class="col-xs-12 col-md-1">
+                    <a href="https://{{row.domain}}/uploads/booking/{{ row.image9 }}"><img width="100%" src='https://{{row.domain}}/uploads/booking/{{ row.image9 }}'></a>
+                </div>
+                {% endif %}
+            </div>
+            </td></tr>
+            <tr><td colspan="8">
+            </td></tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>

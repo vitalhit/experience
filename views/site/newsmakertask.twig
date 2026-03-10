@@ -1,0 +1,67 @@
+	{{ this.registerMetaTag({name: 'robotes', content: 'noindex, nofollow'}) | raw }}
+
+
+
+<div class="title-page" style="background: url('/web/uploads/users/{% if model.image %}{{ model.image }}{% else %} {% endif %}') 50% 50% no-repeat transparent;">
+	<div class="container">
+		<div class="breadcrumbs">
+			<a class="home-link" href="/"><img src="/images/logo-mini-white.svg"></a>
+			
+		</div>
+
+		<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 title-block">
+			<h1>id: {{ model.id }}, {{model.date_create}}</h1>
+			
+		</div>
+	</div>
+</div>
+
+
+
+<div class="container">
+	<div class="section-block">
+		<div class="content">
+			<h4>Информация для размещения:</h4>
+			<textarea cols="6" rows="1" style="margin: 0px; width: 600px; height: 366px;">{{ model.info }}</textarea>
+			<p>id: {{ model.id }}, дата создания: {{model.date_create}}</p>
+		</div>
+	</div>
+
+	<div class="sidebar-block">
+		<div class="user-go">
+			<h2>Вливайся<br><small>в </small>iGo<small>Event и</small></h2>
+			<div class="advantage">
+				<img src="/images/ico-heart-yellow.svg">
+				<p>ВЫБИРАЙ ЛУЧШЕЕ<br><span>и добавляй в избранное только то, что нравится </span></p>
+			</div>
+			<div class="advantage">
+				<img src="/images/ico-ringer-yellow.svg">
+				<p>БУДЬ В КУРСЕ<br>ВСЕХ СОБЫТИЙ<br><span>iGo всегда напомнит</span></p>
+			</div>
+			<div class="advantage">
+				<img src="/images/ico-messages-yellow.svg">
+				<p>ДЕЛИСЬ СВОИМ<br>ВПЕЧАТЛЕНИЕМ<br><span>твои комментарии всегда ценят на iGo</span></p>
+			</div>
+			{# <a class="btn btn-red" href="">Зарегистрироваться</a> #}
+		</div>
+	</div>
+</div>
+	
+
+
+
+<footer class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-10 col-md-8">
+			<img class="logo-footer" src="/images/logo-mini.svg">
+			<p class="copyrite">© 2018-{{now|date("Y")}} iGoEvent.com — мы создаем события. Права на текстовые и другие материалы, размещенные на сайте, охраняются законом.
+				При цитировании обязательна прямая ссылка на iGoEvent.com.
+			</p>
+			
+
+			</noindex>
+		</div>
+	</div>
+</footer>
+
+<link rel="stylesheet" href="/css/front.css">

@@ -1,0 +1,19 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+
+			<h2>{{ company.name }}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		<div class="steps">
+		{{ this.render('/module/finance_step.twig', {'company' : company}) | raw }}
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+		<h3>Если у вас возникли вопросы или вы хотите изменить информацию пишите на почту v@igoevent.com</h3>
+
+		{{ this.render('_form_add_ip.php', {'model' : model, 'company' : company}) | raw }}
+	</div>
+</div>

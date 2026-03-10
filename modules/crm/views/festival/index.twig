@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <h2>Фестивали</h2>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="steps">
+            {{ this.render('/module/festival_step.twig', {'company' : company}) | raw }}
+            <div class="newblo">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-9 newblos">
+
+    
+
+
+        <div>
+            <div class="newblo btop">
+                <p><b>Фестивали</b></p>
+                <table class="tb">
+                    <tr>
+                        <th>id</th>
+                        <th>Фестиваль</th>
+                        <th>Сайт</th>
+                        <th>Город</th>
+                        <th>Соц. сети</th>
+                        <th>Дата добавления</th>
+                    </tr>
+                    {% for festival in festivals %}
+                                <tr>
+                                    <td><p>{{ festival.id }}</p></td>
+                                    <td><p><a href="/crm/festival/update?id={{festival.id}}">{{ festival.title }}</p></td>
+                                    <td><p><a href="https://{{ festival.link_site }}"> {{ festival.link_site }}</p></td> 
+                                    <td><p>{{ festival.city_id }}</p></td>
+                                    <td>
+
+                                        <span>{% if festival.link_vk %}<a href="https://vk.com/{{ festival.link_vk }}">vk</a>,{% else %} <s>vk</s>,{% endif %}
+                                        {% if festival.link_fb %}<a href="{{ festival.link_fb }}">fb</a>,{% else %} <s>fb</s>,{% endif %}
+                                        {% if festival.link_insta %}<a href="{{ festival.link_insta }}">insta</a>,{% else %} <s>insta</s>,{% endif %}
+                                        {% if festival.link_tg %}<a href="https://tg.com/{{ festival.link_tg }}">tg</a>,{% else %} <s>tg</s>,{% endif %}
+                                        <!--
+                                        {% if festival.link_kg %}<a href="{{ festival.link_kg }}">kg</a><br>{% else %} <s>kg</s><br>{% endif %}
+                                        {% if festival.link_yt %}<a href="{{ festival.link_yt }}">yt</a>,{% else %} <s>yt</s>,{% endif %}
+                                        -->
+                                        </span>
+                                    </td>
+                                    <td><p>{{  festival.date_create|date('d.m.y') }}</p></td>
+                                    
+                                </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        
+
+
+        
+    </div>
+</div>
+
+<script>
+$('.js_slide').click(function () {
+    $(this).parent().find('table').slideToggle(200);
+    $(this).parent().next('.tbmob').slideToggle(200);
+});
+</script>

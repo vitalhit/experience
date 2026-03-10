@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <h2>Откуда пришел гость</h2>    
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-3 left_blo">
+        {{ this.render('/module/person_step.twig', {'company' : company}) | raw }}
+    </div>
+
+    <div class="col-xs-12 col-lg-9">
+
+        <table class="tb stacktable">
+            <tr>
+                <td>id</td>
+                <td>Источник</td>
+                <td>Информация</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% for row in froms %}
+                <tr>
+                    <td>{{ row.id }}</td>
+                    <td><a href="/crm/froms/view?id={{ row.id }}">{{ row.url }}</a></td>
+                    <td>{{ row.info }}</td>
+                    <td>
+                        <a href="/crm/froms/update?id={{ row.id }}" title="Редактировать" aria-label="Редактировать" data-pjax="0">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/crm/froms/delete?id={{ row.id }}" title="Удалить" aria-label="Удалить" data-pjax="0" data-confirm="Вы уверены, что хотите удалить этот элемент?" data-method="post">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+

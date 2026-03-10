@@ -1,0 +1,32 @@
+<div class="user-go">
+	{% if ads %}
+		<h2 class="mt20">Смотри так же</h2>
+		{% set i = 0 %}
+		{% for row in ads %}
+			{% if i < 7 %}
+				{% set i = i + 1 %}
+				<div class="event">
+					<a class="img-event" href="/{{ row.cities.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+						<img src="/uploads/users/{{ row.img.imgrazdel }}" class="img-responsive">
+					</a>
+					<a class="title-event" href="/{{ row.cities.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}">
+						<h4>{{ row.name }}</h4>
+					</a>
+				</div>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+	<h2>Вливайся<br><small>в </small>iGo<small>Event и</small></h2>
+	<div class="advantage">
+		<img src="/images/ico-heart-yellow.svg">
+		<p>ВЫБИРАЙ ЛУЧШЕЕ<br><span>и добавляй в избранное только то, что нравится </span></p>
+	</div>
+	<div class="advantage">
+		<img src="/images/ico-ringer-yellow.svg">
+		<p>БУДЬ В КУРСЕ<br>ВСЕХ СОБЫТИЙ<br><span>iGo всегда напомнит</span></p>
+	</div>
+	<div class="advantage">
+		<img src="/images/ico-messages-yellow.svg">
+		<p>ДЕЛИСЬ СВОИМ<br>ВПЕЧАТЛЕНИЕМ<br><span>твои комментарии всегда ценят на iGo</span></p>
+	</div>
+</div>

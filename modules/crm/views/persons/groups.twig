@@ -1,0 +1,150 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<div class="row">
+				<div class="col-xs-12 col-lg-3">
+					<h2>Группы гостей</h2>    
+				</div>
+				<div class="col-xs-12 col-lg-9">
+					<div class="row">
+						<div class="col-xs-12 col-sm-3">
+							<h3 class="itog">{{ allcount|number_format(0, '.', ' ') }}<span>всего</span> </h3>
+						</div>
+
+						<div class="col-xs-12 col-sm-3">
+							<h3 class="itog">{{ personsnogroup|number_format(0, '.', ' ') }}<span>нет групп</span> </h3>
+						</div>
+
+						<div class="col-xs-12 col-sm-3">
+							<h3 class="itog">{{ (allcount - personsnogroup)|number_format(0, '.', ' ') }}<span>в группах</span> </h3>
+						</div>
+
+						<div class="col-xs-12 col-sm-3">
+							<h3 class="itog">{{ (allcount - personsnomail)|number_format(0, '.', ' ') }}<span>mail'ов</span> </h3>
+						</div>
+					</div>
+				</div>
+			</div>       
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/person_step.twig', {'company' : company}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9">
+
+		<div class="row">
+			<div class="col-xs-12 col-md-3">
+				<div class="newblo">
+					<h2 class="mb10">Откуда</h2>
+					<table class="tb stacktable">
+						<tr>
+							<td>Откуда</td>
+							<td>Гости</td>
+						</tr>
+						{% for pers in allfromscount %}
+							<tr>
+								<td>{{ pers[1] }}</td>
+								<td class="tar">{{ pers[0] }}</td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+
+
+
+			<div class="col-xs-12 col-md-3 p-0">
+				<div class="newblo">
+					<h2 class="mb10">Группы</h2>
+					<table class="tb stacktable">
+						<tr>
+							<td>Группа</td>
+							<td><span class="glyphicon glyphicon-user"></span></td>
+							<td>@</td>
+						</tr>
+						{% for count in allgroupscount %}
+							<tr>
+								<td><a href="/crm/persons/groups?pingroup={{ count[0] }}">{{ count[0] }}</a></td>
+								<td>{{ count[1] }}</td>
+								<td>{{ count[2] }}</td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+
+
+			<div class="col-xs-12 col-md-6">
+				<div class="newblo">
+					<h2 class="mb10">Гостей в выбранной группе</h2>
+					<table class="tb stacktable">
+						<tr>
+							<td>Имя</td>
+							<td>Группа</td>
+							<td>Почта</td>
+							<td>Статус</td>
+						</tr>
+						{% for pers in personsingroup %}
+							<tr>
+								<td><a target="_blank" href="/crm/persons/view?id={{ pers.id }}">{{ pers.second_name }} {{ pers.name }}</td>
+								<td width="50%">{{ pers.groups }}</td>
+								<td>{{ pers.mail }}</td>
+								<td>{{ pers.status }}</td>
+							</tr>
+						{% endfor %}
+					</table>
+					<p class="mini">Внимание, не точное сравнение! По группе "джаз" вы увидите ВСЕХ пользователей, у которых в группах есть слово джаз.</p>
+				</div>
+			</div>
+		</div>
+
+
+
+
+<!-- 
+
+<div class="row">
+	<div class="col-xs-12 col-md-3">
+	</div>
+	<div class="col-xs-12 col-md-3">
+
+		<h2>Статусы гостей</h2>
+
+		<table class="tb stacktable">
+			<tr>
+				<td>Статус</td>
+				<td>Гости</td>
+				<td>Mail</td>
+			</tr>
+			{% for stat in allstatuscount %}
+			<tr>
+				<td><a href="/crm/persons/groups?pinstatus={{ stat[0] }}">{{ stat[0] }}</a></td>
+				<td>{{ stat[1] }}</td>
+				<td>{{ stat[2] }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+	<div class="col-xs-12 col-md-6">
+
+		<h2>Имена гостей c выбранным статусом</h2>
+
+		<table class="tb stacktable">
+			<tr>
+				<td>Имя</td>
+				<td>Статус</td>
+				<td>Почта</td>
+			</tr>
+			{% for pers in personsinstatus %}
+			<tr>
+				<td><a target="_blank" href="/crm/persons/view?id={{ pers.id }}">{{ pers.second_name }} {{ pers.name }}</td>
+				<td>{{ pers.status }}</td>
+				<td>{{ pers.mail }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div> -->

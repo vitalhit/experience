@@ -1,0 +1,89 @@
+<form class="form" method="POST" action="/persons/sell?uid={{user.id}}">
+
+	<input type="hidden" value="0" name="itogo" id="itogo">
+
+	<h2><span>#{{ user.id }}</span> <a href="/persons/view?id={{ user.id }}">{{ user.second_name }} {{ user.name }} {{ user.middle_name }}</a></h2>
+
+	<div class="row ta-c mini">
+		<p class="col-xs-12 col-sm-4">{{ user.status }}</p>
+		<p class="col-xs-12 col-sm-4">{{ user.mail }}</p>
+		<p class="col-xs-12 col-sm-4">{{ user.phone }}</p>
+	</div>
+
+	<div class="line"></div>
+
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-4">
+			<div class="col-xs-12">Товар:</div>
+			<div class="col-xs-12 p10-0">
+				<select class="form-control goods" name="good_id">
+					<option value="0">выбрать</option>
+					{% for good in goods %}
+						<option value="{{ good.id }}">{{ good.name }} - <span class="goodprice">{{ good.price }}</span></option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-5">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<div>Стоимость:</div>
+					<div class="col-xs-12 p10-0">
+						{% for good in goods %}
+							<div class="hidden good{{ good.id }}">{{ good.price }}</div>
+						{% endfor %}
+						<input type="text" class="form-control formprice" value="" name="price" placeholder="Стоимость">
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6">
+					<div>Кол-во:</div>
+					<div class="col-xs-12 p10-0">
+						<input type="text" class="form-control kolvo" value="1" name="count" placeholder="Кол-во">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-3">
+			<div class="ta-c">Итог:</div>
+			<div class="ta-c">
+				<p class="big">
+					<span class="normal itogo">0</span> 
+					<span>p</span>
+				</p>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="line"></div>
+	<div class="mt50"></div>
+
+
+	<div class="row">   
+		<div class="col-xs-12 col-sm-4"><input type="submit" name="type" class="btn btn-grey" value="Не оплачено" /></div>
+		<div class="col-xs-12 col-sm-4"><input type="submit" name="type" class="btn btn-primary" value="Наличка" /></div>  
+		<div class="col-xs-12 col-sm-4"><input type="submit" name="type" class="btn btn-primary" value="БезНал" /></div>
+	</div>
+
+</form>
+
+
+<script type="text/javascript">
+
+	$(function(){
+
+		$('select.goods').on('change', function() {
+			var price = this.value;
+			var price2 = $(".formprice").val($('div.good' + price).html());
+		})
+
+		$('select.goods, .formprice, .kolvo').bind("change keyup", function() {
+			var itogo = $(".formprice").val() * $(".kolvo").val();
+			$(".itogo").html(Math.round(itogo,0));
+			$("#itogo").val(Math.round(itogo,0));
+		});
+
+	})
+
+</script>

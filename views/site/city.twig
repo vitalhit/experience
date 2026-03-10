@@ -1,0 +1,165 @@
+<div class="container title-section">
+	<div class="row">
+		<div class="title-geo">
+			<h1>Я иду <small class="geo-in-this">в {{ city.name }}</small></h1>
+			<ul class="geo-in-row">
+				{% for row in cities %}
+					<li class="city {% if row.alias == city.alias %}active{% endif %}"><a href="/{{ row.alias }}">{{ row.name }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+
+		<ul class="week-row">
+			{% set mnths = ['','янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'] %}
+			{% set week = ['','пн','вт','ср','чт','пт','сб','вс'] %}
+			{% for i in 0..6 %}
+				<li>
+					<a href="/{{ city.alias }}?date={{ mon|date('Y-m-d') }}" {% if mon|date('Y-m-d') == now|date('Y-m-d') %} class="cred"{% endif %}>
+						{{ mon|date('d') }}
+						<span>{{ mnths[mon|date("n")] }}</span>
+						<small {% if i > 4 %}class="weekend"{% endif %}>{{ week[i + 1] }}</small>
+					</a>
+				</li>
+				{% set mon = [mon|date_modify("+1 day")|date('Y-m-'), mon|date_modify("+1 day")|date('d')]|join %}
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+
+
+
+
+<div class="container">
+	<div class="section-block">
+{# 		<div class="top-row">
+			<a class="event top-big" href="/stranicza" style="background: url(/images/top-1.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Богемская рапсодия <small>18+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">кино биография</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event top-mid notmid" href="/stranicza" style="background: url(/images/top-2.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>День рождения «Ролл Холл» <small>18+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">фестиваль</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event" href="/stranicza" style="background: url(/images/top-3.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>10 развлечений не дороже 500 руб. <small>6+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">развлечение</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event" href="/stranicza" style="background: url(/images/top-4.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Стильные квесты на Хеллоуин <small>16+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">квест</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event top-mid" href="/stranicza" style="background: url(/images/top-5.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Божественная комедия Сальвадора Дали <small>16+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">выставка</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event top-big fl-r" href="/stranicza" style="background: url(/images/top-8.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Киноночи ноября в «Люмьер-Холле» <small>18+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">развлечение</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event" href="/stranicza" style="background: url(/images/top-6.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Иммерсивная выставка Samskara <small>16+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">выставка</span>
+				<span class="views">9214</span>
+			</a>
+			<a class="event" href="/stranicza" style="background: url(/images/top-7.jpg) 50% 50% no-repeat transparent;">
+				<div class="title-event">
+					<h2>Полёт на воздушномшаре <small>14+</small></h2>
+					<span class="comments">12</span><span class="like">410</span>
+				</div>
+				<span class="type-event">развлечение</span>
+				<span class="views">9214</span>
+			</a>
+		</div> #}
+
+		<div class="event-row">
+			{% if date == 'past' %}
+				<h2>Прощедшие события</h2>
+			{% endif %}
+
+			{% if biblioevents %}
+				{% for row in biblioevents %}
+					{% if row.image %}
+						<div class="event">
+							<a class="img-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}{% if iuser.username %}?utm_source=partner&utm_medium={%if iuser.utm_medium%}{{iuser.utm_medium}}{%else%}u{{iuser.id}}{%endif%}&utm_campaign=&utm_content=&utm_term={%endif%}">
+			 					{# <span class="comments">12</span><span class="like">410</span> #}
+								<img src="/uploads/users/{{ row.img.imgrazdel }}">
+							</a>
+							{# <span class="type-event">категория</span> #}
+							<a class="title-event" href="/{{ city.alias }}/event/{% if row.alias %}{{ row.alias }}{% else %}{{ row.id }}{% endif %}{% if iuser.username %}?utm_source=partner&utm_medium={%if iuser.utm_medium%}{{iuser.utm_medium}}{%else%}u{{iuser.id}}{%endif%}&utm_campaign=&utm_content=&utm_term={%endif%}">
+								<h3>{{ row.name }} {# <small>6+</small> #}</h3>
+							</a>
+								<span class="point">{{row.places.name}}<br>
+								{{row.places.address}}<br>
+								{{ row.oneactiveevent.date|date('d.m.Y ') }} в {{ row.oneactiveevent.date|date('H:i') }}</span><br>
+								<noindex>
+								{% if row.oneactiveevent.link_vk %}<a style="float: right; margin: 0 5px 0 0; "class="soc" rel="nofollow" href="https://vk.com/{{ row.oneactiveevent.link_vk }}"> <img src="/images/vk.png" width="70%" alt=""></a>{% endif %}
+								{% if row.oneactiveevent.link_fb %}<a style="float: right; margin: 0 5px 0 0;"class="soc" rel="nofollow" href="{{ row.oneactiveevent.link_fb }}"> <img width="70%" src="/images/fb.png" alt=""></a>{% endif %}
+								{% if row.oneactiveevent.link_kg %}<a style="float: right; margin: 0 5px 0 0;"class="soc" rel="nofollow" href="{{ row.oneactiveevent.link_kg }}"> <img width="70%" src="/images/kg.png" alt=""></a>{% endif %}
+								</noindex>
+							{# <span class="views">9214</span> #}
+						</div>
+					{% endif %}
+				{% endfor %}
+
+			{% if city.info %}
+				<div class="clear"></div>
+				<div class="content">
+				{{city.info | raw }}
+				</div>
+			{% endif %}
+			{% elseif city.info %}
+				<div class="content">
+				{{city.info | raw }}
+				</div>
+			{% else %}
+				<h1>В этом городе нет событий!</h1>
+			{% endif %}
+		</div>
+		
+		<div class="clear"></div>
+		{{ this.render('_bottom.twig', {'ads' : ads}) | raw }}
+	</div>
+
+	<div class="sidebar-block">
+		{{ this.render('_right.twig', {'ads' : ads}) | raw }}
+	</div>
+</div>
+
+
+{{ this.render('block/_footer.twig') | raw }}
+
+			</noindex>
+		</div>
+	</div>
+</footer>
+
+<script type="text/javascript" src="/js/igoeventapi.js"></script>
+<link rel="stylesheet" href="/css/igoeventapi.css">
+<link href="/css/front.css" rel="stylesheet">

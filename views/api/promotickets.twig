@@ -1,0 +1,16 @@
+{% for row in promo %}
+    {% if row.price == 0 %}
+        {% set itemval = 1 %}
+    {% else %}
+        {% set itemval = 0 %}
+    {% endif %}
+    <div class="igo_grey">
+        <div class="col-xs-12 col-sm-7"><b>{{ row.name }}</b><br><span>{{ row.info }}</span></div>
+        <div class="col-xs-6 col-sm-2"><b>{{ row.price }}</b> р.</div>
+        <div class="input-group col-xs-6 col-sm-2">
+            <span class="input-group-addon btn-num btn-minus" data-type="minus" data-field="promo{{ loop.index }}">-</span>
+            <div id="promo{{ loop.index }}" class="form-control tick_num" ticksum="{{ row.price }}" seatid="{{ row.id }}" min="0" max="10">0</div>
+            <span class="input-group-addon btn-num btn-plus" data-type="plus" data-field="promo{{ loop.index }}">+</span>
+        </div>
+    </div>
+{% endfor %}

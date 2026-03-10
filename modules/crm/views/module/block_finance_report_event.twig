@@ -1,0 +1,144 @@
+        <div class="mini_header mt0"><span>Финансы</span></div>
+        <div class="hidden-xs">
+            {% for event in alleventfinances %}
+                <div class="newblo btop">
+                    <table class="tb">
+                        <tr>
+                            <td colspan="11"><p><b>{{ event.event.date|date('d.m.Y H:i') }}</b>&nbsp;|&nbsp;<a href="https://igoevent.com/crm/events/update?id={{event.event.id}}">{{event.event.id}}</a>&nbsp;| {{ event.event.biblioevents.name }}&nbsp;<b>  <a  href="/crm/finance/create?event_id={{event.event.id}}&price=1000&date_payment=now&biblioevent_id=158&state=3&status=1&name=&event_id={{event.event.id}}">+ХП</a> | <a  href="/crm/finance/create?price=5000&date_payment=now&from_contragent=237&biblioevent_id=158&state=3&status=3&name=Расход&event_id={{event.event.id}}">-ХП</a> | <a  href="/crm/finance/create?event_id={{event.event.id}}&price=1000&date_payment=now&biblioevent_id=158&state=3&status=1&to_contragent=217&name=&event_id={{event.event.id}}">+ИПХ</a> | <a  href="/crm/finance/create?event_id={{event.event.id}}&price=5000&date_payment=now&from_contragent=217&biblioevent_id=158&state=3&status=3&name=Расход&event_id={{event.event.id}}">-ИПХ</a></b></p></td>
+                        </tr>
+                        {% for item in event.finance %}
+                            <tr>
+                                <td><span>{{item.id }}<br> {{ item.date|date('d.m.Y') }}</span><br>
+                                    {% if item.state == 1 %}
+                                        <b class="r_blue"></b>
+                                        <span>на&nbsp;подпись</span>
+                                    {% elseif item.state == 2 %}
+                                        <b class="r_yell"></b>
+                                        <span>подписан</span>
+                                    {% elseif item.state == 3 %}
+                                        <span><b class="r_green"></b> проведен</span>
+                                    {% elseif item.state == -1 %}
+                                        <span><b class="r_red"></b>не актуальна</span>
+                                    {% endif %}<br>
+                                     <span>{% if item.info_pay_machine %}Чек:{{item.info_pay_machine}}<br>
+                                    {%endif%}
+                                    {% if item.info_pay_bank%}
+                                    В банке: {{item.info_pay_bank}}<br>
+                                    {%endif%}</span>
+
+
+                                    <br>
+                                    {% if item.task_id %}
+                                        <a href="/crm/tasks/update?id={{item.task_id}}"><span class="glyphicon glyphicon-th-list"></span></a>
+                                    {% endif %}</td>
+                                <td><a title="" href="/crm/finance/update?id={{ item.id|e }}">{{ item.name|e }}</a><br>
+                                <div class="row">
+                                    <div class="col-xs-4 col-lg-4">
+                                        <a  style="font-size: 9px; display: block;  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 120px;" href="/crm/contragent/update?id={{ item.from_contragent }}">{{ item.contragent.name }}</a> 
+                                    </div>
+                                    
+                                    <div class="col-xs-4 col-lg-4">
+                                    <a style="font-size: 9px; display: block;  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 120px;" href="/crm/contragent/update?id={{ item.to_contragent }}">{{ item.contragentto.name }}</a>
+                                    </div>
+                                    {% if item.personf.name or item.personto.name %}
+                                    <div class="clear"></div>
+                                    <div class="col-xs-4 col-lg-4">
+                                        <span>{{ item.personf.name }} {{ item.personf.second_name }}: {{ item.from_user_id }}</span>
+                                    </div>
+                                    
+                                    <div class="col-xs-4 col-lg-4">
+                                        <span>{{ item.personto.name }} {{ item.personto.second_name }}  : {{ item.to_user_id }}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% if item.client_id %}<span>client_id: <a href="/crm/clients/view?id={{item.client_id}}">{{item.client_id}}</a> {% endif %}
+                                {{ item.info }}</span>
+
+                                </td>
+                                <td>
+                                    <span class="small">
+                                        <a class="btn btn-success btn-xs" href="https://igoevent.com/crm/finance/bill?&id={{ item.id|e }}">счет</a><br>
+                                        <a class="btn btn-success btn-xs" href="https://igoevent.com/crm/finance/akt?&id={{ item.id|e }}">акт</a>{% if item.link %}<br>
+                                        <a href="{{item.link}}">договор</a>{% endif %}
+                                    </span>
+                                </td>
+                                
+                                </td>
+                                <td><p class="tar flr {% if item.status == 3 %}c_red{%endif%}"><b>{{ item.summa }}</b> <span class="glyphicon glyphicon-rub lite"></span></p></td>
+
+                                <td><a href="/crm/finance/update?id={{ item.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                                <td><a href="/crm/finance/delete?id={{ item.id }}" title="Delete" aria-label="Delete" data-confirm="Уверены в том, что хотите удалить?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="11"></td>
+                        </tr>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+
+
+
+        <div class="visible-xs">
+            <div class="tbmob">
+                {% for event in alleventfinances %}
+                    <div class="newblo btop">
+                        <p><b>{{ event.event.date|date('d.m.Y H:i') }}&nbsp;</b> | {{ event.event.biblioevents.name }}</p>
+                    </div>
+                    {% for item in event.finance %}
+                        <div class="newblo{% if item.state == 1 %} btop {% elseif item.state == 2 %} ytop {% elseif item.state == 3 %} gtop {% endif %}">
+                            <div class="col-xs-4"><span class="mini"># {{ item.id }}</span></div>
+                            <div class="col-xs-4"><span class="mini">Дата {{ item.date|date('d.m.Y') }}</span></div>
+                            <div class="col-xs-4"><span class="mini">
+                                {% if item.task_id %}
+                                    <a href="/crm/tasks/update?id={{item.task_id}}"><span class="glyphicon glyphicon-th-list"></span></a>
+                                {% endif %}
+                            </span></div>
+                            <div class="clear"></div>
+
+                            <div class="col-xs-12"><p><a href="/crm/finance/update?id={{ item.id|e }}">{{ item.name|e }}</a></p></div>
+
+                            <div class="col-xs-6">
+                                <span>{{ item.personf.name }} {{ item.personf.second_name }}</span><br><a href="/crm/contragent/update?id={{ item.from_contragent }}">{{ item.contragent.name }}</a>
+                            </div>
+                            <div class="col-xs-6">
+                                <span>{{ item.personto.name }} {{ item.personto.second_name }}</span><br><a href="/crm/contragent/update?id={{ item.to_contragent }}">{{ item.contragentto.name }}</a>
+                            </div>
+
+                            <div class="clear"></div>
+
+                            <div class="col-xs-4">
+                                {% if item.status == 1 %}
+                                    <p class="c_green"><b>Приход</b></p>
+                                {% elseif item.status == 2 %}
+                                    <p class="C_blue"><b>Конвертация</b></p>
+                                {% elseif item.status == 3 %}
+                                    <p class="c_red"><b>Расход</b></p>
+                                {% endif %}
+                            </div>
+                            <div class="col-xs-4"><p class="tar flr {% if item.status == 3 %}c_red{%endif%}"><b>{{ item.summa|number_format(0, '.', ' ') }}</b> <span class="glyphicon glyphicon-rub lite"></span></p></div>
+                            <div class="col-xs-4"><span class="mini">
+                                {% if item.state == 1 %}
+                                    <b class="r_blue"></b>
+                                    <span>на&nbsp;подпись</span>
+                                {% elseif item.state == 2 %}
+                                    <b class="r_yell"></b>
+                                    <span>подписан</span>
+                                {% elseif item.state == 3 %}
+                                    <b class="r_green"></b>
+                                    <span>проведен</span>
+                                {% elseif item.state == -1 %}
+                                        <b class="r_red"></b><span>не актуальна</span>
+                                {% endif %}
+                                {% if item.info_pay_machine %}Чек:{{item.info_pay_machine}}<br>
+                                    {%endif%}
+                                    {% if item.info_pay_bank%}
+                                    №перевода:{{item.info_pay_bank}}<br>
+                                    {%endif%}
+                            </span></div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>

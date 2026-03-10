@@ -1,0 +1,108 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>Редактировать даты: {{ biblioevent.name }} | {{ biblioevent.cities.name }}</h2>
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-3 left_blo">
+		{{ this.render('/module/event_step.twig', {'user': user ,'biblioevent' : biblioevent}) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-lg-9" style="overflow: scroll;">
+		<table class="tb dates">
+			<tbody>
+				<tr>
+					<th>Даты события</th>
+					<th>Мест</th>
+					<th class="tac">Бил. + рег.</th>
+					<th>Выручка</th>
+					<th>Место</th>
+					<th colspan="2"></th>
+				</tr>
+				{% for row in dates %}
+					<tr class="{% if (row.date.status == 0) or (row.date.date|date('Y-m-d') < now|date('Y-m-d')) %} noactive black {% else %} green {% endif %}">
+						<td>
+							<small>{% if row.date.cancel == 1 %}<span class="glyphicon glyphicon-ban-circle text-danger"></span>{%else%}<span class="glyphicon glyphicon-ok text-success"></span>  {%endif%} {{ row.date.date|date('d.m.y H:i') }}
+								<br>{{row.date.id}}</small>
+							</td>
+						<td class="tac bl"><a href="/crm/seats/create?event_id={{ row.date.id }}&biblioeventid={{ row.date.event_id }}">
+								{% if row.s_count == 0 %} <span class="cred normal">нет!</span> {% else %} {{ row.s_count - row.t_zayavka_c - row.t_back_c - row.t_pay_c}} / {{ row.s_count }} (<s>{{row.t_back_c}}</s>){% endif %}</a>
+								
+						</td>
+						<td class="tac bl c_blue"><a href="/crm/biblioevents/view?id={{ biblioevent.id }}&event_id={{ row.date.id }}">{{ 0+ row.t_pay_c_t }}</a>  + {{ row.t_reg_c }} </td>
+						
+						<td class="tac bl c_green">{{ 0 + row.t_pay_s }}<span>р</span></td>
+						
+						<td class="bl"><small>
+
+
+
+						<a href="/{{row.date.places.cities.alias}}/place/{{row.date.places.alias}}">{{row.date.places.name}}</a> <br>
+							
+							{% if  row.bands is not empty %}
+							Артисты: <br>
+							{% for one in row.bands %}
+							<a href="/band/{{ one.band.alias }}">{{ one.band.name }}</a><sup><a href="/crm/band/view?id={{ one.band.id }}">edit</a></sup></div>
+							{% endfor %}
+							{% else %}
+							{% endif %}
+							</small>
+							<small>{{row.date.button}}</small>
+							{% if row.date.info_eventer %} Пометка организатора: <small>{{ row.date.info_eventer }}</small>{% endif %}
+							{{row.date.event_status}}
+						</td>
+						<td><a class="din" href="/crm/events/update?id={{ row.date.id }}"><span class="glyphicon glyphicon-pencil"></span></a> <br><a href="/crm/biblioevents/viewcsvall?id={{ biblioevent.id }}&event_id={{ row.date.id }}">csv</a><br><a href="/crm/events/duplicate?id={{ row.date.id }}"><span class="glyphicon glyphicon-duplicate"></span></a>
+						<br><a href="/crm/events/barcode?id={{ row.date.id }}"><span class="glyphicon glyphicon-barcode"></span></a>
+						
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="clear mt20"></div>
+		{% if model.id  %}
+			
+		{{ this.render('_form_events.php', {'model' : model, 'biblioevent' : biblioevent, 'biblioevents' : biblioevents}) | raw }}
+		{% else %}
+			<a class="btn btn-success btn-lg" href="/crm/events/create?biblioeventid={{ biblioevent.id }}"> добавить дату <span class="glyphicon glyphicon-plus small"></span></a>
+		{% endif %}
+
+		{% if model.id %}
+			<div class="clear"></div>
+			<h3 class="tal">Бенды</h3>
+			{% for row in mybands %}
+				<div class="din btn btn-info">{{ row.band.name }}<a class="del_in_btn" href="/crm/events/banddel?id={{ model.id }}&band={{ row.band_id }}">X</a></div>
+			{% endfor %}
+			<div class="col-xs-12 col-lg-3">
+				<select class="form-control din" name="Бенды" onchange="top.location.href=this.options[this.selectedIndex].value;">
+					<option>Добавить бенд</option>
+					{% for row in bands %}
+						<option value="/crm/events/bandadd?id={{ model.id }}&band={{ row.id }}">{{ row.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		{% endif %}
+
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+	// Даты
+	$(document).ready(function() {
+		$('#events-event_id').on('change', function() {
+			var biblioeventid = this.value;
+			$.ajax({
+				type: 'get',
+				url: "/crm/events/get-dates",
+				data: {'biblioeventid': biblioeventid},
+				response: 'text',
+				success: function(data){
+					$('.dates').html(data);
+					$('.left_blo').css({minHeight: $('.wrap').height()});
+				}
+			}); 
+		});
+	});
+</script>

@@ -1,0 +1,40 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<button type="button" class="left_toggle"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+			<h2>Test</h2>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-3 left_blo">
+		{{ this.render('/module/profile_step.twig', {'person' : person, 'user_id' : user_id }) | raw }}
+	</div>
+
+	<div class="col-xs-12 col-sm-9">
+		
+			<div class="mini_header mt0"><span>Тесты <div class="badge">{{ ticks|length }}</div></span></div>
+			<table>
+				<tr><td></td><td></td><td></td><td></td></tr>
+				{% for ticket in tickets %}
+				<tr><td>{{ticket.id}}:</td><td>{{ticket.user_id}}&nbsp;</td><td><small> - {{ticket.user}} - </small></td><td>{{ticket.person_id}}&nbsp;</td></tr>
+				{% endfor %}
+			</table>
+		
+
+	</div>
+</div>
+
+
+
+<script>
+	$(document).ready(function(){
+		$('.js_up').slideUp();
+
+		$('.js_slide').click(function(){
+			$(this).next().slideToggle(200);
+		});
+	});
+</script>
+

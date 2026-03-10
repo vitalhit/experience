@@ -1,0 +1,52 @@
+<div class="akt">
+	
+<p style="text-align: right;"> 
+	{{ contragent2.name }}<br>
+	{{contragent2.position }}<br>
+	{{ contragent2.man }}<br>
+	ИНН/ОГРН: <br>{{ contragent2.inn }} /{{contragent2.ogrn }}<br>
+	Адрес:<br>{{ contragent2.jaddress }}
+</p>
+<p style="text-align: center;"><b>Служебная записка  № {% if model.doc_number %}{{ model.doc_number }}{%else%} ______________{% endif %}   </b>
+	<table class="tb">
+		<tr>
+			<td>{{contragent2.city}}</td>
+			<td class="tar">{% if model.date_doc != '' %}{{ model.date_doc|date('d.m.Y') }}{% else %}___ / ___ / 20___ г. {% endif %}</td>
+		</tr>
+	</table>
+</p>	
+	<P>Я, {{ contragent2.man }}, {{contragent2.position }} {% if contragent2.name %}{{ contragent2.name }}{%else%}________________________________________{%endif%}, довожу до вашего сведения,что _____________ был осуществлен возврат денежных средств через банк на реквизиты клиента, но платеж не прошел в банке по причине неправильно указанных реквизитов в заявление. 
+В связи с этим, {% if  model.date_payment %}{{ model.date_payment|date('d.m.Y') }}{% else %}___ / ___ / 20___ г. {% endif %}  потребовалось осуществить повторный возврат по верным реквизитам. Прилагаю к служебной записки : Чек прихода и чек возврата по не верным реквизитам.<br>
+Чек прихода и чек возврата по верным реквизитам.
+
+</p>
+<p>
+	<table>
+		<tr><th>Дата</th><th>Сумма</th><th>Назначение платежа</th><th>Статус</th></tr>
+		<tr><td>{{ model.date_payment|date('d.m.Y H:i')}}</td><td>{{ model.summa}}</td><td>{{ model.name}}</td><td></td></tr>
+		<tr><td></td><td></td><td></td><td></td></tr>
+	</table>
+
+<p>
+
+Контрольно-кассовый аппарат ПТК«MSPOS-K» версия 002, №199036002951, 003, Общество с ограниченной ответственностью «Эвотор ОФД», www.platformaofd.ru, ИНН: 9715260691 с регистрационным номером ККТ 0001 3804 9104 0529 и заводским номером экземпляра фискального накопителя 9961440300214419 Шифровальное (криптографическое) средство защиты фискальных данных фискальный накопитель «ФН-1.1М исполнение Ин36-1М».
+</p>
+
+	<table class="tb">
+		<tr>
+			<td width="50%">
+				{% if model.date_doc != '' %}{{ model.date_doc|date('d.m.Y') }}{% else %}___ / ___ / 20___ г. {% endif %}
+			</td>
+			<td width="50%">
+				<br> {{ contragent2.name }}
+				<br> {{ contragent2.position }}:
+				<br> {{ contragent2.man }}
+				<br> Кассир: 
+				<br> {{ contragent2.man }}
+			</td>
+		</tr>
+	</table>
+</p>	
+</div>
+
+

@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-xs-12 col-lg-3 left_blo">
+        <div class="stiky">
+
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-9">
+        <div class="newblo">
+            <div class="row">
+                <div class="col-xs-12"> 
+                    <table class="tb stacktable">
+                        <tr>
+                            <td>id</td>
+                            <td>public vk_id</td>
+                            <td>current post</td>
+                            <td>time</td>
+                            <td>stop</td>
+                            <td>name</td>
+                            <td>goal</td>
+                            <td>current ptext</td>
+                            <td>current plink</td>
+                            <td>current paudio</td>
+                            <td>current pvideo</td>
+                            <td>current pquote</td>
+                        </tr>
+                        <tr>
+                        <td><span class=""><a href="/crm/ptext/update?id={{ model.id }}">{{ model.id }}</a></span></td>
+                            <td>{{ model.public_vk_id }}
+                            </td>
+                            <td>{{ model.current_post}}</td>
+                            <td>{{ model.time}}</td>
+                            <td>{{ model.stop}}</td>
+                            <td>{{ model.name}}</td>
+                            <td>{{ model.goal}}</td>
+                            <td>{{ model.current_ptext}}</td>
+                            <td>{{ model.current_plink}}</td>
+                            <td>{{ model.current_paudio}}</td>
+                            <td>{{ model.current_pvideo}}</td>
+                            <td>{{ model.current_pquote }}</td>
+                        </tr>
+                </table>
+                </div>
+                <div class="col-xs-12">
+                <table class="tb stacktable"><tr>
+                <td>
+                    id
+                </td><td>
+                    title
+                </td><td>
+
+                </td>
+
+                </tr> 
+                {% for row in myposts %}
+                <tr>
+                    <td>
+                        <a  href="/crm/post?id={{ row.post.id }}">{{ row.posts.id }} </a>
+                    </td><td>
+                        {{ row.posts.title }}<br>
+                        <small> {{ row.posts.text }}</small>
+                    </td><td>
+                        
+                    </td>
+                </tr>
+                {% endfor %}
+                </div>
+
+                </table>
+            </div>
+        </div>
+        
+      
+
+    </div>
+</div>

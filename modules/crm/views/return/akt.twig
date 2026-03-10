@@ -1,0 +1,81 @@
+<div class="akt">
+
+	<h2>АКТ  №{{ model.act_id }}-{{ model.task_id }}{% if model.act_number %}-{{ model.act_number }}{% endif %} </h2>
+
+	<table class="tb">
+		<tr>
+			<td><p>г. Санкт-Петербург</p></td>
+			<td class="tar"><p>{{ model.date_act|date('d.m.Y') }}</p></td>
+		</tr>
+	</table>
+
+	<table border="1">
+		<tr>
+			<td>Заказчик:</td>
+			<td><p>{{ contragent1.name }}, ИНН {{ contragent1.inn }}, р/с {{ contragent1.raschet }} в банке {{ contragent1.bank }}, БИК {{ contragent1.bik }}, к/с {{ contragent1.korr }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td>Исполнитель:</td>
+			<td><p>{{ contragent2.name }}, ИНН {{ contragent2.inn }}, р/с {{ contragent2.raschet }} в банке {{ contragent2.bank }}, БИК {{ contragent2.bik }}, к/с {{ contragent2.korr }}</p></td>	
+		</tr>
+	</table>
+	<p>&nbsp;</p>
+
+
+	<table border="1">
+		<tr>
+			<td>№</td>
+			<td> Наименование работ, услуг</td>
+			<td>Кол-во</td>
+			<td>Ед.</td>
+			<td>Цена</td>
+			<td>Сумма</td>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>{{ model.name }}</td>
+			<td></td>
+			<td></td>
+			<td>{{ model.summa }}</td>
+			<td>{{ model.summa }}</td>
+		</tr>
+		
+	</table>
+
+	
+	<p><b>Всего оказано услуг 1, на сумму {{ model.summa }} руб</b></p>
+	<p><b>{{ money.summa_p }}</b></p>
+
+<p>Вышеперечисленные услуги выполнены полностью и в срок. Заказчик претензий по объему, качеству и
+срокам оказания услуг не имеет.</p>
+
+	<br><br>
+
+	<h2>ПОДПИСИ СТОРОН:</h2>
+
+	<table class="tb">
+		<tr>
+			<td width="50%">
+				<p><b>Заказчик:</b></p>
+				<p>{{ contragent1.name }}</p>
+				<p>ИНН: {{ contragent1.inn }} </p>
+				<p>Почтовый адрес: {{ contragent1.jaddress }}</p>
+				<p>Юридический адрес: {{ contragent1.faddress }}</p>
+				<p>&nbsp;</p>
+				<p>_________________ ({{ contragent1.man }})</p>
+			</td>
+			<td width="50%">
+				<p><b>Исполнитель:</b></p>
+				<p> {{ contragent2.name }}</p>
+				<p>ИНН: {{ contragent2.inn }} </p>
+				<p>Почтовый адрес: {{ contragent2.jaddress }}</p>
+				<p>Юридический адрес: {{ contragent2.faddress }}</p>
+				<p>&nbsp;</p>
+				<p>_________________ ({{ contragent2.man }})</p>
+			</td>
+		</tr>
+	</table>
+</div>
+
+

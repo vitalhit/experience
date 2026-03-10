@@ -1,0 +1,64 @@
+{{ use('/yii/widgets') }}
+
+<ul class="search_result"></ul>
+
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="newblo">
+            <div class="row">
+              
+                <div class="col-xs-12 col-lg-12">
+                    <h2>All posts</h2>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-3 left_blo">
+        {{ this.render('/module/post_step.twig') | raw }}
+    </div>
+
+    <div class="col-xs-12 col-lg-9">
+        
+        <a class="btn btn-success btn-sm" href="/post/post/create"> добавить post <span class="glyphicon glyphicon-plus small"></span></a> 
+
+        <br><br>
+        <table class="tb stacktable">
+            <tr>
+                <td>id</td>
+                <td>title</td>
+                <td>text</td>
+                
+            </tr>
+            {% for one in all %}
+            <tr>
+                <td><a href="/post/post/update?id={{ one.id}}">{{ one.id}}</a></td>
+                <td><a href="/post/post/update?id={{ one.id}}">{{ one.title}}</a> 
+                    <br>— {{ one.serv_info}} 
+                    item(id): {{ one.item}}({{ one.item_id}}). usecase: {{ one.usecase}}
+                    <hr>
+ {% if one.tag %} Теги:{{ one.tag}} {%endif%}
+                    </td>
+                <td><div style="max-width: 400px;">
+                {{ one.text}}</div><br>
+                    <a class="btn btn-success btn-xs" href="/post/post/jointoplace?post_id={{ one.id}}"> + PostPlace</a> 
+                    <a class="btn btn-success btn-xs" href="/post/post/jointobiblioevent?post_id={{ one.id}}"> + PostBiblioevent</a> 
+                     <a class="btn btn-success btn-xs" href="/post/post/jointoimg?post_id={{ one.id}}"> + PostImg</a> 
+                    <a class="btn btn-success btn-xs" href="https://crm.igoevent.com/crm/items/create?post_id={{ one.id}}"> + item</a> 
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+    {{link_pager_widget({
+        'pagination': pages
+    }) }}
+
+
+
+    <div class="popup end popup_d"></div>
+
+    <div class="overlay"></div>
+

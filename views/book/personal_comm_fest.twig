@@ -1,0 +1,13 @@
+<div class="row">
+	<div class="col-xs-12 col-lg-12">
+		<div class="newblo">
+			<h2>{{booking.title }}</h2>
+			<hr>
+
+			{{booking.info | raw}}
+		</div>
+	</div>
+	<div class="col-xs-12 col-lg-12">
+		{{ this.render('form/personal/_form_comm_fest.php', {'model' : model, 'booking' : booking,   'events' : events ,  'event_id' : event_id , 'person' : person }) | raw }}
+	</div>
+</div>
