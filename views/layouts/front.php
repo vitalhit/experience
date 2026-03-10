@@ -90,9 +90,7 @@ AppAsset::register($this);
 				<div class="col-xs-6 col-lg-3 pull-right"><p>Сайт сделал <a href="http://vitalhit.com/">Хитров Виталий Глебович</a></p>
 				</div>
 				<div class="col-xs-12 col-lg-1 tac">
-					<script type="text/javascript">
-						document.write("<a href='//www.liveinternet.ru/click' "+"target=_blank><img src='//counter.yadro.ru/hit?t26.1;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";h"+escape(document.title.substring(0,150))+";"+Math.random()+"' alt='' title='LiveInternet: показано число посетителей за"+" сегодня' "+"border='0' width='88' height='15'><\/a>")
-					</script>
+					
 				</div>
 			</div>
 		</div>
@@ -102,8 +100,7 @@ AppAsset::register($this);
 	<script src="/js/main.js"></script>
 	<script src="/js/stacktable.js"></script>
 	<noindex>
-		<script type="text/javascript">document.write("<a rel='nofollow' href='//www.liveinternet.ru/click' "+"target=_blank><img src='//counter.yadro.ru/hit?t26.1;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";h"+escape(document.title.substring(0,150))+";"+Math.random()+"' alt='' title='LiveInternet: показано число посетителей за"+" сегодня' "+"border='0' width='88' height='15'><\/a>");
-		</script>
+		<!-- liveinternet -->
 	</noindex>
 
 	<!-- Yandex.Metrika counter --> 

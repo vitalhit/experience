@@ -17,8 +17,5 @@ use yii\bootstrap\ActiveForm;
             <?= Html::submitButton('Войти', ['class' => 'btn btn-success pull-right', 'name' => 'login-button']) ?>
         </div>
         <?php ActiveForm::end(); ?>
-
-        <?= yii\authclient\widgets\AuthChoice::widget([ 'baseAuthUrl' => ['site/auth'], 'popupMode' => false]) ?>
-
     </div>
 </div>

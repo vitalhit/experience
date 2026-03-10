@@ -6,27 +6,7 @@
 
     <div class="row noprint">
         <div class="col-xs-10 col-xs-offset-1">
-            <!--LiveInternet counter-->
-            <script type="text/javascript">
-document.write('<a  rel="nofollow" href= "//www.liveinternet.ru/click" '+
-'target="_blank"><img src="//counter.yadro.ru/hit?t26.1;r'+
-escape(document.referrer)+((typeof(screen)=='undefined')?'':
-';s'+screen.width+'*'+screen.height+'*'+(screen.colorDepth?
-screen.colorDepth:screen.pixelDepth))+';u'+escape(document.URL)+
-';h'+escape(document.title.substring(0,150))+';'+Math.random()+
-'" alt="" title="LiveInternet: показано число посетителей за'+
-' сегодня" '+
-'border="0" width="88" height="15"><\/a>')
-</script><!--/LiveInternet-->
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88249632-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-88249632-1');
-</script>
+            <!-- liveinternet -->
             <h4>Электронный билет <a  rel="nofollow" href= "/{{event.cities.alias}}/event/{% if event.alias %}{{event.alias}}{%else%}{{event.id}}{%endif%}?utm_source=ticket&utm_medium=vitalhit&utm_campaign={{person.id}}">на событие</a></h4>
             <p class="noprint"><b>{{ event.name }}</b></p>
             <p class="noprint"><span class="cred noprint">Внимание!</span> Ссылка на эту страницу позволяет открыть электронный билет с любого компьютера! Не допускайте того, чтобы она попала к посторонним людям</p>
