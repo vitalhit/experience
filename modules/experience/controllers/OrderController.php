@@ -242,21 +242,50 @@ class OrderController extends Controller
 
         $orders = [];
         foreach ($byOrder as $row) {
+            $eventDate = null;
+            if (!empty($row['event']) && !empty($row['event']->date)) {
+                $eventDate = is_numeric($row['event']->date) ? $row['event']->date : strtotime($row['event']->date);
+            }
+            $orderDate = !empty($row['tickets'][0]) ? $row['tickets'][0]->date : null;
             $orders[] = [
                 'order_id' => $row['order_id'],
                 'statusLabel' => $this->getStatusLabel($row['tickets']),
                 'sum' => $row['sum'],
                 'event' => $row['event'],
                 'biblioevent' => $row['biblioevent'],
-                'date' => !empty($row['tickets'][0]) ? $row['tickets'][0]->date : null,
+                'date' => $orderDate,
+                'eventDate' => $eventDate,
             ];
         }
+
+        $now = time();
+        $ordersFuture = [];
+        $ordersPast = [];
+        foreach ($orders as $order) {
+            $ed = $order['eventDate'];
+            if ($ed !== null && $ed >= $now) {
+                $ordersFuture[] = $order;
+            } else {
+                $ordersPast[] = $order;
+            }
+        }
+        usort($ordersFuture, function ($a, $b) {
+            $da = $a['eventDate'] ?? 0;
+            $db = $b['eventDate'] ?? 0;
+            return $da <=> $db;
+        });
+        usort($ordersPast, function ($a, $b) {
+            $da = $a['eventDate'] ?? 0;
+            $db = $b['eventDate'] ?? 0;
+            return $db <=> $da;
+        });
 
         $this->layout = '@app/views/layouts/site';
         Yii::$app->view->title = 'Список заказов';
 
         return $this->render('index.twig', [
-            'orders' => $orders,
+            'ordersFuture' => $ordersFuture,
+            'ordersPast' => $ordersPast,
         ]);
     }
 
