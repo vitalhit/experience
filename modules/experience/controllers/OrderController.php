@@ -255,6 +255,7 @@ class OrderController extends Controller
                 'biblioevent' => $row['biblioevent'],
                 'date' => $orderDate,
                 'eventDate' => $eventDate,
+                'eventDateFormatted' => $eventDate !== null ? date('d.m.Y H:i', $eventDate) : null,
             ];
         }
 
