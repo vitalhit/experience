@@ -138,7 +138,8 @@ $css = <<<CSS
 .excursion-sessions-section h3,
 .excursion-booking-form-section h3,
 .excursion-contact-form h3 { margin: 16px 0 12px; font-size: 1em; }
-.excursion-calendar-container { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 12px 0; }
+.excursion-calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 12px 0; }
+.excursion-calendar-weekday { text-align: center; font-weight: 600; font-size: 0.85em; padding: 4px 0; }
 .excursion-calendar-day {
     padding: 8px; text-align: center; border-radius: 4px; cursor: pointer;
     border: 1px solid #ddd; background: #f9f9f9;
@@ -224,9 +225,8 @@ $script = <<<JS
         html += '<button type="button" class="excursion-calendar-nav" data-dir="-1"' + (canGoLeft ? '' : ' disabled') + '>←</button>';
         html += '<span>' + monthNames[currentMonth] + ' ' + currentYear + '</span>';
         html += '<button type="button" class="excursion-calendar-nav" data-dir="1"' + (canGoRight ? '' : ' disabled') + '>→</button>';
-        html += '</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px;">';
-        ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(function(d) { html += '<div style="text-align:center;font-weight:600;font-size:0.85em;">' + d + '</div>'; });
-        html += '</div><div class="excursion-calendar-container">';
+        html += '</div><div class="excursion-calendar-grid">';
+        ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(function(d) { html += '<div class="excursion-calendar-weekday">' + d + '</div>'; });
 
         for (var i = 0; i < firstDow; i++) html += '<div class="excursion-calendar-day disabled"></div>';
         for (var day = 1; day <= lastDay; day++) {
