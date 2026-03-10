@@ -78,7 +78,7 @@
 		<form method="post" action="{{ addCommentUrl }}" style="max-width: 100%;">
 			<input type="hidden" name="{{ csrfParam }}" value="{{ csrfToken }}">
 			<label for="comment-body" style="display: block; margin-bottom: 0.5rem;">Добавить комментарий</label>
-			<textarea id="comment-body" name="body" rows="3" maxlength="1000" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" placeholder="Текст сообщения (до 1000 символов)"></textarea>
+			<textarea id="comment-body" name="body" rows="3" maxlength="1000" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; color: #333; background: #fff;" placeholder="Текст сообщения (до 1000 символов)"></textarea>
 			<button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">Отправить</button>
 		</form>
 	</section>
