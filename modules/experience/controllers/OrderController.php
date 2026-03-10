@@ -5,6 +5,8 @@ namespace app\modules\experience\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
+use yii\helpers\ArrayHelper;
 use app\models\Tickets;
 use app\models\Events;
 use app\models\Biblioevents;
@@ -40,6 +42,15 @@ class OrderController extends Controller
             
         if (empty($tickets)) {
             throw new NotFoundHttpException('Заказ не найден.');
+        }
+
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/login']);
+        }
+        $persons = Persons::find()->where(['persons.user_id' => Yii::$app->user->id])->all();
+        $pids = ArrayHelper::getColumn($persons, 'id');
+        if (empty($pids) || !in_array((int) $tickets[0]->user_id, array_map('intval', $pids), true)) {
+            throw new ForbiddenHttpException('Нет доступа к этому заказу.');
         }
 
         $event = Events::find()
@@ -186,17 +197,28 @@ class OrderController extends Controller
     }
 
     /**
-     * Список всех заказов (по order_id из tickets) с суммами и статусами.
+     * Список заказов текущего пользователя (по order_id из tickets) с суммами и статусами.
      */
     public function actionIndex()
     {
-        $tickets = Tickets::find()
-            ->joinWith('events')
-            ->joinWith('events.biblioevents')
-            ->where(['tickets.del' => 0])
-            ->orderBy(['tickets.date' => SORT_DESC])
-            ->limit(2000)
-            ->all();
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/login']);
+        }
+        $persons = Persons::find()->where(['persons.user_id' => Yii::$app->user->id])->all();
+        $pids = ArrayHelper::getColumn($persons, 'id');
+
+        if (empty($pids)) {
+            $tickets = [];
+        } else {
+            $tickets = Tickets::find()
+                ->joinWith('events')
+                ->joinWith('events.biblioevents')
+                ->where(['tickets.del' => 0])
+                ->andWhere(['tickets.user_id' => $pids])
+                ->orderBy(['tickets.date' => SORT_DESC])
+                ->limit(2000)
+                ->all();
+        }
 
         $byOrder = [];
         foreach ($tickets as $ticket) {
