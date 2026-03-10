@@ -150,6 +150,7 @@ $css = <<<CSS
 .excursion-calendar-day.disabled { opacity: 0.7; cursor: not-allowed; }
 .excursion-calendar-day.disabled.past { background: #e0e0e0; color: #999; }
 .excursion-calendar-day.disabled.future { background: #ffebee; color: #c62828; }
+.excursion-calendar-day.disabled.no-sessions { background: #ffebee; color: #c62828; }
 .excursion-calendar-legend { font-size: 0.85em; color: #666; margin-top: 8px; }
 .excursion-legend-item { margin-right: 16px; }
 .excursion-sessions-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
@@ -237,11 +238,13 @@ $script = <<<JS
             var dayDate = new Date(y, currentMonth, day);
             var isPast = dayDate < today;
             var isBeyondYear = dayDate > maxDate;
-            var isAvailable = !isPast && !isBeyondYear && availableDates.indexOf(dateStr) !== -1;
+            var hasSessions = availableDates.indexOf(dateStr) !== -1;
+            var isAvailable = !isPast && !isBeyondYear && hasSessions;
             var isSelected = selectedDate === dateStr;
             var cls = 'excursion-calendar-day';
             if (isPast) { cls += ' disabled past'; }
             else if (isBeyondYear) { cls += ' disabled future'; }
+            else if (!isPast && !isBeyondYear && !hasSessions) { cls += ' disabled no-sessions'; }
             else if (isAvailable) cls += ' available';
             if (isSelected) cls += ' selected';
             html += '<div class="' + cls + '" data-date="' + dateStr + '">' + day + '</div>';
