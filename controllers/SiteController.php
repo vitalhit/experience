@@ -140,6 +140,15 @@ class SiteController extends Controller
 
 	public function actionIndex()
 	{
+		$host = parse_url(Yii::$app->request->getHostInfo(), PHP_URL_HOST) ?? '';
+		$isExperience = ($host === 'experience.igoevent.com' || strpos($host, 'experience.') === 0);
+		if ($isExperience) {
+			if (Yii::$app->user->isGuest) {
+				return $this->redirect(['/login']);
+			}
+			return $this->redirect(['/experience/order']);
+		}
+
 		$this->layout='front';
 
 		$cities = Cities::Active();
