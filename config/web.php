@@ -169,6 +169,7 @@ $config = [
                 '<module>/<controller>/<action>' => '<module>/<controller>/<action>',
                 'lll' => 'site/allevents',
                 'manager' => 'site/manager',
+                'experience/order/<token>' => 'experience/order/view',
 
             ],
         ],
@@ -214,6 +215,9 @@ $config = [
         'kudago' => [
             'class' => 'app\modules\kudago\Module',
         ],
+        'experience' => [
+            'class' => 'app\modules\experience\Module',
+        ],
         'rbac' => [
             'class' => 'mdm\admin\Module',
             'controllerMap' => [
@@ -247,6 +251,7 @@ $config = [
             'shop/*',
             'avisourl/*',
             'checkurl/*',
+            'experience/*',
             'smena/smenaavtoclose',
             'abonements/daycheck',
             'debug/*',
