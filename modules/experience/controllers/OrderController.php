@@ -10,6 +10,7 @@ use app\models\Events;
 use app\models\Biblioevents;
 use app\models\Persons;
 use app\models\Companies;
+use app\models\Comment;
 
 /**
  * Контроллер заказов экскурсий. Страница заказа по token (order_id).
@@ -36,7 +37,7 @@ class OrderController extends Controller
             ->where(['tickets.order_id' => $token])
             ->andWhere(['tickets.del' => 0])
             ->all();
-            echo 'test'; die;
+            
         if (empty($tickets)) {
             throw new NotFoundHttpException('Заказ не найден.');
         }
@@ -77,7 +78,7 @@ class OrderController extends Controller
             $guideName = 'Организатор';
         }
         
-        $this->layout = 'site';
+        $this->layout = '@app/views/layouts/site';
         Yii::$app->view->title = 'Заказ — ' . $biblioevent->name;
 
         $paymentUrl = 'https://igoevent.com/site/pay?order_id=' . urlencode($token);
@@ -85,6 +86,15 @@ class OrderController extends Controller
         $dateFormatted = $event->date ? Yii::$app->formatter->asDate($event->date, 'php:j F, D') : '';
         $timeFormatted = $event->date ? Yii::$app->formatter->asTime($event->date, 'php:H:i') : '';
         $datetimeFormatted = $event->date ? Yii::$app->formatter->asDatetime($event->date, 'php:d F, D, H:i') : '';
+
+        $comments = Comment::find()
+            ->where(['order_id' => $token])
+            ->andWhere(['or', ['deleted' => 0], ['deleted' => null]])
+            ->joinWith('author')
+            ->orderBy(['created_at' => SORT_ASC])
+            ->all();
+
+        $addCommentUrl = Yii::$app->urlManager->createUrl(['/experience/order/add-comment', 'token' => $token]);
 
         return $this->render('view.twig', [
             'tickets' => $tickets,
@@ -103,6 +113,128 @@ class OrderController extends Controller
             'timeFormatted' => $timeFormatted,
             'datetimeFormatted' => $datetimeFormatted,
             'meetingPlace' => trim($event->place ?? '') ?: trim($event->address ?? '') ?: null,
+            'comments' => $comments,
+            'addCommentUrl' => $addCommentUrl,
+            'csrfParam' => Yii::$app->request->csrfParam,
+            'csrfToken' => Yii::$app->request->getCsrfToken(),
+        ]);
+    }
+
+    /**
+     * Добавление комментария к заказу (POST).
+     * @param string $token order_id
+     */
+    public function actionAddComment($token)
+    {
+        $request = Yii::$app->request;
+        if (!$request->isPost) {
+            return $this->redirect(['view', 'token' => $token]);
+        }
+
+        $tickets = Tickets::find()
+            ->joinWith('events')
+            ->joinWith('events.biblioevents')
+            ->where(['tickets.order_id' => $token])
+            ->andWhere(['tickets.del' => 0])
+            ->all();
+        if (empty($tickets)) {
+            throw new NotFoundHttpException('Заказ не найден.');
+        }
+
+        $event = Events::find()->joinWith('biblioevents')->andWhere(['events.id' => $tickets[0]->event_id])->one();
+        $biblioevent = $event && $event->biblioevents ? $event->biblioevents : null;
+
+        $body = trim((string) ($request->post('body') ?? ''));
+        if ($body === '' || mb_strlen($body) > 1000) {
+            Yii::$app->session->setFlash('danger', 'Текст комментария обязателен (до 1000 символов).');
+            return $this->redirect(['view', 'token' => $token]);
+        }
+
+        $authorId = null;
+        $authorType = Comment::AUTHOR_TYPE_GUEST;
+
+        if (!Yii::$app->user->isGuest) {
+            $person = Persons::findOne(['user_id' => Yii::$app->user->id]);
+            if ($person) {
+                $authorId = $person->id;
+                if (Yii::$app->authManager->getAssignment('manager', Yii::$app->user->id)
+                    || Yii::$app->authManager->getAssignment('admin', Yii::$app->user->id)) {
+                    $authorType = Comment::AUTHOR_TYPE_MANAGER;
+                } elseif ($biblioevent && (int) $person->company_id === (int) $biblioevent->company_id) {
+                    $authorType = Comment::AUTHOR_TYPE_GUIDE;
+                } else {
+                    $authorType = Comment::AUTHOR_TYPE_GUEST;
+                }
+            }
+        }
+
+        $comment = new Comment();
+        $comment->order_id = $token;
+        $comment->body = $body;
+        $comment->author_id = $authorId;
+        $comment->author_type = $authorType;
+        $comment->id_event = $event ? $event->id : null;
+        $comment->id_biblioevent = $biblioevent ? $biblioevent->id : null;
+        $comment->deleted = 0;
+        if (!$comment->save()) {
+            Yii::$app->session->setFlash('danger', 'Не удалось сохранить комментарий.');
+            return $this->redirect(['view', 'token' => $token]);
+        }
+
+        Yii::$app->session->setFlash('success', 'Комментарий добавлен.');
+        return $this->redirect(['view', 'token' => $token]);
+    }
+
+    /**
+     * Список всех заказов (по order_id из tickets) с суммами и статусами.
+     */
+    public function actionIndex()
+    {
+        $tickets = Tickets::find()
+            ->joinWith('events')
+            ->joinWith('events.biblioevents')
+            ->where(['tickets.del' => 0])
+            ->orderBy(['tickets.date' => SORT_DESC])
+            ->limit(2000)
+            ->all();
+
+        $byOrder = [];
+        foreach ($tickets as $ticket) {
+            $oid = $ticket->order_id;
+            if (!isset($byOrder[$oid])) {
+                $byOrder[$oid] = [
+                    'order_id' => $oid,
+                    'tickets' => [],
+                    'sum' => 0,
+                    'event' => null,
+                    'biblioevent' => null,
+                ];
+            }
+            $byOrder[$oid]['tickets'][] = $ticket;
+            $byOrder[$oid]['sum'] += (int) $ticket->summa;
+            if ($byOrder[$oid]['event'] === null && $ticket->events) {
+                $byOrder[$oid]['event'] = $ticket->events;
+                $byOrder[$oid]['biblioevent'] = $ticket->events->biblioevents ?? null;
+            }
+        }
+
+        $orders = [];
+        foreach ($byOrder as $row) {
+            $orders[] = [
+                'order_id' => $row['order_id'],
+                'statusLabel' => $this->getStatusLabel($row['tickets']),
+                'sum' => $row['sum'],
+                'event' => $row['event'],
+                'biblioevent' => $row['biblioevent'],
+                'date' => !empty($row['tickets'][0]) ? $row['tickets'][0]->date : null,
+            ];
+        }
+
+        $this->layout = '@app/views/layouts/site';
+        Yii::$app->view->title = 'Список заказов';
+
+        return $this->render('index.twig', [
+            'orders' => $orders,
         ]);
     }
 

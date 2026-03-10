@@ -56,4 +56,30 @@
 			<a href="{{ paymentUrl }}">Оплатить</a>
 		</p>
 	{% endif %}
+
+	<section class="experience-comments" style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #eee;">
+		<h2 style="font-size: 1.25rem; margin-bottom: 1rem;">Комментарии</h2>
+		{% if comments is defined and comments|length > 0 %}
+			<ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0;">
+				{% for c in comments %}
+					<li style="margin-bottom: 1rem; padding: 0.75rem; background: #f9f9f9; border-radius: 4px;">
+						<div style="font-size: 0.85rem; color: #666; margin-bottom: 0.25rem;">
+							{% if c.author_type == 1 %}Гость{% elseif c.author_type == 2 %}Гид{% elseif c.author_type == 3 %}Менеджер{% else %}Автор{% endif %}
+							{% if c.author %}{{ c.author.name }} {{ c.author.second_name }}{% endif %}
+							— {{ c.created_at|date('d.m.Y H:i') }}
+						</div>
+						<div style="white-space: pre-wrap;">{{ c.body }}</div>
+					</li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			<p style="color: #888; margin-bottom: 1rem;">Пока нет комментариев.</p>
+		{% endif %}
+		<form method="post" action="{{ addCommentUrl }}" style="max-width: 100%;">
+			<input type="hidden" name="{{ csrfParam }}" value="{{ csrfToken }}">
+			<label for="comment-body" style="display: block; margin-bottom: 0.5rem;">Добавить комментарий</label>
+			<textarea id="comment-body" name="body" rows="3" maxlength="1000" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" placeholder="Текст сообщения (до 1000 символов)"></textarea>
+			<button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">Отправить</button>
+		</form>
+	</section>
 </div>
