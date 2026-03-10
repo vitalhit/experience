@@ -189,6 +189,9 @@ class BookingController extends Controller
                 $ticket->type = 'excursion';
                 $ticket->date = date('Y-m-d H:i:s');
                 $ticket->status = ExperienceOrder::STATUS_WAITING;
+                $ticket->promocode = '';
+                $ticket->del = 0;
+                $ticket->canceled = 0;
 
                 if (!$ticket->save(false)) {
                     throw new \Exception('Ошибка создания билета: ' . json_encode($ticket->errors));

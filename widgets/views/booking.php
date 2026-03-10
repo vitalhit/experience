@@ -64,6 +64,9 @@ $csrfToken = Yii::$app->request->csrfToken;
     <div class="excursion-booking-form-section" style="display: none;">
         <h3>Сколько вас будет</h3>
         <div class="excursion-tickets-list" id="excursion-tickets-list-<?= $widgetId ?>">
+            <?php if (empty($ticketCategories)): ?>
+            <p class="excursion-no-categories">Нет категорий билетов. Добавьте их в таблицу ticket_categories для biblioevent_id <?= $biblioevent->id ?>.</p>
+            <?php else: ?>
             <?php foreach ($ticketCategories as $category): ?>
             <div class="excursion-ticket-item" data-category-id="<?= $category->id ?>" data-price="<?= $category->price ?>">
                 <div class="excursion-ticket-info">
@@ -79,21 +82,22 @@ $csrfToken = Yii::$app->request->csrfToken;
                 </div>
             </div>
             <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
         <div class="excursion-contact-form">
             <h3>Контактные данные</h3>
             <div class="excursion-form-group">
                 <label>Как вас зовут *</label>
-                <input type="text" class="excursion-form-control" name="customer_name" required>
+                <input type="text" class="excursion-form-control" name="customer_name" required placeholder="Фамилия и имя">
             </div>
             <div class="excursion-form-group">
                 <label>Ваша эл. почта *</label>
-                <input type="email" class="excursion-form-control" name="customer_email" required>
+                <input type="email" class="excursion-form-control" name="customer_email" required placeholder="v@igoevent.com">
             </div>
             <div class="excursion-form-group">
                 <label>Ваш телефон *</label>
-                <input type="tel" class="excursion-form-control" name="customer_phone" required placeholder="+7 (___) ___-__-__">
+                <input type="tel" class="excursion-form-control" name="customer_phone" required placeholder="79258819781">
             </div>
             <div class="excursion-form-group">
                 <label>Вопросы и комментарии</label>
@@ -111,6 +115,7 @@ $csrfToken = Yii::$app->request->csrfToken;
             <button type="button" class="excursion-btn-submit" id="excursion-submit-booking-<?= $widgetId ?>">
                 Забронировать
             </button>
+            <div class="excursion-error-msg" id="excursion-error-<?= $widgetId ?>" style="display: none;"></div>
         </div>
     </div>
 </div>
@@ -163,19 +168,21 @@ $css = <<<CSS
 .excursion-ticket-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
 .excursion-ticket-info { display: flex; justify-content: space-between; width: 60%; }
 .excursion-ticket-counter { display: flex; align-items: center; gap: 4px; }
-.excursion-counter-btn { width: 32px; height: 32px; border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5; cursor: pointer; }
+.excursion-counter-btn { width: 32px; height: 32px; border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5; cursor: pointer; pointer-events: auto; }
+.excursion-no-categories { color: #c62828; padding: 12px 0; }
 .excursion-counter-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .excursion-counter-input { width: 40px; text-align: center; border: 1px solid #ddd; border-radius: 4px; padding: 4px; }
 .excursion-form-group { margin-bottom: 12px; }
-.excursion-form-control { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; color: black; }
+.excursion-form-control { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; color: black !important; }
 .excursion-form-control::placeholder { color: #666; }
-input.excursion-form-control[name="customer_phone"] { color: black; }
+input.excursion-form-control[name="customer_phone"] { color: black !important; }
 .excursion-booking-footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; }
 .excursion-total-price { font-weight: 600; margin-bottom: 8px; }
 .excursion-booking-info { font-size: 0.9em; color: #666; margin-bottom: 12px; }
 .excursion-btn-submit { padding: 12px 24px; background: #4caf50; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; }
 .excursion-btn-submit:hover { background: #43a047; }
 .excursion-btn-submit:disabled { background: #9e9e9e; cursor: not-allowed; }
+.excursion-error-msg { margin-top: 12px; padding: 12px; background: #ffebee; border: 1px solid #ef5350; border-radius: 4px; color: #c62828; font-size: 0.9em; user-select: text; cursor: text; }
 .excursion-calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .excursion-calendar-nav { padding: 4px 12px; cursor: pointer; border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5; }
 .excursion-calendar-nav:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -301,7 +308,8 @@ $script = <<<JS
                             selectedSession = parseInt(this.dataset.sessionId, 10);
                             list.querySelectorAll('.excursion-session-btn').forEach(function(b) { b.classList.remove('selected'); });
                             this.classList.add('selected');
-                            document.querySelector('.excursion-booking-form-section').style.display = 'block';
+                            var formSection = container.querySelector('.excursion-booking-form-section');
+                            if (formSection) formSection.style.display = 'block';
                             updateTotal();
                         });
                         list.appendChild(btn);
@@ -328,30 +336,38 @@ $script = <<<JS
         if (personsEl) personsEl.textContent = persons;
     }
 
-    container.querySelectorAll('.excursion-ticket-item').forEach(function(item) {
-        var minus = item.querySelector('.excursion-counter-minus');
-        var plus = item.querySelector('.excursion-counter-plus');
-        var input = item.querySelector('.excursion-counter-input');
-        var max = 25;
-        function updateBtns() {
+    var ticketsList = container.querySelector('.excursion-tickets-list');
+    if (ticketsList) {
+        ticketsList.addEventListener('click', function(e) {
+            var btn = e.target.closest('.excursion-counter-minus, .excursion-counter-plus');
+            if (!btn || btn.disabled) return;
+            var item = btn.closest('.excursion-ticket-item');
+            if (!item) return;
+            var input = item.querySelector('.excursion-counter-input');
+            if (!input) return;
+            var max = 25;
             var v = parseInt(input.value, 10) || 0;
-            minus.disabled = v <= 0;
-            plus.disabled = v >= max;
-        }
-        minus.addEventListener('click', function() {
-            var v = Math.max(0, (parseInt(input.value, 10) || 0) - 1);
+            if (btn.classList.contains('excursion-counter-minus')) {
+                v = Math.max(0, v - 1);
+            } else {
+                v = Math.min(max, v + 1);
+            }
             input.value = v;
-            updateBtns();
+            item.querySelector('.excursion-counter-minus').disabled = v <= 0;
+            item.querySelector('.excursion-counter-plus').disabled = v >= max;
             updateTotal();
         });
-        plus.addEventListener('click', function() {
-            var v = Math.min(max, (parseInt(input.value, 10) || 0) + 1);
-            input.value = v;
-            updateBtns();
-            updateTotal();
+        container.querySelectorAll('.excursion-ticket-item').forEach(function(item) {
+            var minus = item.querySelector('.excursion-counter-minus');
+            var plus = item.querySelector('.excursion-counter-plus');
+            var input = item.querySelector('.excursion-counter-input');
+            if (minus && plus && input) {
+                var v = parseInt(input.value, 10) || 0;
+                minus.disabled = v <= 0;
+                plus.disabled = v >= 25;
+            }
         });
-        updateBtns();
-    });
+    }
 
     document.getElementById('excursion-submit-booking-' + widgetId).addEventListener('click', function() {
         var btn = this;
@@ -368,12 +384,16 @@ $script = <<<JS
                 totalQty += qty;
             }
         });
-        if (totalQty === 0) { alert('Выберите количество билетов.'); return; }
-        if (!selectedSession) { alert('Выберите время.'); return; }
+        var errEl = document.getElementById('excursion-error-' + widgetId);
+        function showErr(msg) { if (errEl) { errEl.textContent = msg; errEl.style.display = 'block'; } }
+        function hideErr() { if (errEl) { errEl.textContent = ''; errEl.style.display = 'none'; } }
+        hideErr();
+        if (totalQty === 0) { showErr('Выберите количество билетов.'); return; }
+        if (!selectedSession) { showErr('Выберите время.'); return; }
         var name = container.querySelector('input[name="customer_name"]').value.trim();
         var email = container.querySelector('input[name="customer_email"]').value.trim();
         var phone = container.querySelector('input[name="customer_phone"]').value.trim();
-        if (!name || !email || !phone) { alert('Заполните контактные данные.'); return; }
+        if (!name || !email || !phone) { showErr('Заполните контактные данные.'); return; }
 
         btn.disabled = true;
         var fd = new FormData();
@@ -391,12 +411,12 @@ $script = <<<JS
                 if (data.success && data.payment_url) {
                     window.location.href = data.payment_url;
                 } else {
-                    alert(data.message || 'Ошибка бронирования');
+                    showErr(data.message || 'Ошибка бронирования');
                     btn.disabled = false;
                 }
             })
-            .catch(function() {
-                alert('Ошибка сети');
+            .catch(function(e) {
+                showErr('Ошибка сети: ' + (e.message || 'не удалось отправить запрос'));
                 btn.disabled = false;
             });
     });
