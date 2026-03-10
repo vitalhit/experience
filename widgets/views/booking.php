@@ -147,7 +147,9 @@ $css = <<<CSS
 .excursion-calendar-day.available { background: #e8f5e9; cursor: pointer; }
 .excursion-calendar-day.available:hover { background: #c8e6c9; }
 .excursion-calendar-day.selected { background: #4caf50; color: #fff; }
-.excursion-calendar-day.disabled { opacity: 0.5; cursor: not-allowed; }
+.excursion-calendar-day.disabled { opacity: 0.7; cursor: not-allowed; }
+.excursion-calendar-day.disabled.past { background: #e0e0e0; color: #999; }
+.excursion-calendar-day.disabled.future { background: #ffebee; color: #c62828; }
 .excursion-calendar-legend { font-size: 0.85em; color: #666; margin-top: 8px; }
 .excursion-legend-item { margin-right: 16px; }
 .excursion-sessions-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
@@ -164,7 +166,7 @@ $css = <<<CSS
 .excursion-counter-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .excursion-counter-input { width: 40px; text-align: center; border: 1px solid #ddd; border-radius: 4px; padding: 4px; }
 .excursion-form-group { margin-bottom: 12px; }
-.excursion-form-control { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+.excursion-form-control { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; color: black; }
 .excursion-booking-footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; }
 .excursion-total-price { font-weight: 600; margin-bottom: 8px; }
 .excursion-booking-info { font-size: 0.9em; color: #666; margin-bottom: 12px; }
@@ -238,7 +240,8 @@ $script = <<<JS
             var isAvailable = !isPast && !isBeyondYear && availableDates.indexOf(dateStr) !== -1;
             var isSelected = selectedDate === dateStr;
             var cls = 'excursion-calendar-day';
-            if (isPast || isBeyondYear) cls += ' disabled';
+            if (isPast) { cls += ' disabled past'; }
+            else if (isBeyondYear) { cls += ' disabled future'; }
             else if (isAvailable) cls += ' available';
             if (isSelected) cls += ' selected';
             html += '<div class="' + cls + '" data-date="' + dateStr + '">' + day + '</div>';
