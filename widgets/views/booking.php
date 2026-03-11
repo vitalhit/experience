@@ -16,7 +16,8 @@ $csrfParam = Yii::$app->request->csrfParam;
 $csrfToken = Yii::$app->request->csrfToken;
 ?>
 
-<div id="excursion-booking-widget-<?= $widgetId ?>" class="excursion-booking-widget" data-biblioevent-id="<?= $biblioevent->id ?>" data-get-sessions-url="<?= Html::encode($getSessionsUrl) ?>" data-create-booking-url="<?= Html::encode($createBookingUrl) ?>" data-csrf-param="<?= Html::encode($csrfParam) ?>" data-csrf-token="<?= Html::encode($csrfToken) ?>">
+<?php $fromUrl = Yii::$app->request->absoluteUrl; ?>
+<div id="excursion-booking-widget-<?= $widgetId ?>" class="excursion-booking-widget" data-biblioevent-id="<?= $biblioevent->id ?>" data-get-sessions-url="<?= Html::encode($getSessionsUrl) ?>" data-create-booking-url="<?= Html::encode($createBookingUrl) ?>" data-from-url="<?= Html::encode($fromUrl) ?>" data-csrf-param="<?= Html::encode($csrfParam) ?>" data-csrf-token="<?= Html::encode($csrfToken) ?>">
     <?php if (!empty($guides)): ?>
     <div class="excursion-guide-block">
         <?php foreach ($guides as $index => $guide): ?>
@@ -173,9 +174,11 @@ $css = <<<CSS
 .excursion-counter-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .excursion-counter-input { width: 40px; text-align: center; border: 1px solid #ddd; border-radius: 4px; padding: 4px; }
 .excursion-form-group { margin-bottom: 12px; }
-.excursion-form-control { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; color: black !important; }
+.excursion-form-control { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; color: #000 !important; background: #fff !important; }
 .excursion-form-control::placeholder { color: #666; }
-input.excursion-form-control[name="customer_phone"] { color: black !important; }
+input.excursion-form-control[name="customer_name"],
+input.excursion-form-control[name="customer_email"],
+input.excursion-form-control[name="customer_phone"] { color: #000 !important; background: #fff !important; }
 .excursion-booking-footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; }
 .excursion-total-price { font-weight: 600; margin-bottom: 8px; }
 .excursion-booking-info { font-size: 0.9em; color: #666; margin-bottom: 12px; }
@@ -198,6 +201,7 @@ $script = <<<JS
     var biblioeventId = container.dataset.biblioeventId;
     var getSessionsUrl = container.dataset.getSessionsUrl;
     var createBookingUrl = container.dataset.createBookingUrl;
+    var fromUrl = container.dataset.fromUrl || '';
     var csrfParam = container.dataset.csrfParam;
     var csrfToken = container.dataset.csrfToken;
 
@@ -403,6 +407,7 @@ $script = <<<JS
         fd.append('customer_email', email);
         fd.append('customer_phone', phone);
         fd.append('comment', container.querySelector('textarea[name="comment"]').value || '');
+        fd.append('from_url', fromUrl);
         fd.append(csrfParam, csrfToken);
 
         fetch(createBookingUrl, { method: 'POST', body: fd })

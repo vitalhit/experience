@@ -1169,18 +1169,33 @@ class SiteController extends Controller
 		$this->layout='site';
 		Yii::$app->view->title = 'Оплатить билет'; 
 
-		$tickets = Tickets::find()->joinWith('events')->joinWith('seats')
+		$tickets = Tickets::find()->joinWith('events')->joinWith('seats')->joinWith('ticketCategory')
 		->where('order_id = :order_id', [':order_id' => $order_id])->andWhere(['tickets.del' => 0])->all();
+
+		if (empty($tickets)) {
+			throw new \yii\web\NotFoundHttpException('Заказ не найден.');
+		}
+
 		$sum = Tickets::find()->where('order_id = :order_id', [':order_id' => $order_id])->andWhere(['tickets.del' => 0])->sum('summa');
 		$event = Events::findOne($tickets[0]->event_id);
-		$user = Persons::findOne($tickets[0]->user_id);
+		$user = $tickets[0]->user_id ? Persons::findOne($tickets[0]->user_id) : null;
+		if ($user === null) {
+			$t = $tickets[0];
+			$user = (object)[
+				'name' => $t->customer_name ?: $t->name ?: '',
+				'second_name' => $t->secondname ?: '',
+				'mail' => $t->customer_email ?: $t->email ?: '',
+				'phone' => $t->customer_phone ?: $t->phone ?: '',
+				'id' => 0,
+			];
+		}
 
-		// Есть ли место которое нельзя оплатить
+		// Есть ли место которое нельзя оплатить (для билетов с seats; экскурсии без seat_id — оплата разрешена)
 		$afterpay = 1;
 		foreach ($tickets as $ticket) {
-			if ($ticket->seats->afterpay == 0) {
-				// Оплатить нельзя
+			if ($ticket->seats !== null && $ticket->seats->afterpay == 0) {
 				$afterpay = 0;
+				break;
 			}
 		}
 

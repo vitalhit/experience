@@ -11,6 +11,8 @@ use app\models\Sessions;
 use app\models\ExperienceOrder;
 use app\models\Tickets;
 use app\models\Companies;
+use app\models\Persons;
+use app\models\Users;
 
 /**
  * Контроллер бронирования экскурсий.
@@ -153,6 +155,41 @@ class BookingController extends Controller
             }
 
             $orderNumber = $order->order_number;
+            $customerEmail = trim($data['customer_email'] ?? '');
+            $customerName = trim($data['customer_name'] ?? '');
+            $customerPhone = trim($data['customer_phone'] ?? '');
+            $fromUrl = $data['from_url'] ?? '';
+
+            $person = null;
+            $user = null;
+            $userCreated = false;
+            if ($customerEmail) {
+                $person = Persons::find()->where(['mail' => $customerEmail])->one();
+                if (!$person) {
+                    $person = new Persons();
+                    $parts = preg_split('/\s+/u', trim($customerName), 2);
+                    $person->second_name = $parts[0] ?? '-';
+                    $person->name = $parts[1] ?? $parts[0] ?? '-';
+                    $person->mail = $customerEmail;
+                    $person->phone = $customerPhone;
+                    $person->company_id = $biblioevent->company_id;
+                    if (!$person->save()) {
+                        throw new \Exception('Ошибка создания профиля: ' . json_encode($person->errors));
+                    }
+                }
+                $userExisted = Users::find()->where(['email' => $person->mail])->andWhere(['>', 'status', 0])->exists();
+                $user = Users::createUser($person);
+                if ($user && !$person->user_id) {
+                    $person->user_id = $user->id;
+                    $person->save(false);
+                }
+                $person->refresh();
+                if (!$userExisted && $person->user_id && $user) {
+                    $userCreated = true;
+                }
+            }
+            $userId = $person ? $person->id : 0;
+            $userField = $person && $person->user_id ? $person->user_id : 0;
 
             foreach ($ticketsData as $t) {
                 $qty = (int) ($t['quantity'] ?? 0);
@@ -163,38 +200,48 @@ class BookingController extends Controller
                 $price = (float) ($t['price'] ?? 0);
                 $multiplier = (float) ($session->price_multiplier ?? 1);
                 $finalPrice = $price * $multiplier;
+                $categoryId = (int) ($t['category_id'] ?? 0);
 
-                $ticket = new Tickets();
-                $ticket->order_id = $orderNumber;
-                $ticket->experience_order_id = $order->id;
-                $ticket->session_id = $session->id;
-                $ticket->event_id = $event->id;
-                $ticket->ticket_category_id = (int) ($t['category_id'] ?? 0);
-                $ticket->quantity = $qty;
-                $ticket->price = $finalPrice;
-                $ticket->summa = round($finalPrice * $qty);
-                $ticket->money = round($finalPrice);
-                $ticket->count = $qty;
-                $ticket->customer_name = $data['customer_name'] ?? '';
-                $ticket->customer_email = $data['customer_email'] ?? '';
-                $ticket->customer_phone = $data['customer_phone'] ?? '';
-                $ticket->comment = $data['comment'] ?? '';
-                $ticket->name = $data['customer_name'] ?? '';
-                $ticket->email = $data['customer_email'] ?? '';
-                $ticket->phone = $data['customer_phone'] ?? '';
-                $ticket->info = $data['comment'] ?? '';
-                $ticket->company_id = $biblioevent->company_id;
-                $ticket->biblioevent_id = $biblioevent->id;
-                $ticket->user_id = 0;
-                $ticket->type = 'excursion';
-                $ticket->date = date('Y-m-d H:i:s');
-                $ticket->status = ExperienceOrder::STATUS_WAITING;
-                $ticket->promocode = '';
-                $ticket->del = 0;
-                $ticket->canceled = 0;
+                for ($i = 0; $i < $qty; $i++) {
+                    $ticket = new Tickets();
+                    $ticket->order_id = $orderNumber;
+                    $ticket->experience_order_id = $order->id;
+                    $ticket->session_id = $session->id;
+                    $ticket->event_id = $event->id;
+                    $ticket->ticket_category_id = $categoryId;
+                    $ticket->quantity = 1;
+                    $ticket->price = $finalPrice;
+                    $ticket->summa = round($finalPrice);
+                    $ticket->money = round($finalPrice);
+                    $ticket->count = 1;
+                    $ticket->name = $customerName;
+                    $ticket->email = $customerEmail;
+                    $ticket->phone = $customerPhone;
+                    $ticket->customer_name = $customerName;
+                    $ticket->customer_email = $customerEmail;
+                    $ticket->customer_phone = $customerPhone;
+                    $ticket->info = $data['comment'] ?? '';
+                    $ticket->company_id = $biblioevent->company_id;
+                    $ticket->biblioevent_id = $biblioevent->id;
+                    $ticket->user_id = $userId;
+                    $ticket->user = $userField;
+                    $ticket->person_id = $userId;
+                    $ticket->type = 'excursion';
+                    $ticket->date = date('Y-m-d H:i:s');
+                    $ticket->status = ExperienceOrder::STATUS_WAITING;
+                    $ticket->promocode = '';
+                    $ticket->del = 0;
+                    $ticket->canceled = null;
+                    $ticket->from_url = $fromUrl;
+                    $ticket->subscribe = 1;
+                    $ticket->duty = 0;
 
-                if (!$ticket->save(false)) {
-                    throw new \Exception('Ошибка создания билета: ' . json_encode($ticket->errors));
+                    if (!$ticket->save(false)) {
+                        throw new \Exception('Ошибка создания билета: ' . json_encode($ticket->errors));
+                    }
+
+                    $ticket->barcode = str_pad(substr((string)$ticket->event_id, 0, 5), 5, '0', STR_PAD_RIGHT) . substr($ticket->date, 17, 2) . str_pad($ticket->id, 6, '0', STR_PAD_LEFT);
+                    $ticket->save(false);
                 }
             }
 
@@ -203,6 +250,18 @@ class BookingController extends Controller
             $session->save(false);
 
             $transaction->commit();
+
+            if ($userCreated && $user && $customerEmail) {
+                $supportEmail = Yii::$app->params['supportEmail'] ?? 'v@igoevent.com';
+                Yii::$app->mailer->compose(
+                    ['html' => 'lkCreate-html', 'text' => 'lkCreate-text'],
+                    ['user' => $user]
+                )
+                    ->setFrom([$supportEmail => 'Igoevent.com'])
+                    ->setTo($customerEmail)
+                    ->setSubject('Создан личный кабинет на Igoevent.com')
+                    ->send();
+            }
 
             return [
                 'success' => true,

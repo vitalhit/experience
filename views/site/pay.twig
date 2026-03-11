@@ -9,7 +9,7 @@
 	<hr>
 
 	{% for ticket in tickets %}
-		<p><b>{{ticket.seats.name}}:</b> <span class="flr">{{ticket.money|number_format(2, '.', '')}} р * {{ticket.count}} шт</span></p>
+		<p><b>{% if ticket.seats %}{{ticket.seats.name}}{% elseif ticket.ticketCategory %}{{ticket.ticketCategory.name}}{% else %}Билет{% endif %}:</b> <span class="flr">{{ticket.money|number_format(2, '.', '')}} р * {{ticket.count}} шт</span></p>
 	{% endfor %}
 	<hr>
 	<p><b>Сумма:</b> <span class="flr">{{sum|number_format(2, '.', '')}} р</span></p>
@@ -28,7 +28,7 @@
 			"taxSystem": 1,
 			"items":[
 			{% for ticket in tickets %}
-				{"quantity": {{ticket.count}}, "price": {"amount": {{ticket.money|number_format(2, '.', '')}}},  "tax": 3,"text": "{{ticket.seats.name}}"}
+				{"quantity": {{ticket.count}}, "price": {"amount": {{ticket.money|number_format(2, '.', '')}}},  "tax": 3,"text": "{% if ticket.seats %}{{ticket.seats.name}}{% elseif ticket.ticketCategory %}{{ticket.ticketCategory.name}}{% else %}Билет{% endif %}"}
 				{% if not loop.last %},{% endif %}
 				{% endfor %}
 				]}'
