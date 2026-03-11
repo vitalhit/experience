@@ -13,6 +13,7 @@ use app\models\Tickets;
 use app\models\Companies;
 use app\models\Persons;
 use app\models\Users;
+use app\models\Seats;
 
 /**
  * Контроллер бронирования экскурсий.
@@ -132,14 +133,24 @@ class BookingController extends Controller
             $company = Companies::findOne($biblioevent->company_id);
             $prepaymentPercent = ($company && isset($company->percent)) ? (int) $company->percent : 25;
 
+            $multiplier = (float) ($session->price_multiplier ?? 1);
             $totalAmount = 0;
             foreach ($ticketsData as $t) {
                 $qty = (int) ($t['quantity'] ?? 0);
-                if ($qty > 0) {
-                    $price = (float) ($t['price'] ?? 0);
-                    $multiplier = (float) ($session->price_multiplier ?? 1);
-                    $totalAmount += $price * $qty * $multiplier;
+                if ($qty <= 0) {
+                    continue;
                 }
+                $seatId = (int) ($t['seat_id'] ?? 0);
+                if ($seatId <= 0) {
+                    throw new \Exception('Тип билета не указан');
+                }
+                $seat = Seats::find()
+                    ->where(['id' => $seatId, 'biblioevent_id' => $biblioevent->id, 'is_active' => 1])
+                    ->one();
+                if (!$seat) {
+                    throw new \Exception('Тип билета не найден или недоступен');
+                }
+                $totalAmount += (float) $seat->price * $qty * $multiplier;
             }
             $prepaymentAmount = $totalAmount * $prepaymentPercent / 100;
 
@@ -197,10 +208,20 @@ class BookingController extends Controller
                     continue;
                 }
 
-                $price = (float) ($t['price'] ?? 0);
+                $seatId = (int) ($t['seat_id'] ?? 0);
+                if ($seatId <= 0) {
+                    throw new \Exception('Тип билета не указан');
+                }
+                $seat = Seats::find()
+                    ->where(['id' => $seatId, 'biblioevent_id' => $biblioevent->id, 'is_active' => 1])
+                    ->one();
+                if (!$seat) {
+                    throw new \Exception('Тип билета не найден или недоступен');
+                }
+
+                $price = (float) $seat->price;
                 $multiplier = (float) ($session->price_multiplier ?? 1);
                 $finalPrice = $price * $multiplier;
-                $categoryId = (int) ($t['category_id'] ?? 0);
 
                 for ($i = 0; $i < $qty; $i++) {
                     $ticket = new Tickets();
@@ -208,7 +229,8 @@ class BookingController extends Controller
                     $ticket->experience_order_id = $order->id;
                     $ticket->session_id = $session->id;
                     $ticket->event_id = $event->id;
-                    $ticket->ticket_category_id = $categoryId;
+                    $ticket->seat_id = $seatId > 0 ? $seatId : null;
+                    $ticket->ticket_category_id = 0;
                     $ticket->quantity = 1;
                     $ticket->price = $finalPrice;
                     $ticket->summa = round($finalPrice);
@@ -226,7 +248,7 @@ class BookingController extends Controller
                     $ticket->user_id = $userId;
                     $ticket->user = $userField;
                     $ticket->person_id = $userId;
-                    $ticket->type = 'excursion';
+                    $ticket->type = 0;  // 0 = Не оплачено (способ оплаты)
                     $ticket->date = date('Y-m-d H:i:s');
                     $ticket->status = ExperienceOrder::STATUS_WAITING;
                     $ticket->promocode = '';

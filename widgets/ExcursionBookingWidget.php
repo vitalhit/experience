@@ -5,7 +5,7 @@ namespace app\widgets;
 use Yii;
 use yii\base\Widget;
 use app\models\Biblioevents;
-use app\models\TicketCategories;
+use app\models\Seats;
 use app\models\Guide;
 use app\models\Events;
 
@@ -27,7 +27,7 @@ class ExcursionBookingWidget extends Widget
     public $viewPath = '@app/widgets/views';
 
     private $biblioevent;
-    private $ticketCategories;
+    private $seats;
     private $guides;
     private $availableDates = [];
 
@@ -49,7 +49,7 @@ class ExcursionBookingWidget extends Widget
             return;
         }
 
-        $this->ticketCategories = TicketCategories::find()
+        $this->seats = Seats::find()
             ->where(['biblioevent_id' => $this->biblioevent_id, 'is_active' => 1])
             ->orderBy(['sort_order' => SORT_ASC])
             ->all();
@@ -82,7 +82,7 @@ class ExcursionBookingWidget extends Widget
 
         return $this->render('booking', [
             'biblioevent' => $this->biblioevent,
-            'ticketCategories' => $this->ticketCategories,
+            'seats' => $this->seats,
             'guides' => $this->guides,
             'selectedDate' => $this->date,
             'widgetId' => $this->getId(),

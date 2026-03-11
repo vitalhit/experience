@@ -1,7 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $biblioevent app\models\Biblioevents */
-/* @var $ticketCategories app\models\TicketCategories[] */
+/* @var $seats app\models\Seats[] */
 /* @var $guides app\models\Guide[] */
 /* @var $selectedDate string|null */
 /* @var $widgetId string */
@@ -65,15 +65,15 @@ $csrfToken = Yii::$app->request->csrfToken;
     <div class="excursion-booking-form-section" style="display: none;">
         <h3>Сколько вас будет</h3>
         <div class="excursion-tickets-list" id="excursion-tickets-list-<?= $widgetId ?>">
-            <?php if (empty($ticketCategories)): ?>
-            <p class="excursion-no-categories">Нет категорий билетов. Добавьте их в таблицу ticket_categories для biblioevent_id <?= $biblioevent->id ?>.</p>
+            <?php if (empty($seats)): ?>
+            <p class="excursion-no-categories">Нет типов билетов. Добавьте записи в таблицу seats для biblioevent_id <?= $biblioevent->id ?>.</p>
             <?php else: ?>
-            <?php foreach ($ticketCategories as $category): ?>
-            <div class="excursion-ticket-item" data-category-id="<?= $category->id ?>" data-price="<?= $category->price ?>">
+            <?php foreach ($seats as $seat): ?>
+            <div class="excursion-ticket-item" data-seat-id="<?= $seat->id ?>" data-price="<?= $seat->price ?>">
                 <div class="excursion-ticket-info">
-                    <span class="excursion-ticket-name"><?= Html::encode($category->name) ?></span>
+                    <span class="excursion-ticket-name"><?= Html::encode($seat->name) ?></span>
                     <span class="excursion-ticket-price">
-                        <?= $category->price > 0 ? Yii::$app->formatter->asCurrency($category->price) : 'бесплатно' ?>
+                        <?= $seat->price > 0 ? Yii::$app->formatter->asCurrency($seat->price) : 'бесплатно' ?>
                     </span>
                 </div>
                 <div class="excursion-ticket-counter">
@@ -381,7 +381,7 @@ $script = <<<JS
             var qty = parseInt(item.querySelector('.excursion-counter-input').value, 10) || 0;
             if (qty > 0) {
                 tickets.push({
-                    category_id: item.dataset.categoryId,
+                    seat_id: item.dataset.seatId,
                     quantity: qty,
                     price: parseFloat(item.dataset.price) || 0
                 });

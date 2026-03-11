@@ -9,7 +9,8 @@ use yii\helpers\ArrayHelper;
  * This is the model class for table "seats".
  *
  * @property int $id
- * @property int $event_id
+ * @property int|null $biblioevent_id
+ * @property int|null $event_id
  * @property string $name
  * @property int $count
  * @property int $price
@@ -26,6 +27,8 @@ use yii\helpers\ArrayHelper;
  * @property int $template_id
  * @property int $type
  * @property string $css
+ * @property int $is_active
+ * @property int $sort_order
  */
 class Seats extends \yii\db\ActiveRecord
 {
@@ -41,8 +44,8 @@ class Seats extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['event_id', 'name', 'price'], 'required'],
-            [['event_id', 'count', 'price', 'row', 'promolimit', 'afterpay', 'template_id', 'type'], 'integer'],
+            [['name', 'price'], 'required'],
+            [['biblioevent_id', 'event_id', 'count', 'price', 'row', 'promolimit', 'afterpay', 'template_id', 'type', 'is_active', 'sort_order'], 'integer'],
             [['info', 'info_ticket','css','date_start','date_stop'], 'string'],
             ['name', 'match', 'pattern'=>'~^[a-zА-Яа-яёЁ,-_+-—;.*#()&!@=: ]+$~u','message'=>'Используйте только буквы и пробелы'],
             [['name', 'sec', 'nums', 'promocode'], 'string', 'max' => 255],
@@ -154,6 +157,10 @@ class Seats extends \yii\db\ActiveRecord
         return $this->hasOne(Events::className(), ['id' => 'event_id']);
     }
 
+    public function getBiblioevent()
+    {
+        return $this->hasOne(Biblioevents::className(), ['id' => 'biblioevent_id']);
+    }
 
     // public function getTickets()
     // {
